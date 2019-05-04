@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 package controlador;
+
 /**
  *
  * @author kuroy
  */
-public class Cardinal {
-
-    /**
-     * @param args the command line arguments
-     */
+public class Controlador {
     public static void main(String[] args) {
     }
-    
 }
