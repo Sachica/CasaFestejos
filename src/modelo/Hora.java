@@ -4,29 +4,32 @@
  * and open the template in the editor.
  */
 package modelo;
-
+import util.MyException;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author kuroy
  */
-public class Hora extends Thread{   
-    private Integer hour;
-    private Integer minute;
-    private Integer second;
+public class Hora{   
+    private Integer hora;
+    private Integer minuto;
+    private Integer segundo;
 
     public Hora() {
         LocalDateTime c = LocalDateTime.now();
-        this.hour = c.getHour();
-        this.minute = c.getMinute();
-        this.second = c.getSecond();
+        this.hora = c.getHour();
+        this.minuto = c.getMinute();
+        this.segundo = c.getSecond();
     }
 
-    public Hora(Integer hour, Integer minute, Integer second) {
-        this.hour = hour;
-        this.minute = minute;
-        this.second = second;
+    public Hora(Integer hora, Integer minuto, Integer segundo) throws MyException{
+        if((hora<0 || hora>23) || (minuto<0 || minuto>59) || (segundo<0 || segundo>59)){
+            throw new MyException("Hora no permitida");
+        }
+        this.hora = hora;
+        this.minuto = minuto;
+        this.segundo = segundo;
     }
     
     
@@ -37,11 +40,11 @@ public class Hora extends Thread{
      * @return 
      */
     public Boolean esMayor(Hora other){
-        if(this.hour>other.getHour()){
+        if(this.hora>other.getHora()){
             return true;
-        }else if(this.hour==other.getHour() && this.getMinute()>other.getMinute()){
+        }else if(this.hora==other.getHora() && this.getMinuto()>other.getMinuto()){
             return true;
-        }else if(this.hour==other.getHour() && this.getMinute()==other.getMinute() && this.getSecond()>other.getSecond()){
+        }else if(this.hora==other.getHora() && this.getMinuto()==other.getMinuto() && this.getSegundo()>other.getSegundo()){
             return true;
         }
         return false;
@@ -64,38 +67,38 @@ public class Hora extends Thread{
      * @return 
      */
     public Boolean equals(Hora other){
-        return this.hour==other.getHour() && this.getMinute()==other.getMinute() && this.getSecond()==other.getSecond();
+        return this.hora==other.getHora() && this.getMinuto()==other.getMinuto() && this.getSegundo()==other.getSegundo();
     }
 
-    public Integer getHour() {
-        return hour;
+    public Integer getHora() {
+        return hora;
     }
 
-    public void setHour(Integer hour) {
-        this.hour = hour;
+    public void setHora(Integer hora) {
+        this.hora = hora;
     }
 
-    public Integer getMinute() {
-        return minute;
+    public Integer getMinuto() {
+        return minuto;
     }
 
-    public void setMinute(Integer minute) {
-        this.minute = minute;
+    public void setMinuto(Integer minuto) {
+        this.minuto = minuto;
     }
 
-    public Integer getSecond() {
-        return second;
+    public Integer getSegundo() {
+        return segundo;
     }
 
-    public void setSecond(Integer second) {
-        this.second = second;
+    public void setSegundo(Integer segundo) {
+        this.segundo = segundo;
     }
     
     public String toString(){ 
-        String hora = this.hour<10 ? "0"+this.hour : ""+this.hour;
-        String minuto = this.minute<10 ? "0"+this.minute : ""+this.minute;
-        String segundo = this.second<10 ? "0"+this.second : ""+this.second;
-        return hora+":"+minuto+":"+segundo;
+        String horaString = this.getHora()<10 ? "0"+this.getHora() : ""+this.getHora();
+        String minutoString = this.getMinuto()<10 ? "0"+this.getMinuto() : ""+this.getMinuto();
+        String segundoString = this.getSegundo()<10 ? "0"+this.getSegundo(): ""+this.getSegundo();
+        return horaString+":"+minutoString+":"+segundoString;
     }
 }
 

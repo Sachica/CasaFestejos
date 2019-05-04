@@ -6,14 +6,11 @@
 package modelo;
 
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author kuroy
  */
-public class Fecha extends Thread{
+public class Fecha{
     private Integer año;
     private Integer mes;
     private Integer dia;
@@ -46,7 +43,7 @@ public class Fecha extends Thread{
      * la hora es igual a 23, minuto igual a 59 y segundo igual a 59
      */
     public void actualizarFecha(){
-        if(this.hora.getHour()==23 && this.hora.getMinute()==59 && this.hora.getSecond()==59){
+        if(this.hora.getHora()==23 && this.hora.getMinuto()==59 && this.hora.getSegundo()==59){
             LocalDateTime l = LocalDateTime.now();
             this.año = l.getYear();
             this.mes = l.getMonthValue()<10 ? l.getMonthValue() : l.getMonthValue();
@@ -130,17 +127,5 @@ public class Fecha extends Thread{
         String diaS = this.dia<10 ? "0"+this.dia : ""+this.dia;
         String mesS = this.mes<10 ? "0"+this.mes : ""+this.mes;
         return diaS+"/"+mesS+"/"+año+" - "+this.hora.toString();
-    }
-
-    @Override
-    public void run() {
-        while(true){
-            try {
-                actualizarFecha();
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Fecha.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 }
