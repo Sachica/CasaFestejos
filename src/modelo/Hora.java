@@ -97,11 +97,5 @@ public class Hora extends Thread{
         String segundo = this.second<10 ? "0"+this.second : ""+this.second;
         return hora+":"+minuto+":"+segundo;
     }
-    
-    public static void main(String[] args) {
-        Hora h1 = new Hora(0, 0, 0);
-        Hora h2 = new Hora(0, 0, 0);
-        System.out.println("Afirmacion : "+h1.equals(h2));
-    }
 }
 
