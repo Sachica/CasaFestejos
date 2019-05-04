@@ -9,15 +9,15 @@ package modelo;
  *
  * @author kuroy
  */
-public class Comida {
+public class Bebida {
     private String nombre;
     private Integer costo;
     private Integer cantidad;
 
-    public Comida() {
+    public Bebida() {
     }
 
-    public Comida(String nombre, Integer costo, Integer cantidad) {
+    public Bebida(String nombre, Integer costo, Integer cantidad) {
         this.nombre = nombre;
         this.costo = costo;
         this.cantidad = cantidad;

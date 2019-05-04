@@ -50,4 +50,7 @@ public class Actividad{
         this.costo = costo;
     }
     
+    public String toString(){
+        return "Nombre: "+this.getNombre()+"\t Horario: "+this.getHorario();
+    }
 }

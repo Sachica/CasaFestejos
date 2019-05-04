@@ -5,6 +5,7 @@
  */
 package modelo;
 import java.util.ArrayList;
+import util.MyException;
 /**
  *
  * @author kuroy
@@ -14,8 +15,8 @@ public class Evento{
     private Integer num_asistentes;
     private String direccion_evento;
     private ArrayList<Actividad> cronograma_actividades;
-    private Silla sillas[];
-    private ArrayList<Comida> comidas;
+    private Silla sillas;
+    private Bufet bufet;
     private Fecha fecha_celebracion;
 	
     public Evento(){
@@ -24,8 +25,7 @@ public class Evento{
 	this.direccion_evento = null;
 	this.cronograma_actividades = null;
 	this.fecha_celebracion = null;
-	this.sillas = null;
-	this.comidas = new ArrayList<>();
+	this.bufet = new Bufet();
     }
 	
     public Evento(String nombre, Fecha fecha_celebracion, Integer num_asistentes, String direccion_evento){
@@ -34,15 +34,15 @@ public class Evento{
 	this.direccion_evento = direccion_evento;
 	this.cronograma_actividades = new ArrayList<>();
 	this.fecha_celebracion = fecha_celebracion;
-	this.sillas = new Silla[num_asistentes];
-	this.comidas = new ArrayList<>();
+	this.bufet = new Bufet();
     }
-	
-    public void agregarComida(Comida comida){
-   	this.comidas.add(comida);
-    }
-	
-    public void agregarCronograma(Actividad actividad){
+
+    public void agregarActividad(Actividad actividad) throws MyException{
+        for(Actividad comparador : cronograma_actividades){
+            if(comparador.getHorario().equals(actividad.getHorario())){
+                throw new MyException("Ya existe una actividada a esta hora");
+            }
+        }
     	this.cronograma_actividades.add(actividad);
     }
 
@@ -77,23 +77,7 @@ public class Evento{
     public void setCronograma_actividades(ArrayList<Actividad> cronograma_actividades) {
         this.cronograma_actividades = cronograma_actividades;
     }
-
-    public Silla[] getSillas() {
-        return sillas;
-    }
-
-    public void setSillas(Silla[] sillas) {
-        this.sillas = sillas;
-    }
-
-    public ArrayList<Comida> getComidas() {
-        return comidas;
-    }
-
-    public void setComidas(ArrayList<Comida> comidas) {
-        this.comidas = comidas;
-    }
-
+    
     public Fecha getFecha_celebracion() {
         return fecha_celebracion;
     }
@@ -101,5 +85,28 @@ public class Evento{
     public void setFecha_celebracion(Fecha fecha_celebracion) {
         this.fecha_celebracion = fecha_celebracion;
     }
+
+    public Bufet getBufet() {
+        return bufet;
+    }
+
+    public Silla getSillas() {
+        return sillas;
+    }
+
+    public void setSillas(String tipo, Integer cantidad) {
+        this.sillas = SillaFactory.crearSilla(tipo, cantidad);
+    }
     
+    public void setBufet(Bufet bufet) {
+        this.bufet = bufet;
+    }
+    
+    public String mostraCronograma(){
+        String actividades = "Actividades: \n";
+        for(Actividad actividad : cronograma_actividades){
+            actividades += actividad.toString()+"\n";
+        }
+        return actividades;
+    }  
 }

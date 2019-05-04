@@ -10,57 +10,40 @@ package modelo;
  * @author kuroy
  */
 public class Silla{
-    private Persona espectador;
-    private Character columna;
-    private Integer fila;
-	
+    private String tipo;
+    private Integer cantidad;
+    private Integer costo;
     public Silla(){
     }
 
-    public Silla(Persona espectador, Character columna, Integer fila) {
-        this.espectador = espectador;
-        this.columna = columna;
-        this.fila = fila;
-    }
-    
-    /**
-     * Averigua si this(Silla) esta vacia osea si su espectador es igual a null
-     * si es asi retorna true de lo contrario false
-     * @return 
-     */
-    public Boolean isEmpty(){
-	return this.espectador==null;
-    }
-	
-    /**
-     * Quita el espectador de la silla cambiando el actual a null
-     */
-    public void clear(){
-	this.espectador = null;
+    public Silla(String tipo, Integer cantidad, Integer costo) {
+        this.tipo = tipo;
+        this.cantidad = cantidad;
+        this.costo = costo;
     }
 
-    public Persona getEspectador() {
-        return espectador;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setEspectador(Persona espectador) {
-        this.espectador = espectador;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public Character getColumna() {
-        return columna;
+    public Integer getCantidad() {
+        return cantidad;
     }
 
-    public void setColumna(Character columna) {
-        this.columna = columna;
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
-    public Integer getFila() {
-        return fila;
+    public Integer getCosto() {
+        return costo*cantidad;
     }
 
-    public void setFila(Integer fila) {
-        this.fila = fila;
+    public void setCosto(Integer costo) {
+        this.costo = costo;
     }
     
 }
