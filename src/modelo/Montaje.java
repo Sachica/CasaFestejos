@@ -51,7 +51,7 @@ public class Montaje {
     public Integer getCosto() {
         Integer sillasValor = this.getSillas().getCosto();
         Integer mesasValor = this.getMesas().getCosto();
-        return costo;
+        return costo+sillasValor+mesasValor;
     }
 
     public void setCosto(Integer costo) {

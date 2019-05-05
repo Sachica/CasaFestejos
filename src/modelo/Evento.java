@@ -59,7 +59,10 @@ public class Evento{
     	this.cronograma_actividades.add(actividad);
     }
     
-    public void abonarMonto(Integer monto){
+    public void abonarMonto(Integer monto) throws MyException{
+        if(monto<=0){
+            throw new MyException("Monto no valido!");
+        }
         monto_abonado += monto;       
     }
     
@@ -91,7 +94,10 @@ public class Evento{
         return num_asistentes;
     }
 
-    public void setNum_asistentes(Integer num_asistentes) {
+    public void setNum_asistentes(Integer num_asistentes) throws MyException{
+        if(num_asistentes<0){
+            throw new MyException("Numero de asistentes no valido!");
+        }
         this.num_asistentes = num_asistentes;
     }
 
