@@ -6,6 +6,7 @@
 package modelo;
 import java.util.ArrayList;
 import util.MyException;
+import util.SillaFactory;
 /**
  *
  * @author kuroy
