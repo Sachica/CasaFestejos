@@ -24,7 +24,7 @@ public class Evento{
         this.nombre = "";
 	this.num_asistentes = 0;
 	this.direccion_evento = null;
-	this.cronograma_actividades = null;
+	this.cronograma_actividades = new ArrayList<>();
 	this.fecha_celebracion = null;
 	this.bufet = new Bufet();
     }
