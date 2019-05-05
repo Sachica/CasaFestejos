@@ -42,7 +42,7 @@ public class Bufet {
         this.bebidas = bebidas;
     }
     
-    public Integer obtenerCostoBufet(){
+    public Integer getCosto(){
         Integer costo = 0;
         for(Comida comida : comidas){
             costo += comida.getCosto();
