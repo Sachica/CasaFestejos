@@ -5,12 +5,19 @@
  */
 package controlador;
 
+import util.MyException;
+import modelo.*;
 /**
  *
  * @author kuroy
  */
 public class Controlador {
     public static void main(String[] args) {
-        System.out.println("Hola");
+        try {
+            Evento e = new Evento();
+            e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
+            e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
+        } catch (MyException e) {
+        }
     }
 }
