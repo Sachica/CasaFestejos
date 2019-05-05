@@ -16,7 +16,7 @@ public class Controlador {
         try {
             System.out.println("Test");
             Evento e = new Evento();
-            e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
+            e.agregarActividad(new Actividad("Karaoke", new Hora(), 2000));
             e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
         } catch (MyException e) {
         }
