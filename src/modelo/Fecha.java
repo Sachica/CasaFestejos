@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package modelo;
-
+import util.MyException;
 import java.time.LocalDateTime;
 /**
  *
@@ -24,14 +24,20 @@ public class Fecha{
         this.dia = l.getDayOfMonth()<10 ? l.getDayOfMonth(): l.getDayOfMonth();
     }
     
-    public Fecha(Integer año, Integer mes, Integer dia) {
+    public Fecha(Integer año, Integer mes, Integer dia) throws MyException{
+        if(año<0 && mes<0 || mes>12 || dia<0 || dia>31){
+            throw new MyException("Fecha no permitida!");
+        }
         this.año = año;
         this.mes = mes;
         this.dia = dia;
         this.hora = new Hora();
     }
 
-    public Fecha(Integer año, Integer mes, Integer dia, Hora hora) {
+    public Fecha(Integer año, Integer mes, Integer dia, Hora hora) throws MyException{
+        if(año<0 && mes<0 || mes>12 || dia<0 || dia>31){
+            throw new MyException("Fecha no permitida!");
+        }
         this.año = año;
         this.mes = mes;
         this.dia = dia;

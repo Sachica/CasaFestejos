@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package util;
 
 /**
  *
  * @author kuroy
  */
-public class Persona {
-    
+public enum Estado {
+    PAGO,
+    NO_PAGO,
 }

@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 package util;
-import modelo.Silla;
+import modelo.Mesa;
 /**
  *
  * @author kuroy
  */
-public class SillaFactory {
-    private static final String TIPO[] = {"ECONOMICA", "NORMAL", "NORMAL DECORADA", "AMUEBLADA", "EJECUTIVA"};
-    private static final Integer COSTOS[] = {0, 0, 0, 0, 0};
+public class MesaFactory {
+    private static final String TIPO[] = {"MESA IMPERIAL", "MESA REDONDA", "MESA EJECUTIVA", "MESA RUSA"};
+    private static final Integer COSTO[] = {0, 0, 0, 0};
     
-    public static Silla crearSillas(String comando, Integer cantidad){
+    public static Mesa crearMesas(String comando, Integer cantidad){
         for(Integer i=0; i<TIPO.length; i++){
             if(TIPO[i].equals(comando)){
-                return new Silla(TIPO[i], COSTOS[i], cantidad);
+                return new Mesa(TIPO[i], COSTO[i], cantidad);
             }
         }
         return null;
