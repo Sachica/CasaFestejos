@@ -15,7 +15,7 @@ public class Controlador {
     public static void main(String[] args) {
         try {
             System.out.println("Test Consola");
-            
+          
             Evento e = new Evento();
             e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
             e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
