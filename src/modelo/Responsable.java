@@ -15,7 +15,7 @@ public class Responsable {
     public String cedula;
     public String telefono;
     public String e_mail;
-
+    public String genero;
     public Responsable() {
     }
 
