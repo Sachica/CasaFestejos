@@ -9,6 +9,6 @@ package controlador;
  *
  * @author kuroy
  */
-public class Ejemplo2 {
+public class Test {
     
 }
