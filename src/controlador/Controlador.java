@@ -28,6 +28,7 @@ public class Controlador implements ActionListener {
         persona = new Responsable();
         conexion = new Conexion();
         servicio = new PersonaServicio();
+        
         principal = new Principal();
         principal.InicializarListener(this);
     }
@@ -55,7 +56,7 @@ public class Controlador implements ActionListener {
             principal.txtApellido.setText("");
             principal.txtDocumento.setText("");
             principal.txtTelefono.setText("");
-            principal.txtEdad.setText("");
+            principal.txtEmail.setText("");
         }
     }
     

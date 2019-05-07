@@ -44,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
         txtApellido = new javax.swing.JTextField();
         txtDocumento = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
-        txtEdad = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
 
@@ -60,7 +60,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Telefono");
 
-        jLabel5.setText("Edad");
+        jLabel5.setText("Email");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,7 +91,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(txtTelefono)
                         .addComponent(txtDocumento)
                         .addComponent(txtApellido))
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
@@ -127,7 +127,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -206,7 +206,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     public javax.swing.JTextField txtApellido;
     public javax.swing.JTextField txtDocumento;
-    public javax.swing.JTextField txtEdad;
+    public javax.swing.JTextField txtEmail;
     public javax.swing.JTextField txtNombre;
     public javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
