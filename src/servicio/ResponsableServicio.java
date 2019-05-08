@@ -14,7 +14,7 @@ import modelo.*;
  *
  * @author usuario
  */
-public class PersonaServicio {
+public class ResponsableServicio {
     
     public void Guardar(Connection conexion, Responsable persona) throws SQLException{
         

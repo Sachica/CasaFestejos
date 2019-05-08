@@ -20,16 +20,16 @@ public class Controlador implements ActionListener {
     
     Responsable persona;
     Conexion conexion;
-    PersonaServicio servicio;
-    Principal principal;
+    ResponsableServicio servicio;
+    RegistroPersona principal;
 
     public Controlador() throws SQLException, ClassNotFoundException {
         
         persona = new Responsable();
         conexion = new Conexion();
-        servicio = new PersonaServicio();
+        servicio = new ResponsableServicio();
         
-        principal = new Principal();
+        principal = new RegistroPersona();
         principal.InicializarListener(this);
     }
     
@@ -50,7 +50,7 @@ public class Controlador implements ActionListener {
             }
         }
         
-        if(e.getSource()==principal.btnCancelar){
+        if(e.getSource()==principal.btnLimpiar){
             
             principal.txtNombre.setText("");
             principal.txtApellido.setText("");
