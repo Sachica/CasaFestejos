@@ -21,7 +21,16 @@ public class Controlador implements ActionListener {
     Responsable persona;
     Conexion conexion;
     ResponsableServicio servicio;
-    RegistroPersona principal;
+    RegistroPersona registro;
+    Principal principal;
+    Administrador administrador;
+    CajaAdministrador caja;
+    Comidas_Bebidas comida_bebida;
+    Confirmar confirmar;
+    ControlAdministrador control;
+    Reservas reserva;
+    Sillas_Mesas silla_mesa;
+    TipoDeMontaje montaje;
 
     public Controlador() throws SQLException, ClassNotFoundException {
         
@@ -29,18 +38,36 @@ public class Controlador implements ActionListener {
         conexion = new Conexion();
         servicio = new ResponsableServicio();
         
-        principal = new RegistroPersona();
-        principal.InicializarListener(this);
+        registro = new RegistroPersona();
+        registro.InicializarListener(this);
+        principal = new Principal();
+        principal.InicializarListener6(this);
+        administrador = new Administrador();
+        administrador.InicializarListener7(this);
+        caja = new CajaAdministrador();
+        caja.InicializarListener10(this);
+        comida_bebida = new Comidas_Bebidas();
+        comida_bebida.InicializarListener4(this);
+        confirmar = new Confirmar();
+        confirmar.InicializarListener5(this);
+        control = new ControlAdministrador();
+        control.InicializarListener9(this);
+        reserva = new Reservas();
+        reserva.InicializarListener8(this);
+        silla_mesa = new Sillas_Mesas();
+        silla_mesa.InicializarListener3(this);
+        montaje = new TipoDeMontaje();
+        montaje.InicializarListener2(this);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==principal.btnGuardar){
+        if(e.getSource()==registro.btnGuardar){
             
-            /*String identificacion = principal.txtDocumento.getText();
-            String id = identificacion.substring(identificacion.length()-3);
-            persona = new Responsable(principal.txtNombre.getText(), principal.txtApellido.getText(), principal.txtDocumento.getText(), Integer.parseInt(principal.txtTelefono.getText()), Integer.parseInt(principal.txtEdad.getText()));
-            */
+            /*String identificacion = registro.txtDocumento.getText();
+            String cedula = identificacion.substring(identificacion.length()-3);*/
+            persona = new Responsable(registro.txtNombre.getText(), registro.txtApellido.getText(),registro.txtDocumento.getText(), registro.txtTelefono.getText(), registro.txtEmail.getText());
+            
             try{
                 servicio.Guardar(conexion.getCnx(), persona);
                 
@@ -50,19 +77,19 @@ public class Controlador implements ActionListener {
             }
         }
         
-        if(e.getSource()==principal.btnLimpiar){
+        if(e.getSource()==registro.btnLimpiar){
             
-            principal.txtNombre.setText("");
-            principal.txtApellido.setText("");
-            principal.txtDocumento.setText("");
-            principal.txtTelefono.setText("");
-            principal.txtEmail.setText("");
+            registro.txtNombre.setText("");
+            registro.txtApellido.setText("");
+            registro.txtDocumento.setText("");
+            registro.txtTelefono.setText("");
+            registro.txtEmail.setText("");
         }
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Controlador c = new Controlador();
-        c.principal.setVisible(true);
+        c.registro.setVisible(true);
         try {
             System.out.println("");
             Evento e = new Evento();
