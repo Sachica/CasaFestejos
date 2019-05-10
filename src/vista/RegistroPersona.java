@@ -26,6 +26,14 @@ public class RegistroPersona extends javax.swing.JFrame {
         btnBuscar.addActionListener(a);
         btnLimpiar.addActionListener(a);
     }
+    
+    public void Limpiar(){
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDocumento.setText("");
+        txtTelefono.setText("");
+        txtEmail.setText("");
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.

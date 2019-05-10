@@ -8,6 +8,7 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import util.MyException;
 import modelo.*;
 import servicio.*;
@@ -19,7 +20,7 @@ import vista.*;
 public class Controlador implements ActionListener {
     
     Responsable persona;
-    Conexion conexion;
+    //Conexion conexion;
     ResponsableServicio servicio;
     RegistroPersona registro;
     Principal principal;
@@ -35,7 +36,7 @@ public class Controlador implements ActionListener {
     public Controlador() throws SQLException, ClassNotFoundException {
         
         persona = new Responsable();
-        conexion = new Conexion();
+        //conexion = new Conexion();
         servicio = new ResponsableServicio();
         
         registro = new RegistroPersona();
@@ -68,26 +69,51 @@ public class Controlador implements ActionListener {
             String cedula = identificacion.substring(identificacion.length()-3);*/
             persona = new Responsable(registro.txtNombre.getText(), registro.txtApellido.getText(),registro.txtDocumento.getText(), registro.txtTelefono.getText(), registro.txtEmail.getText());
             
-            try{
+           /* try{
                 servicio.Guardar(conexion.getCnx(), persona);
                 
             }catch(SQLException ex){
                 System.out.print(ex.getMessage());
                 
             }
-        }
+        }*/
         
         if(e.getSource()==registro.btnLimpiar){
             
-            registro.txtNombre.setText("");
-            registro.txtApellido.setText("");
-            registro.txtDocumento.setText("");
-            registro.txtTelefono.setText("");
-            registro.txtEmail.setText("");
+            registro.Limpiar();
+        }
+        
+        if(e.getSource()==registro.btnIngresar){
+            
+            registro.setVisible(false);
+            montaje.setVisible(true);
+        }
+        
+        if(e.getSource()==montaje.btnContinuar){
+            
+            montaje.setVisible(false);
+            silla_mesa.setVisible(true);
+        }
+        
+        if(e.getSource()==silla_mesa.btnContinuar){
+            
+            silla_mesa.setVisible(false);
+            comida_bebida.setVisible(true);
+        }
+        
+        if(e.getSource()==comida_bebida.btnContinuar){
+            
+            comida_bebida.setVisible(false);
+            confirmar.setVisible(true);
+        }
+        
+        if(e.getSource()==confirmar.btnConfirmar){
+            
+            JOptionPane.showMessageDialog(null, "Operación Relizada Correctamente");
         }
     }
     
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    /*public static void main(String[] args) throws SQLException, ClassNotFoundException{
         Controlador c = new Controlador();
         c.registro.setVisible(true);
         try {
@@ -97,5 +123,11 @@ public class Controlador implements ActionListener {
             e.agregarActividad(new Actividad("Karaoke", new Hora(1, 1, 1), 2000));
         } catch (MyException e) {
         }
+    }*/
+   }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        Controlador m = new Controlador();
+        m.registro.setVisible(true);
+    
     }
 }

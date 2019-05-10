@@ -24,6 +24,31 @@ public class Comidas_Bebidas extends javax.swing.JFrame {
         btnPrecio.addActionListener(d);
         btnContinuar.addActionListener(d);
     }
+    
+    public void Limpiar(){
+        jCheckBox1.setSelected(false);
+        jCheckBox2.setSelected(false);
+        jCheckBox3.setSelected(false);
+        jCheckBox4.setSelected(false);
+        jCheckBox5.setSelected(false);
+        jCheckBox6.setSelected(false);
+        jCheckBox7.setSelected(false);
+        jCheckBox8.setSelected(false);
+        jCheckBox9.setSelected(false);
+        jCheckBox10.setSelected(false);
+        jCheckBox11.setSelected(false);
+        jCheckBox12.setSelected(false);
+        jCheckBox13.setSelected(false);
+        jCheckBox14.setSelected(false);
+        jCheckBox15.setSelected(false);
+        jCheckBox16.setSelected(false);
+        jCheckBox17.setSelected(false);
+        jCheckBox18.setSelected(false);
+        jCheckBox19.setSelected(false);
+        jCheckBox20.setSelected(false);
+        jCheckBox21.setSelected(false);
+        jCheckBox22.setSelected(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
