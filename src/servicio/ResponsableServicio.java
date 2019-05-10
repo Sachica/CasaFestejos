@@ -7,6 +7,7 @@ package servicio;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import modelo.*;
 
@@ -16,11 +17,11 @@ import modelo.*;
  */
 public class ResponsableServicio {
     
-    public void Guardar(Connection conexion, Responsable persona) throws SQLException{
+    public void guardar(Connection conexion, Responsable persona) throws SQLException{
         
         try{
             PreparedStatement consulta;
-            consulta = conexion.prepareStatement("INSERT INTO persona (nombre, apellidos, cedula, telefono, e_mail)"
+            consulta = conexion.prepareStatement("INSERT INTO responsable (nombre, apellidos, cedula, telefono, e_mail)"
                     +"VALUES(?, ?, ?, ?, ?)" );
             
             consulta.setString(1, persona.getNombre());
@@ -35,11 +36,11 @@ public class ResponsableServicio {
         }
     }
     
-    public void Actualizar(Connection conexion, Responsable persona) throws SQLException{
+    public void actualizar(Connection conexion, Responsable persona) throws SQLException{
         
         try{
             PreparedStatement consulta;
-            consulta = conexion.prepareStatement("UPDATE persona SET nombre=?, apellidos=?, cedula=?, telefono=?, e_mail=?"
+            consulta = conexion.prepareStatement("UPDATE responsable SET nombre=?, apellidos=?, cedula=?, telefono=?, e_mail=?"
                     +"WHERE cedula=?" );
             
             consulta.setString(1, persona.getNombre());
@@ -58,7 +59,7 @@ public class ResponsableServicio {
       try{
           
          PreparedStatement consulta;
-         consulta = conexion.prepareStatement("DELETE FROM persona "
+         consulta = conexion.prepareStatement("DELETE FROM responsable "
                  + "WHERE cedula=?");        
          consulta.setString(3, cedula);
          consulta.executeUpdate();
@@ -67,17 +68,17 @@ public class ResponsableServicio {
       }
    }
     
-    public static void buscar(Connection conexion, String cedula) throws SQLException{
-      try{
-          
-         PreparedStatement consulta;
-         consulta = conexion.prepareStatement("SELECT * FROM persona "
-                 + "WHERE cedula=?");        
-         consulta.setString(3, cedula);
-         consulta.executeUpdate();
+    public static Responsable buscar(Connection conexion, String cedula) throws SQLException{
+        ResultSet rs = null;
+        try{         
+            PreparedStatement consulta;
+            consulta = conexion.prepareStatement("SELECT * FROM responsable "
+                    + "WHERE cedula=?");        
+            consulta.setString(3, cedula);
+            rs = consulta.executeQuery();
         }catch(SQLException ex){
          throw new SQLException(ex);
         }
-    
+        return new Responsable(rs.getString("nombres"), rs.getString("apellidos"), rs.getString("cedula"), rs.getString("telefono"), rs.getString("e_mail"));
     }
 }

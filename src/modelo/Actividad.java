@@ -11,19 +11,18 @@ package modelo;
  */
 public class Actividad{
     private String nombre;
+    private String descripcion;
     private Hora horario;
-    private Integer costo;
 	
     public Actividad(){
     	this.nombre = "";
     	this.horario = null;
-    	this.costo = 0;
     }
 	
-    public Actividad(String nombre, Hora hora, Integer costo){
+    public Actividad(String nombre, String descripcion, Hora hora){
 	this.nombre = nombre;
+        this.descripcion = descripcion;
     	this.horario = hora;
-	this.costo = costo;
     }
 
     public String getNombre() {
@@ -34,20 +33,20 @@ public class Actividad{
         this.nombre = nombre;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public Hora getHorario() {
         return horario;
     }
 
     public void setHorario(Hora horario) {
         this.horario = horario;
-    }
-
-    public Integer getCosto() {
-        return costo;
-    }
-
-    public void setCosto(Integer costo) {
-        this.costo = costo;
     }
     
     public String toString(){
