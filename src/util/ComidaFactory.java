@@ -10,7 +10,7 @@ import modelo.Comida;
  * @author kuroy
  */
 public class ComidaFactory {
-    private static final String COMIDAS[] = {"PASTEL", "PASTEL DE BODA", "PERRO CALIENTE", "SANDWIWCH", "PINCHO DE FRUTA",
+    private static final String COMIDAS[] = {"PASTEL", "PASTEL DE BODA", "PERRO CALIENTE", "SANDWICH", "PINCHO DE FRUTA",
                                              "PINCHO DE CARNES", "NUGGETS DE POLLO", "PORCION DE PIZZA", "ENSALADA", "ARROZ CON LECHE", "GALLETAS",
                                              "FLAN", "NATILLA", "BUÑUELOS", "ROSQUILLAS"};
     private static final Integer COSTOS[] = {0, 0, 0, 0, 0, 0, 0, 0};

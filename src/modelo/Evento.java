@@ -155,6 +155,10 @@ public class Evento{
         this.estado_pago = estado_pago;
     }
     
+    public String getID(){
+        return this.getResponsable().getCedula().substring(0, 4);
+    }
+    
     public Integer getMontoTotal() {
         Integer bufetValor = this.getBufet().getCosto();
         Integer montajeValor = this.getMontaje().getCosto();

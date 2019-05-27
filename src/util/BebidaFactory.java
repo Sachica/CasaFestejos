@@ -11,8 +11,8 @@ import modelo.Bebida;
  * @author kuroy
  */
 public class BebidaFactory {
-    private static final String BEBIDAS[] = {"VINO", "WHISKY", "CHAMPAÑA", "LITRO DE GASESOSA", "GASEOSA PERSONAL", "LITRO DE JUGO HIT",
-                                             "JUGO HIT PERSONAL"};
+    private static final String BEBIDAS[] = {"VINO", "WHISKY", "CHAMPAÑA", "LITRO DE GASESOSA", "GASEOSA PERSONAL", "LITRO DE JUGO",
+                                             "JUGO PERSONAL"};
     private static final Integer COSTOS[] = {0, 0, 0, 0, 0, 0, 0};
     
     public static Bebida crearBebida(String comando, Integer cantidad){
