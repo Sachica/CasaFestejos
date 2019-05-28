@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 public class Vista extends javax.swing.JFrame {
     public formEvento frmEvento;
     public formRegistro frmRegistro;
+    public formInicio frmInicio;
     /**
      * Creates new form Vista
      */
@@ -24,8 +25,14 @@ public class Vista extends javax.swing.JFrame {
         super.setLocationRelativeTo(null);       
         frmEvento = new formEvento();
         frmRegistro = new formRegistro();
+        frmInicio = new formInicio();
     }
 
+    public void initListeners(java.awt.event.ActionListener e){
+        this.frmRegistro.initListeners(e);
+        this.frmInicio.initListener(e);
+    }
+    
     public void cambiarPanel(JPanel anterior, JPanel nuevo){
         Dimension s = nuevo.getMaximumSize();
         super.setSize((int)s.getWidth(), (int)s.getHeight()+40);
@@ -48,11 +55,11 @@ public class Vista extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 354, Short.MAX_VALUE)
+            .addGap(0, 409, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+            .addGap(0, 316, Short.MAX_VALUE)
         );
 
         pack();

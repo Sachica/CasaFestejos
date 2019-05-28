@@ -9,36 +9,27 @@ package modelo;
  *
  * @author kuroy
  */
-public class Comida{
+public class Mobiliario {
     private Integer id;
-    private String nombre;
-    private Integer costo;
+    private String tipo;
     private Integer cantidad;
-
-    public Comida() {
+    private Integer costo;
+    public Mobiliario(){
     }
 
-    public Comida(Integer id, String nombre, Integer costo, Integer cantidad) {
+    public Mobiliario(Integer id, String tipo, Integer cantidad, Integer costo) {
         this.id = id;
-        this.nombre = nombre;
-        this.costo = costo;
+        this.tipo = tipo;
         this.cantidad = cantidad;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Integer getCosto() {
-        return costo*cantidad;
-    }
-
-    public void setCosto(Integer costo) {
         this.costo = costo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Integer getCantidad() {
@@ -47,6 +38,14 @@ public class Comida{
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Integer getCosto() {
+        return costo*cantidad;
+    }
+
+    public void setCosto(Integer costo) {
+        this.costo = costo;
     }
 
     public Integer getId() {

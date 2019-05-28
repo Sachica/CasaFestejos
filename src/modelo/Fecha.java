@@ -132,6 +132,6 @@ public class Fecha{
     public String toString() {
         String diaS = this.dia<10 ? "0"+this.dia : ""+this.dia;
         String mesS = this.mes<10 ? "0"+this.mes : ""+this.mes;
-        return diaS+"/"+mesS+"/"+año+" - "+this.hora.toString();
+        return diaS+"/"+mesS+"/"+año+"-"+this.hora.toString();
     }
 }

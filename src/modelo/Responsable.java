@@ -12,14 +12,14 @@ package modelo;
 public class Responsable {
     public String nombre;
     public String apellidos;
-    public String cedula;
+    public Integer cedula;
     public String telefono;
     public String e_mail;
 
     public Responsable() {
     }
 
-    public Responsable(String nombre, String apellidos, String cedula, String telefono, String e_mail) {
+    public Responsable(String nombre, String apellidos, Integer cedula, String telefono, String e_mail) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.cedula = cedula;
@@ -43,11 +43,11 @@ public class Responsable {
         this.apellidos = apellidos;
     }
 
-    public String getCedula() {
+    public Integer getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(Integer cedula) {
         this.cedula = cedula;
     }
 

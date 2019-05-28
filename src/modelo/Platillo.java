@@ -9,12 +9,11 @@ package modelo;
  *
  * @author kuroy
  */
-public class Silla extends Mobiliario{
-    public Silla(){
-        super();
+public class Platillo extends Comida {
+    public Platillo() {
     }
-    
-    public Silla(Integer id, String tipo, Integer cantidad, Integer costo){
-        super(id, tipo, cantidad, costo);
+
+    public Platillo(Integer id, String nombre, Integer costo, Integer cantidad) {
+        super(id, nombre, costo, cantidad);
     }
 }

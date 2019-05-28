@@ -11,5 +11,9 @@ package util;
  */
 public enum Estado {
     PAGO,
-    NO_PAGO,
+    NO_PAGO;
+    
+    public static Estado getEstado(String estadoString){
+        return estadoString.equals("PAGO") ? PAGO : NO_PAGO;
+    }
 }

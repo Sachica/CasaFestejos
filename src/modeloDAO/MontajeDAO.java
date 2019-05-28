@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modeloDAO;
 
 /**
  *
  * @author kuroy
  */
-public class Silla extends Mobiliario{
-    public Silla(){
-        super();
-    }
+public class MontajeDAO {
     
-    public Silla(Integer id, String tipo, Integer cantidad, Integer costo){
-        super(id, tipo, cantidad, costo);
-    }
 }

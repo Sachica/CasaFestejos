@@ -9,41 +9,12 @@ package modelo;
  *
  * @author kuroy
  */
-public class Mesa {
-    private String tipo;
-    private Integer costo;
-    private Integer cantidad;
-
-    public Mesa() {
+public class Mesa extends Mobiliario{
+    public Mesa(){
+        super();
     }
-
-    public Mesa(String tipo, Integer costo, Integer cantidad) {
-        this.tipo = tipo;
-        this.costo = costo;
-        this.cantidad = cantidad;
+    
+    public Mesa(Integer id, String tipo, Integer cantidad, Integer costo){
+        super(id, tipo, cantidad, costo);
     }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Integer getCosto() {
-        return costo*cantidad;
-    }
-
-    public void setCosto(Integer costo) {
-        this.costo = costo;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    } 
 }

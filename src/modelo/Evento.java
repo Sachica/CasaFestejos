@@ -155,8 +155,8 @@ public class Evento{
         this.estado_pago = estado_pago;
     }
     
-    public String getID(){
-        return this.getResponsable().getCedula().substring(0, 4);
+    public Integer getID(){
+        return this.getResponsable().getCedula();
     }
     
     public Integer getMontoTotal() {
