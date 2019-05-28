@@ -15,6 +15,7 @@ public class Responsable {
     public Integer cedula;
     public String telefono;
     public String e_mail;
+    public String prueba;
 
     public Responsable() {
     }
