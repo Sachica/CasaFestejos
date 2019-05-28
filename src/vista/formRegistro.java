@@ -25,7 +25,7 @@ public class formRegistro extends javax.swing.JPanel {
         this.txtCed.addActionListener(e);
         this.btnVolver.addActionListener(e);
     }
-    
+   
     public void clean(){
         this.txtApe.setText("");
         this.txtNom.setText("");
