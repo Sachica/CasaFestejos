@@ -71,20 +71,17 @@ public class formRegistro extends javax.swing.JPanel {
         );
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         setForeground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(427, 247));
 
         btnModificar.setBackground(new java.awt.Color(255, 255, 255));
-        btnModificar.setForeground(new java.awt.Color(0, 0, 0));
         btnModificar.setText("Modificar");
 
         btnRegistrar.setBackground(new java.awt.Color(255, 255, 255));
-        btnRegistrar.setForeground(new java.awt.Color(0, 0, 0));
         btnRegistrar.setText("Registrar");
 
         btnCont.setBackground(new java.awt.Color(255, 255, 255));
-        btnCont.setForeground(new java.awt.Color(0, 0, 0));
         btnCont.setText("Continuar");
 
         txtEmail.setBackground(new java.awt.Color(0, 0, 51));
@@ -133,7 +130,6 @@ public class formRegistro extends javax.swing.JPanel {
         jLabel5.setText("E-mail");
 
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
-        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
         btnVolver.setText("Volver");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -174,7 +170,7 @@ public class formRegistro extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
