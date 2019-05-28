@@ -5,6 +5,8 @@
  */
 package vista;
 
+import java.awt.event.ActionListener;
+
 /**
  *
  * @author kuroy
@@ -16,6 +18,12 @@ public class formEvento extends javax.swing.JPanel {
      */
     public formEvento() {
         initComponents();
+    }
+    
+    public void initListener(ActionListener e){
+        this.btnAddActividad.addActionListener(e);
+        this.btnCancelar.addActionListener(e);
+        this.btnConfirmar.addActionListener(e);
     }
 
     /**
