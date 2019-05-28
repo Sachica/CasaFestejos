@@ -11,14 +11,13 @@ import vista.Vista;
  *
  * @author kuroy
  */
-public class ControladorInicio implements java.awt.event.ActionListener{
+public class ControladorInicio{
     private Vista vista;
 
     public ControladorInicio(Vista vista) {
         this.vista  = vista;
     }
     
-    @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if(e.getSource() == vista.frmInicio.btnRegis){
             vista.cambiarPanel(vista.frmInicio, vista.frmRegistro);

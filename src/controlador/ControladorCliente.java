@@ -14,15 +14,14 @@ import vista.Vista;
  *
  * @author kuroy
  */
-public class ControladorCliente implements java.awt.event.ActionListener{
+public class ControladorCliente{
     private Vista vista;
 
     public ControladorCliente(Vista vista) {
         this.vista = vista;
         this.vista.frmCliente.deshabilitar();
     }
-    
-    @Override
+        
     public void actionPerformed(java.awt.event.ActionEvent e){
         if(e.getSource() == vista.frmCliente.btnBuscar){
             try{
@@ -57,7 +56,7 @@ public class ControladorCliente implements java.awt.event.ActionListener{
             } catch (NumberFormatException err) {
                 this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             } catch (SQLException err){
-                this.mostrarMensajes("Error de conexion a la base de datos", Boolean.FALSE);
+                this.mostrarMensajes("Numero de cedula invalido, ya se encuentra un cliente registrado con este numero cedula", Boolean.FALSE);
             }          
         }
         

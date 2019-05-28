@@ -16,7 +16,7 @@ import util.TipoArticulo;
  *
  * @author kuroy
  */
-public class ArticuloAdminDAO {
+public class ArticuloDAO {
 
     public static Boolean guardar(Articulo articulo, Connection connection) throws SQLException{
         String query = "INSERT INTO articulo (id, tipo, nombre, precio) VALUES(?,?,?,?)";
@@ -42,8 +42,7 @@ public class ArticuloAdminDAO {
         return ps.executeUpdate()!=0;
     }
     
-    public static java.util.ArrayList<Articulo> buscarPorID(Articulo articulo, Connection connection) throws SQLException{
-        java.util.ArrayList<Articulo> articulos = new java.util.ArrayList<>(); 
+    public static Articulo buscarPorID(Articulo articulo, Connection connection) throws SQLException{
         String query = "SELECT * FROM articulo WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
@@ -56,10 +55,29 @@ public class ArticuloAdminDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            articulos.add(new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio));
+            return new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
         }
         
-        return articulos;
+        return null;
+    }
+    
+    public static Articulo buscarPorNombre(Articulo articulo, Connection connection) throws SQLException{
+        String query = "SELECT * FROM articulo WHERE nombre=?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        
+        ps.setString(1, articulo.getNombre());
+        ResultSet rs = ps.executeQuery();
+        
+        while(rs.next()){
+            Integer id = rs.getInt("id");
+            String tipo = rs.getString("tipo");
+            String nombre = rs.getString("nombre");
+            Integer precio = rs.getInt("precio");
+            
+            return new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+        }
+        
+        return null;
     }
     
     public static java.util.ArrayList<Articulo> buscarPorTipo(Articulo articulo, Connection connection) throws SQLException{

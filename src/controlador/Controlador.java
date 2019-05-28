@@ -22,6 +22,7 @@ public class Controlador implements ActionListener {
     private ControladorRegistro controladorRegistro;
     private ControladorInicio controladorInicio;
     private ControladorCliente controladorCliente;
+    private ControladorEvento controladorEvento;
     
     public Controlador(){
         vista = new Vista();
@@ -29,6 +30,7 @@ public class Controlador implements ActionListener {
         controladorRegistro = new ControladorRegistro(vista);
         controladorInicio = new ControladorInicio(vista);
         controladorCliente = new ControladorCliente(vista);
+        controladorEvento = new ControladorEvento(vista);
         vista.cambiarPanel(vista.frmRegistro, vista.frmInicio);
         vista.setVisible(true);
     }
@@ -38,6 +40,7 @@ public class Controlador implements ActionListener {
         controladorInicio.actionPerformed(e);
         controladorRegistro.actionPerformed(e);
         controladorCliente.actionPerformed(e);
+        controladorEvento.actionPerformed(e);
     }
 
     

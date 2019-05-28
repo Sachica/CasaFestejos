@@ -15,14 +15,13 @@ import vista.Vista;
  *
  * @author kuroy
  */
-public class ControladorRegistro implements java.awt.event.ActionListener{
+public class ControladorRegistro{
     private final Vista vista;
     
     public ControladorRegistro(Vista vista){
         this.vista = vista;
     }
     
-    @Override
     public void actionPerformed(java.awt.event.ActionEvent e){
         if(e.getSource() == vista.frmRegistro.btnRegistrar){
             try {

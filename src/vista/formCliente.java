@@ -107,27 +107,42 @@ public class formCliente extends javax.swing.JPanel {
         txtEmail.setBackground(new java.awt.Color(0, 0, 51));
         txtEmail.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtEmail.setForeground(new java.awt.Color(255, 255, 255));
+        txtEmail.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtEmail.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtEmail.setSelectedTextColor(new java.awt.Color(51, 51, 255));
+        txtEmail.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         txtTel.setBackground(new java.awt.Color(0, 0, 51));
         txtTel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtTel.setForeground(new java.awt.Color(255, 255, 255));
+        txtTel.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtTel.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtTel.setSelectedTextColor(new java.awt.Color(51, 51, 255));
+        txtTel.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         txtApe.setBackground(new java.awt.Color(0, 0, 51));
         txtApe.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtApe.setForeground(new java.awt.Color(255, 255, 255));
+        txtApe.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtApe.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtApe.setSelectedTextColor(new java.awt.Color(51, 51, 255));
+        txtApe.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         txtNom.setBackground(new java.awt.Color(0, 0, 51));
         txtNom.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtNom.setForeground(new java.awt.Color(255, 255, 255));
+        txtNom.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtNom.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtNom.setSelectedTextColor(new java.awt.Color(51, 51, 255));
+        txtNom.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         txtCed.setBackground(new java.awt.Color(0, 0, 51));
         txtCed.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCed.setForeground(new java.awt.Color(255, 255, 255));
+        txtCed.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtCed.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtCed.setSelectedTextColor(new java.awt.Color(51, 51, 255));
+        txtCed.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         btnModificar.setBackground(new java.awt.Color(255, 255, 255));
         btnModificar.setForeground(new java.awt.Color(0, 0, 0));
@@ -143,6 +158,8 @@ public class formCliente extends javax.swing.JPanel {
 
         txtCedula.setBackground(new java.awt.Color(0, 0, 51));
         txtCedula.setForeground(new java.awt.Color(255, 255, 255));
+        txtCedula.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtCedula.setSelectionColor(new java.awt.Color(255, 255, 255));
 
         btnClean.setBackground(new java.awt.Color(255, 255, 255));
         btnClean.setForeground(new java.awt.Color(0, 0, 0));
