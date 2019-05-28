@@ -30,7 +30,7 @@ public class ResponsableDAO {
         return consulta.execute();
     }
 
-    public static Boolean actualizar(Responsable persona, Connection conexion) throws SQLException {
+    public static Boolean actualizar(Responsable persona, Integer cedula, Connection conexion) throws SQLException {
         String query = "UPDATE responsable SET nombre=?, apellido=?, cedula=?, telefono=?, email=? WHERE cedula=?";
         PreparedStatement consulta = conexion.prepareStatement(query);
 
@@ -39,6 +39,7 @@ public class ResponsableDAO {
         consulta.setInt(3, persona.getCedula());
         consulta.setString(4, persona.getTelefono());
         consulta.setString(5, persona.getE_mail());
+        consulta.setInt(6, cedula);
 
         return consulta.executeUpdate()!=0;
     }

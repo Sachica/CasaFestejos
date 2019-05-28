@@ -24,6 +24,10 @@ public class ControladorInicio implements java.awt.event.ActionListener{
             vista.cambiarPanel(vista.frmInicio, vista.frmRegistro);
         }
         
+        if(e.getSource() == vista.frmInicio.btnModCliente){
+            vista.cambiarPanel(vista.frmInicio, vista.frmCliente);
+        }
+        
         if(e.getSource() == vista.frmInicio.btnCrearEvento){
             vista.cambiarPanel(vista.frmInicio, vista.frmEvento);
         }

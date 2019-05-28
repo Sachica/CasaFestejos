@@ -16,6 +16,7 @@ public class Vista extends javax.swing.JFrame {
     public formEvento frmEvento;
     public formRegistro frmRegistro;
     public formInicio frmInicio;
+    public formCliente frmCliente;
     /**
      * Creates new form Vista
      */
@@ -26,11 +27,13 @@ public class Vista extends javax.swing.JFrame {
         frmEvento = new formEvento();
         frmRegistro = new formRegistro();
         frmInicio = new formInicio();
+        frmCliente = new formCliente();
     }
 
     public void initListeners(java.awt.event.ActionListener e){
         this.frmRegistro.initListeners(e);
         this.frmInicio.initListener(e);
+        this.frmCliente.initListeners(e);
     }
     
     public void cambiarPanel(JPanel anterior, JPanel nuevo){

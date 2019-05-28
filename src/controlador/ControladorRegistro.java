@@ -33,22 +33,6 @@ public class ControladorRegistro implements java.awt.event.ActionListener{
             }
         }
         
-        if(e.getSource() == vista.frmRegistro.txtCed){        
-            try {
-                Integer cedula = Integer.parseInt(vista.frmRegistro.txtCed.getText());
-                Responsable responsable = new Responsable();
-                responsable.setCedula(cedula);
-                responsable = ResponsableDAO.buscar(responsable, Conexion.getConnection());
-                this.cargarResponsable(responsable);
-            } catch (NumberFormatException err) {
-                System.out.println(err.getMessage());
-            } catch (SQLException err){
-                System.out.println(err.getMessage());
-            } catch(NullPointerException err){
-                System.out.println("No se encontro en la base de datos");
-            }
-        }
-        
         if(e.getSource() == vista.frmRegistro.btnCont){
             vista.cambiarPanel(vista.frmRegistro, vista.frmEvento);
         }
@@ -66,12 +50,5 @@ public class ControladorRegistro implements java.awt.event.ActionListener{
         String email = vista.frmRegistro.txtEmail.getText();
         
         return new Responsable(nombre, apellido, cedula, telefono, email);
-    }
-    
-    private void cargarResponsable(Responsable responsable){
-        vista.frmRegistro.txtNom.setText(responsable.getNombre());
-        vista.frmRegistro.txtApe.setText(responsable.getApellidos());
-        vista.frmRegistro.txtEmail.setText(responsable.getE_mail());
-        vista.frmRegistro.txtTel.setText(responsable.getTelefono());
     }
 }
