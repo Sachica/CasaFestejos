@@ -93,7 +93,7 @@ public class formEvento extends javax.swing.JPanel {
         txtDocumento = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnCalcular = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
@@ -123,15 +123,12 @@ public class formEvento extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(659, 623));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Montaje", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Montaje", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tipo De Montaje");
-
-        cmbMontaje.setBackground(new java.awt.Color(255, 255, 255));
-        cmbMontaje.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel2.setBackground(new java.awt.Color(51, 51, 51));
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -170,7 +167,7 @@ public class formEvento extends javax.swing.JPanel {
         );
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Silla & Mesa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Silla & Mesa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setBackground(new java.awt.Color(51, 51, 51));
@@ -180,12 +177,6 @@ public class formEvento extends javax.swing.JPanel {
         jLabel4.setBackground(new java.awt.Color(51, 51, 51));
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Tipo De Mesa");
-
-        cmbSilla.setBackground(new java.awt.Color(255, 255, 255));
-        cmbSilla.setForeground(new java.awt.Color(0, 0, 0));
-
-        cmbMesa.setBackground(new java.awt.Color(255, 255, 255));
-        cmbMesa.setForeground(new java.awt.Color(0, 0, 0));
 
         txtCantSilla.setEditable(false);
         txtCantSilla.setBackground(new java.awt.Color(0, 0, 51));
@@ -294,7 +285,7 @@ public class formEvento extends javax.swing.JPanel {
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cronograma de actividades", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cronograma de actividades", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel4.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel11.setBackground(new java.awt.Color(51, 51, 51));
@@ -319,9 +310,9 @@ public class formEvento extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         btnAddActividad.setBackground(new java.awt.Color(255, 255, 255));
-        btnAddActividad.setForeground(new java.awt.Color(0, 0, 0));
         btnAddActividad.setText("Añadir actividad");
 
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Horario");
 
         jTextField27.setBackground(new java.awt.Color(0, 0, 51));
@@ -388,7 +379,7 @@ public class formEvento extends javax.swing.JPanel {
         );
 
         jPanel6.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confirmación Del Evento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confirmación Del Evento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel6.setForeground(new java.awt.Color(255, 255, 255));
 
         txtPrecioTotal.setEditable(false);
@@ -407,16 +398,13 @@ public class formEvento extends javax.swing.JPanel {
         txtDocumento.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
-        btnCancelar.setForeground(new java.awt.Color(0, 0, 0));
         btnCancelar.setText("Cancelar Evento");
 
         btnConfirmar.setBackground(new java.awt.Color(255, 255, 255));
-        btnConfirmar.setForeground(new java.awt.Color(0, 0, 0));
         btnConfirmar.setText("Confirmar Evento");
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Calcular precio total");
+        btnCalcular.setBackground(new java.awt.Color(255, 255, 255));
+        btnCalcular.setText("Calcular precio total");
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Fecha de celebracion");
@@ -456,7 +444,7 @@ public class formEvento extends javax.swing.JPanel {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(btnCalcular))
                         .addGap(13, 13, 13)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtPrecioTotal)
@@ -491,7 +479,7 @@ public class formEvento extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnCalcular)
                     .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -520,14 +508,11 @@ public class formEvento extends javax.swing.JPanel {
         );
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bufet", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bufet", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel3.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Comidas");
-
-        cmbComidas.setBackground(new java.awt.Color(255, 255, 255));
-        cmbComidas.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Cantidad");
@@ -536,7 +521,6 @@ public class formEvento extends javax.swing.JPanel {
         txtCantComida.setForeground(new java.awt.Color(255, 255, 255));
 
         btnAddComida.setBackground(new java.awt.Color(255, 255, 255));
-        btnAddComida.setForeground(new java.awt.Color(0, 0, 0));
         btnAddComida.setText("Añadir comida");
 
         txtCantBebida.setBackground(new java.awt.Color(0, 0, 51));
@@ -546,15 +530,12 @@ public class formEvento extends javax.swing.JPanel {
         jLabel10.setText("Cantidad");
 
         btnAddBebida.setBackground(new java.awt.Color(255, 255, 255));
-        btnAddBebida.setForeground(new java.awt.Color(0, 0, 0));
         btnAddBebida.setText("Añadir bebida");
-
-        cmbBebidas.setBackground(new java.awt.Color(255, 255, 255));
-        cmbBebidas.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Bebidas");
 
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Precio");
 
         lblPrecioComida.setForeground(new java.awt.Color(255, 255, 255));
@@ -655,7 +636,7 @@ public class formEvento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -670,7 +651,7 @@ public class formEvento extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 239, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -680,6 +661,7 @@ public class formEvento extends javax.swing.JPanel {
     public javax.swing.JButton btnAddActividad;
     public javax.swing.JButton btnAddBebida;
     public javax.swing.JButton btnAddComida;
+    public javax.swing.JButton btnCalcular;
     public javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnConfirmar;
     public javax.swing.JComboBox<String> cmbBebidas;
@@ -687,7 +669,6 @@ public class formEvento extends javax.swing.JPanel {
     public javax.swing.JComboBox<String> cmbMesa;
     public javax.swing.JComboBox<String> cmbMontaje;
     public javax.swing.JComboBox<String> cmbSilla;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
