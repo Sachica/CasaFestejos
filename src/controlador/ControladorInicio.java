@@ -28,6 +28,8 @@ public class ControladorInicio{
         }
         
         if(e.getSource() == vista.frmInicio.btnCrearEvento){
+            vista.frmAddArticulo.cargar();
+            vista.frmEvento.cargar();
             vista.cambiarPanel(vista.frmInicio, vista.frmEvento);
         }
         

@@ -5,6 +5,10 @@
  */
 package vista;
 
+import java.sql.SQLException;
+import servicio.Conexion;
+import util.TipoArticulo;
+
 /**
  *
  * @author kuroy
@@ -29,6 +33,7 @@ public class formEvento extends javax.swing.JPanel {
         this.btnBus.addActionListener(e);
         this.btnCalcular.addActionListener(e);
         this.btnVolver.addActionListener(e);
+        this.btnAddArticulo.addActionListener(e);
     }
     
     public void precioArticulos(Object articulos[]){
@@ -60,7 +65,21 @@ public class formEvento extends javax.swing.JPanel {
     }
     
     public void addArticulo(modelo.Articulo articulo){
-        this.cmbMontaje.addItem(articulo.getNombre());
+        if(articulo.getTipo().equals(TipoArticulo.MONTAJE)){
+            this.cmbMontaje.addItem(articulo.getNombre());
+        }
+    }
+    
+    public void cargar(){
+        try{
+            this.cmbMontaje.removeAllItems();
+            this.cmbMontaje.addItem("");
+            java.util.ArrayList<modelo.Articulo> articulos = modeloDAO.ArticuloDAO.getAll(Conexion.getConnection());
+            for(modelo.Articulo articulo : articulos){
+                this.addArticulo(articulo);
+            }
+        }catch(SQLException e){
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -327,23 +346,22 @@ public class formEvento extends javax.swing.JPanel {
                                 .addGap(4, 4, 4)
                                 .addComponent(txtMinEvt, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35))
-                            .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelConfirmLayout.createSequentialGroup()
-                                    .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnCalcular))
-                                    .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(panelConfirmLayout.createSequentialGroup()
-                                            .addGap(13, 13, 13)
-                                            .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(0, 0, Short.MAX_VALUE))
-                                        .addGroup(panelConfirmLayout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGroup(panelConfirmLayout.createSequentialGroup()
-                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(panelConfirmLayout.createSequentialGroup()
+                                .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCalcular))
+                                .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelConfirmLayout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(panelConfirmLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(panelConfirmLayout.createSequentialGroup()
+                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(1, 1, 1))
                     .addGroup(panelConfirmLayout.createSequentialGroup()
                         .addComponent(btnCancelar)
@@ -420,7 +438,7 @@ public class formEvento extends javax.swing.JPanel {
                             .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnBus, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
+                        .addGap(102, 102, 102)
                         .addComponent(btnAddArticulo)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
@@ -434,16 +452,12 @@ public class formEvento extends javax.swing.JPanel {
                         .addComponent(txtDoc, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                         .addComponent(btnBus)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 33, Short.MAX_VALUE)
-                        .addComponent(panelMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnVolver)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnVolver)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addComponent(btnAddArticulo)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelActiv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2019 a las 03:27:47
+-- Tiempo de generación: 30-05-2019 a las 16:08:19
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.3
 
@@ -25,6 +25,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `articulo`
+--
+
+CREATE TABLE `articulo` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `tipo` varchar(22) NOT NULL,
+  `precio` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `articulo`
+--
+
+INSERT INTO `articulo` (`id`, `nombre`, `tipo`, `precio`) VALUES
+(1, 'Silla Ejecutiva', 'SILLA', 2000),
+(2, 'Mesa Redonda', 'MESA', 5000),
+(3, 'Vino', 'BEBIDA', 10000),
+(4, 'Caviar', 'PLATILLO', 20000),
+(5, 'Cumpleaños', 'MONTAJE', 10000);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `responsable`
 --
 
@@ -37,8 +61,21 @@ CREATE TABLE `responsable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Volcado de datos para la tabla `responsable`
+--
+
+INSERT INTO `responsable` (`cedula`, `nombre`, `apellido`, `telefono`, `email`) VALUES
+(1, 'David', 'Sachica', '32312312', 'xd@gmail.com');
+
+--
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `articulo`
+--
+ALTER TABLE `articulo`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `responsable`

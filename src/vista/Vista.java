@@ -35,6 +35,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     public void initListeners(java.awt.event.ActionListener e, java.awt.event.MouseListener m){
+        this.frmEvento.initListeners(e);
         this.frmRegistro.initListeners(e);
         this.frmInicio.initListener(e);
         this.frmCliente.initListeners(e);

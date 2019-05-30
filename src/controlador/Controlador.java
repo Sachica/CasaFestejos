@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import servicio.Conexion;
 
 import vista.*;
 /**
@@ -22,6 +24,7 @@ public class Controlador implements ActionListener, MouseListener {
     private ControladorCliente controladorCliente;
     private ControladorEvento controladorEvento;
     private ControladorArticulo controladorArticulo;
+    private ControladorAddArticulo controladorAddArticulo;
     
     public Controlador(){
         vista = new Vista();
@@ -30,10 +33,16 @@ public class Controlador implements ActionListener, MouseListener {
         controladorInicio = new ControladorInicio(vista);
         controladorCliente = new ControladorCliente(vista);
         controladorEvento = new ControladorEvento(vista);
-        controladorArticulo = new ControladorArticulo(vista);
+        controladorArticulo = new ControladorArticulo(vista);  
+        controladorAddArticulo = new ControladorAddArticulo(vista);
+        this.initComponents();
+    }
+    
+    private void initComponents(){
         vista.cambiarPanel(vista.frmRegistro, vista.frmInicio);
         vista.setVisible(true);
     }
+    
     
     @Override
     public void actionPerformed(ActionEvent e) {

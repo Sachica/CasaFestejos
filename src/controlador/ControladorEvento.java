@@ -78,6 +78,10 @@ public class ControladorEvento {
         if(e.getSource() == vista.frmEvento.btnConfirmar){
             //Guardar
         }
+        
+        if(e.getSource() == vista.frmEvento.btnVolver){
+            vista.cambiarPanel(vista.frmEvento, vista.frmInicio);
+        }
     }
     
     private modelo.Actividad getActividad() throws MyException{

@@ -134,7 +134,7 @@ public class ControladorAddArticulo {
             }else{
                 vista.frmAddArticulo.lblPrecioComida.setText("$");
             }  
-        }
+        }       
     }
     
     private Boolean puedeAñadir(javax.swing.JTextField txt, javax.swing.JComboBox cmb){

@@ -29,7 +29,7 @@ public class formModEvento extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableArticulo = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -37,25 +37,26 @@ public class formModEvento extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbMontaje = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableActividades = new javax.swing.JTable();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnDelArt = new javax.swing.JButton();
+        btnAddArt = new javax.swing.JButton();
+        btnAddAct = new javax.swing.JButton();
+        btnDelAct = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        lblPrecioMontaje = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Articulos"));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -63,7 +64,7 @@ public class formModEvento extends javax.swing.JPanel {
                 "Nombre", "Cantidad", "Precio"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableArticulo);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,7 +91,7 @@ public class formModEvento extends javax.swing.JPanel {
         jButton1.setText("Buscar");
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Monto inicial");
+        jLabel6.setText("Monto abonado");
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Hora de inicio");
@@ -100,15 +101,15 @@ public class formModEvento extends javax.swing.JPanel {
 
         jLabel2.setText("Montaje");
 
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
+        cmbMontaje.setBackground(new java.awt.Color(255, 255, 255));
+        cmbMontaje.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel3.setText("Precio $ ");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades"));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableActividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -116,7 +117,7 @@ public class formModEvento extends javax.swing.JPanel {
                 "Nombre", "Hora inicio", "Descripcion"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tableActividades);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -141,24 +142,25 @@ public class formModEvento extends javax.swing.JPanel {
         jTextField3.setBackground(new java.awt.Color(0, 0, 51));
         jTextField3.setForeground(new java.awt.Color(255, 255, 255));
 
+        jTextField4.setEditable(false);
         jTextField4.setBackground(new java.awt.Color(0, 0, 51));
         jTextField4.setForeground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Eliminar");
+        btnDelArt.setBackground(new java.awt.Color(255, 255, 255));
+        btnDelArt.setForeground(new java.awt.Color(0, 0, 0));
+        btnDelArt.setText("Eliminar");
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Añadir");
+        btnAddArt.setBackground(new java.awt.Color(255, 255, 255));
+        btnAddArt.setForeground(new java.awt.Color(0, 0, 0));
+        btnAddArt.setText("Añadir");
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Añadir");
+        btnAddAct.setBackground(new java.awt.Color(255, 255, 255));
+        btnAddAct.setForeground(new java.awt.Color(0, 0, 0));
+        btnAddAct.setText("Añadir");
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Eliminar");
+        btnDelAct.setBackground(new java.awt.Color(255, 255, 255));
+        btnDelAct.setForeground(new java.awt.Color(0, 0, 0));
+        btnDelAct.setText("Eliminar");
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
@@ -187,9 +189,11 @@ public class formModEvento extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
@@ -204,11 +208,11 @@ public class formModEvento extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnAddArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnAddAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDelAct, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(250, 250, 250)
                         .addComponent(jButton6)
@@ -231,22 +235,20 @@ public class formModEvento extends javax.swing.JPanel {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(66, 66, 66)
-                        .addComponent(jButton2)
+                        .addComponent(btnDelArt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(btnAddArt)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
-                        .addComponent(jButton5)
+                        .addComponent(btnDelAct)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)))
+                        .addComponent(btnAddAct)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -260,7 +262,11 @@ public class formModEvento extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6)
@@ -271,14 +277,14 @@ public class formModEvento extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnAddAct;
+    public javax.swing.JButton btnAddArt;
+    public javax.swing.JButton btnDelAct;
+    public javax.swing.JButton btnDelArt;
+    public javax.swing.JComboBox<String> cmbMontaje;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -289,11 +295,12 @@ public class formModEvento extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    public javax.swing.JLabel lblPrecioMontaje;
+    private javax.swing.JTable tableActividades;
+    private javax.swing.JTable tableArticulo;
     // End of variables declaration//GEN-END:variables
 }

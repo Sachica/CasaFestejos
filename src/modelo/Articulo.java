@@ -56,6 +56,10 @@ public class Articulo {
     public void setPrecio(Integer precio) {
         this.precio = precio;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Articulo{" + "id=" + id + ", tipo=" + tipo + ", nombre=" + nombre + ", precio=" + precio + '}';
+    }
     
 }

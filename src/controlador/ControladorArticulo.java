@@ -35,7 +35,7 @@ public class ControladorArticulo {
         if(e.getSource() == vista.frmArticulo.btnAgregar){
             try{
                 ArticuloDAO.guardar(this.getArticulo(), Conexion.getConnection());
-                vista.frmArticulo.clear();
+                vista.frmArticulo.clear();               
             }catch(SQLException err){
             }
         }
@@ -54,6 +54,12 @@ public class ControladorArticulo {
                 vista.frmArticulo.clear();
             }catch(SQLException err){
             }
+        }
+        
+        if(e.getSource() == vista.frmArticulo.btnFin){
+            vista.frmArticulo.clear();
+            vista.frmArticulo.tableModel.setRowCount(0);
+            vista.cambiarPanel(vista.frmArticulo, vista.frmInicio);
         }
     }
     

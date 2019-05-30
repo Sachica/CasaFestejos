@@ -25,6 +25,7 @@ public class formArticulo extends javax.swing.JPanel {
         this.btnAgregar.addActionListener(e);
         this.btnCargar.addActionListener(e);
         this.btnEliminar.addActionListener(e);
+        this.btnFin.addActionListener(e);
     }
     
     public void clear(){
@@ -47,6 +48,7 @@ public class formArticulo extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblArt = new javax.swing.JTable();
         btnCargar = new javax.swing.JButton();
+        btnFin = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -81,7 +83,11 @@ public class formArticulo extends javax.swing.JPanel {
 
         btnCargar.setBackground(new java.awt.Color(255, 255, 255));
         btnCargar.setForeground(new java.awt.Color(0, 0, 0));
-        btnCargar.setText("Cargar Todo");
+        btnCargar.setText("Cargar");
+
+        btnFin.setBackground(new java.awt.Color(255, 255, 255));
+        btnFin.setForeground(new java.awt.Color(0, 0, 0));
+        btnFin.setText("Finalizar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -93,6 +99,8 @@ public class formArticulo extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCargar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFin)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -100,7 +108,9 @@ public class formArticulo extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnCargar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCargar)
+                    .addComponent(btnFin))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -236,6 +246,7 @@ public class formArticulo extends javax.swing.JPanel {
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnCargar;
     public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnFin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
