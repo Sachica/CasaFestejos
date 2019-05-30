@@ -5,17 +5,36 @@
  */
 package vista;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vista.Vista;
+
 /**
  *
  * @author usuario
  */
-public class Splash extends javax.swing.JFrame {
+public class Splash extends javax.swing.JFrame implements Runnable{
 
+    Thread t;
     /**
      * Creates new form Splash
      */
     public Splash() {
         initComponents();
+    }
+    
+    @Override
+    public void run() {
+        try {
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        t.sleep(5000);
+        this.dispose();
+        new Vista();
+        
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Splash.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,7 +55,7 @@ public class Splash extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\usuario\\Documents\\NetBeansProjects\\CasaFestejos\\images\\Festejo.jpg")); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\usuario\\Documents\\NetBeansProjects\\CasaFestejos\\images\\Splash.gif")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\usuario\\Documents\\NetBeansProjects\\CasaFestejos\\images\\Splash2.jpg")); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         jLabel2.setText("CARGANDO ...");
@@ -64,7 +83,7 @@ public class Splash extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
