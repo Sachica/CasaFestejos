@@ -7,12 +7,17 @@ package controlador;
 
 import java.sql.SQLException;
 import modelo.Articulo;
+import modelo.Responsable;
+import modeloDAO.ActividadDAO;
+import modeloDAO.ResponsableDAO;
+import servicio.Conexion;
+import util.MyException;
 import vista.Vista;
 
 /**
  *
  * @author kuroy
- */
+ */ 
 public class ControladorEvento {
     
     private Vista vista;
@@ -25,48 +30,64 @@ public class ControladorEvento {
         if (e.getSource() == vista.frmEvento.cmbMontaje) {
             Integer precio = articuloPrecio(vista.frmEvento.cmbMontaje.getSelectedItem().toString());
             if(precio!=-1){
-                vista.frmEvento.lblPrecioMontaje.setText("$ " + precio);
+                vista.frmEvento.jLabel.setText("$ " + precio);
             }else{
-                vista.frmEvento.lblPrecioMontaje.setText("$");
+                vista.frmEvento.jLabel.setText("$");
             }  
         }
         
-        if (e.getSource() == vista.frmEvento.cmbMesa) {
-            Integer precio = articuloPrecio(vista.frmEvento.cmbMesa.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmEvento.lblPrecioMesa.setText("$ " + precio);
-            } 
-            else{
-                vista.frmEvento.lblPrecioMesa.setText("$");
+        if(e.getSource() == vista.frmEvento.btnAddArticulo){
+            vista.cambiarPanel(vista.frmEvento, vista.frmAddArticulo);
+        }
+        
+        if(e.getSource() == vista.frmEvento.btnBus){
+            try{
+                Responsable r = new Responsable();
+                r.setCedula(Integer.parseInt(vista.frmEvento.txtDoc.getText()));
+                r = ResponsableDAO.buscar(r, Conexion.getConnection());
+                if(r!=null){
+                    vista.frmEvento.habilitar(Boolean.TRUE);
+                }else{
+                    //this.mostrarMensaje();
+                }
+            }catch(NumberFormatException err){
+                //this.mostrarMensaje();
+            }catch(SQLException err){
+                //this.mostrarMensaje();
             }
         }
         
-        if (e.getSource() == vista.frmEvento.cmbSilla) {
-            Integer precio = articuloPrecio(vista.frmEvento.cmbSilla.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmEvento.lblPrecioSilla.setText("$ " + precio);
-            }else{
-                vista.frmEvento.lblPrecioSilla.setText("$");
-            }       
-        }
-        
-        if (e.getSource() == vista.frmEvento.cmbBebidas) {
-            Integer precio = articuloPrecio(vista.frmEvento.cmbBebidas.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmEvento.lblPrecioBebida.setText("$ " + precio);
-            }else{
-                vista.frmEvento.lblPrecioBebida.setText("$");
+        if(e.getSource() == vista.frmEvento.btnAddActividad){
+            try{
+                ActividadDAO.guardar(this.getActividad(), Conexion.getConnection());
+            }catch(NumberFormatException er){
+                //this.mostrarMensaje();
+            }catch(SQLException er){
+                //this.mostrarMensaje();
+            }catch(MyException er){
+                //this.mostrarMensaje();
+            }catch(NullPointerException er){
+                //this.mostrarMensaje();
             }
         }
         
-        if (e.getSource() == vista.frmEvento.cmbComidas) {
-            Integer precio = articuloPrecio(vista.frmEvento.cmbComidas.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmEvento.lblPrecioComida.setText("$ " + precio);
-            }else{
-                vista.frmEvento.lblPrecioComida.setText("$");
-            }  
+        if(e.getSource() == vista.frmEvento.btnCalcular){
+            vista.frmEvento.calcularPrecio();
         }
+        
+        if(e.getSource() == vista.frmEvento.btnConfirmar){
+            //Guardar
+        }
+    }
+    
+    private modelo.Actividad getActividad() throws MyException{
+        Integer id = Integer.parseInt(vista.frmEvento.txtDoc.getText());
+        String nombre = vista.frmEvento.txtNomAct.getText();
+        Integer hora = Integer.parseInt(vista.frmEvento.txtHoraAct.getText());
+        Integer minuto = Integer.parseInt(vista.frmEvento.txtMinAct.getText());
+        String descripcion = vista.frmEvento.txtDescrip.getText();
+        
+        return new modelo.Actividad(id, nombre, descripcion, new modelo.Hora(hora, minuto, 0));
     }
     
     private Integer articuloPrecio(String nombre) {

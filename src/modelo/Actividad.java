@@ -10,6 +10,7 @@ package modelo;
  * @author kuroy
  */
 public class Actividad{
+    private Integer id;
     private String nombre;
     private String descripcion;
     private Hora horario;
@@ -19,7 +20,8 @@ public class Actividad{
     	this.horario = null;
     }
 	
-    public Actividad(String nombre, String descripcion, Hora hora){
+    public Actividad(Integer id, String nombre, String descripcion, Hora hora){
+        this.id = id;
 	this.nombre = nombre;
         this.descripcion = descripcion;
     	this.horario = hora;
@@ -47,6 +49,14 @@ public class Actividad{
 
     public void setHorario(Hora horario) {
         this.horario = horario;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
     
     public String toString(){

@@ -80,13 +80,11 @@ public class ArticuloDAO {
         return null;
     }
     
-    public static java.util.ArrayList<Articulo> buscarPorTipo(Articulo articulo, Connection connection) throws SQLException{
+    public static java.util.ArrayList<Articulo> getAll(Connection connection) throws SQLException{
         java.util.ArrayList<Articulo> articulos = new java.util.ArrayList<>(); 
-        String query = "SELECT * FROM articulo WHERE tipo=?";
-        PreparedStatement ps = connection.prepareStatement(query);
-        
-        ps.setString(1, articulo.getTipo().toString());
-        ResultSet rs = ps.executeQuery();
+        String query = "SELECT * FROM articulo";
+
+        ResultSet rs = connection.prepareStatement(query).executeQuery();
         
         while(rs.next()){
             Integer id = rs.getInt("id");
@@ -100,7 +98,7 @@ public class ArticuloDAO {
         return articulos;
     }
     
-    public static Boolean eliminar(Articulo articulo, String table, Connection connection) throws SQLException{
+    public static Boolean eliminar(Articulo articulo, Connection connection) throws SQLException{
         String query = "DELETE FROM articulo WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         

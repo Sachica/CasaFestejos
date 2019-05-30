@@ -30,6 +30,10 @@ public class ControladorInicio{
         if(e.getSource() == vista.frmInicio.btnCrearEvento){
             vista.cambiarPanel(vista.frmInicio, vista.frmEvento);
         }
+        
+        if(e.getSource() == vista.frmInicio.btnUpdArt){
+            vista.cambiarPanel(vista.frmInicio, vista.frmArticulo);
+        }
     }
     
 }

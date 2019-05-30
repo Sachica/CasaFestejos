@@ -30,7 +30,7 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         this.btnModCliente.addActionListener(e);
         this.btnCrearEvento.addActionListener(e);
         this.btnRegis.addActionListener(e);
-        this.btnUpdEvento.addActionListener(e);
+        this.btnUpdArt.addActionListener(e);
     }
     
     private void cambiarImagen(Integer i){        
@@ -63,7 +63,7 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         btnRegis = new javax.swing.JButton();
         btnCrearEvento = new javax.swing.JButton();
         btnBuscarEvento = new javax.swing.JButton();
-        btnUpdEvento = new javax.swing.JButton();
+        btnUpdArt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnModCliente = new javax.swing.JButton();
         lblFondo = new javax.swing.JLabel();
@@ -89,11 +89,11 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         add(btnBuscarEvento);
         btnBuscarEvento.setBounds(170, 360, 270, 25);
 
-        btnUpdEvento.setBackground(new java.awt.Color(255, 255, 255));
-        btnUpdEvento.setForeground(new java.awt.Color(0, 0, 0));
-        btnUpdEvento.setText("Actualizar articulos");
-        add(btnUpdEvento);
-        btnUpdEvento.setBounds(170, 390, 270, 25);
+        btnUpdArt.setBackground(new java.awt.Color(255, 255, 255));
+        btnUpdArt.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdArt.setText("Actualizar articulos");
+        add(btnUpdArt);
+        btnUpdArt.setBounds(170, 390, 270, 25);
 
         jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -121,7 +121,7 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
     public javax.swing.JButton btnCrearEvento;
     public javax.swing.JButton btnModCliente;
     public javax.swing.JButton btnRegis;
-    public javax.swing.JButton btnUpdEvento;
+    public javax.swing.JButton btnUpdArt;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel lblFondo;
     // End of variables declaration//GEN-END:variables
