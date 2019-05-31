@@ -6,7 +6,7 @@
 package controlador;
 
 import java.sql.SQLException;
-import modelo.Articulo;
+import modelo.ArticuloAdmin;
 import modelo.Responsable;
 import modeloDAO.ActividadDAO;
 import modeloDAO.ResponsableDAO;
@@ -30,9 +30,9 @@ public class ControladorEvento {
         if (e.getSource() == vista.frmEvento.cmbMontaje) {
             Integer precio = articuloPrecio(vista.frmEvento.cmbMontaje.getSelectedItem().toString());
             if(precio!=-1){
-                vista.frmEvento.jLabel.setText("$ " + precio);
+                vista.frmEvento.lblPrecioMontaje.setText(""+precio);
             }else{
-                vista.frmEvento.jLabel.setText("$");
+                vista.frmEvento.lblPrecioMontaje.setText("$");
             }  
         }
         
@@ -63,7 +63,7 @@ public class ControladorEvento {
             }catch(NumberFormatException er){
                 //this.mostrarMensaje();
             }catch(SQLException er){
-                //this.mostrarMensaje();
+                System.out.println(er.getMessage());
             }catch(MyException er){
                 //this.mostrarMensaje();
             }catch(NullPointerException er){
@@ -96,9 +96,9 @@ public class ControladorEvento {
     
     private Integer articuloPrecio(String nombre) {
         try {
-            Articulo articulo = new Articulo();
+            ArticuloAdmin articulo = new ArticuloAdmin();
             articulo.setNombre(nombre);
-            articulo = modeloDAO.ArticuloDAO.buscarPorNombre(articulo, servicio.Conexion.getConnection());            
+            articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, servicio.Conexion.getConnection());            
             return articulo!=null ? articulo.getPrecio() : -1;
         } catch (SQLException e) {
         }

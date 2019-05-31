@@ -5,19 +5,112 @@
  */
 package vista;
 
+import java.sql.SQLException;
+import servicio.Conexion;
+
 /**
  *
  * @author kuroy
  */
 public class formModEvento extends javax.swing.JPanel {
-
+    public javax.swing.table.DefaultTableModel tableModelAct;
+    public javax.swing.table.DefaultTableModel tableModelArt;
     /**
      * Creates new form formModEvento2
      */
     public formModEvento() {
         initComponents();
+        this.cmbMontaje.addItem("");
+        tableModelAct = (javax.swing.table.DefaultTableModel)this.tableActividades.getModel();
+        tableModelArt = (javax.swing.table.DefaultTableModel)this.tableArticulo.getModel();
     }
 
+    public void initListener(java.awt.event.ActionListener e){
+        this.cmbMontaje.addActionListener(e);
+        this.btnAddAct.addActionListener(e);
+        this.btnAddArt.addActionListener(e);
+        this.btnBus.addActionListener(e);
+        this.btnDelAct.addActionListener(e);
+        this.btnDelArt.addActionListener(e);
+        this.btnCancelar.addActionListener(e);
+        this.btnGuardar.addActionListener(e);
+    }
+    
+    public void clear(){
+        this.tableModelAct.setRowCount(0);
+        this.tableModelAct.setRowCount(0);
+        this.txtAbonar.setText("");
+        this.txtDoc.setText("");
+        this.txtHoraInicio.setText("");
+        this.txtMontoAbonado.setText("");
+        this.txtPrecioTotal.setText("");
+    }
+    
+    private void removeItems(){
+        for(Integer i=this.cmbMontaje.getItemCount()-1; i>0; i--){
+            this.cmbMontaje.removeItemAt(i);
+        }
+        this.tableModelAct.setRowCount(0);
+        this.tableModelArt.setRowCount(0);
+    }
+    
+    public void addAllArticulo(java.util.ArrayList<modelo.ArticuloCliente> articulos){
+        for(modelo.ArticuloCliente articulo : articulos){
+            if(articulo.getTipoArticulo().equals(util.TipoArticulo.MONTAJE)){
+                this.cmbMontaje.setSelectedIndex(this.index(articulo.getNombre()));
+                try{
+                    this.lblPrecioMontaje.setText(this.getPrecio(articulo.getNombre()));
+                }catch(SQLException err){
+                }
+            }
+            Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
+            this.tableModelArt.addRow(data);
+        }
+    }
+    
+    public void addAllActividad(java.util.ArrayList<modelo.Actividad> actividades){
+        for(modelo.Actividad actividad : actividades){
+            Object data[] = {actividad.getNombre(), actividad.getDescripcion(), actividad.getHorario().toString()};
+            this.tableModelAct.addRow(data);
+        }
+    }
+    
+    public void addArticulo(modelo.ArticuloAdmin articulo){
+        if(articulo.getTipo().equals(util.TipoArticulo.MONTAJE)){
+            this.cmbMontaje.addItem(articulo.getNombre());
+        }
+    }
+    
+    public void cargar(){
+        try{
+            this.removeItems();
+            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Conexion.getConnection());
+            for(modelo.ArticuloAdmin articulo : articulos){
+                this.addArticulo(articulo);
+            }
+        }catch(SQLException e){
+        }
+    }
+    
+    private String getPrecio(String name) throws SQLException{
+        modelo.ArticuloAdmin articulo = new modelo.ArticuloAdmin();
+        articulo.setNombre(name);
+        articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Conexion.getConnection());
+        if(articulo != null){
+            return ""+articulo.getPrecio();
+        }
+        return "";
+    }
+    
+    private Integer index(String name){
+        for(Integer i=1 ; i<this.cmbMontaje.getItemCount(); i++){
+            if(name.equals(this.cmbMontaje.getItemAt(i))){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,8 +124,8 @@ public class formModEvento extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableArticulo = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtDoc = new javax.swing.JTextField();
+        btnBus = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -42,20 +135,31 @@ public class formModEvento extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActividades = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtHoraInicio = new javax.swing.JTextField();
+        txtMontoAbonado = new javax.swing.JTextField();
         btnDelArt = new javax.swing.JButton();
         btnAddArt = new javax.swing.JButton();
         btnAddAct = new javax.swing.JButton();
         btnDelAct = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         lblPrecioMontaje = new javax.swing.JLabel();
+        dateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel7 = new javax.swing.JLabel();
+        txtAbonar = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        lblMontoFalt = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtPrecioTotal = new javax.swing.JTextField();
+
+        setBackground(new java.awt.Color(51, 51, 51));
+        setMaximumSize(new java.awt.Dimension(738, 654));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Articulos"));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
+        tableArticulo.setBackground(new java.awt.Color(255, 255, 255));
+        tableArticulo.setForeground(new java.awt.Color(0, 0, 0));
         tableArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -83,32 +187,36 @@ public class formModEvento extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Documento");
 
-        jTextField1.setBackground(new java.awt.Color(0, 0, 51));
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        txtDoc.setBackground(new java.awt.Color(0, 0, 51));
+        txtDoc.setForeground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Buscar");
+        btnBus.setBackground(new java.awt.Color(255, 255, 255));
+        btnBus.setForeground(new java.awt.Color(0, 0, 0));
+        btnBus.setText("Buscar");
 
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setForeground(java.awt.Color.white);
         jLabel6.setText("Monto abonado");
 
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText("Hora de inicio");
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Fecha de celebracion");
 
+        jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Montaje");
 
         cmbMontaje.setBackground(new java.awt.Color(255, 255, 255));
         cmbMontaje.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel3.setText("Precio $ ");
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setText("Precio         $ ");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades"));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
+        tableActividades.setBackground(new java.awt.Color(255, 255, 255));
+        tableActividades.setForeground(new java.awt.Color(0, 0, 0));
         tableActividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -118,6 +226,11 @@ public class formModEvento extends javax.swing.JPanel {
             }
         ));
         jScrollPane2.setViewportView(tableActividades);
+        if (tableActividades.getColumnModel().getColumnCount() > 0) {
+            tableActividades.getColumnModel().getColumn(0).setResizable(false);
+            tableActividades.getColumnModel().getColumn(1).setResizable(false);
+            tableActividades.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -136,15 +249,12 @@ public class formModEvento extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTextField2.setBackground(new java.awt.Color(0, 0, 51));
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
+        txtHoraInicio.setBackground(new java.awt.Color(0, 0, 51));
+        txtHoraInicio.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTextField3.setBackground(new java.awt.Color(0, 0, 51));
-        jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-
-        jTextField4.setEditable(false);
-        jTextField4.setBackground(new java.awt.Color(0, 0, 51));
-        jTextField4.setForeground(new java.awt.Color(255, 255, 255));
+        txtMontoAbonado.setEditable(false);
+        txtMontoAbonado.setBackground(new java.awt.Color(0, 0, 51));
+        txtMontoAbonado.setForeground(new java.awt.Color(255, 255, 255));
 
         btnDelArt.setBackground(new java.awt.Color(255, 255, 255));
         btnDelArt.setForeground(new java.awt.Color(0, 0, 0));
@@ -162,13 +272,33 @@ public class formModEvento extends javax.swing.JPanel {
         btnDelAct.setForeground(new java.awt.Color(0, 0, 0));
         btnDelAct.setText("Eliminar");
 
-        jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Guardar cambios");
+        btnGuardar.setBackground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setForeground(new java.awt.Color(0, 0, 0));
+        btnGuardar.setText("Guardar cambios");
 
-        jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setForeground(new java.awt.Color(0, 0, 0));
-        jButton7.setText("Cancelar");
+        btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setForeground(new java.awt.Color(0, 0, 0));
+        btnCancelar.setText("Cancelar");
+
+        lblPrecioMontaje.setForeground(java.awt.Color.white);
+
+        jLabel7.setForeground(java.awt.Color.white);
+        jLabel7.setText("Monto faltante");
+
+        txtAbonar.setBackground(new java.awt.Color(0, 0, 51));
+        txtAbonar.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setForeground(java.awt.Color.white);
+        jLabel8.setText("Abonar");
+
+        lblMontoFalt.setForeground(java.awt.Color.white);
+        lblMontoFalt.setText("$");
+
+        jLabel9.setForeground(java.awt.Color.white);
+        jLabel9.setText("Precio total");
+
+        txtPrecioTotal.setBackground(new java.awt.Color(0, 0, 51));
+        txtPrecioTotal.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -178,47 +308,55 @@ public class formModEvento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnBus))
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnAddArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnDelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnAddAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnDelAct, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField4)))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnAddArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnAddAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDelAct, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtHoraInicio)
+                                    .addComponent(txtMontoAbonado)
+                                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtAbonar)
+                                    .addComponent(lblMontoFalt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(42, 42, 42)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbMontaje, 0, 139, Short.MAX_VALUE)
+                                    .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(250, 250, 250)
-                        .addComponent(jButton6)
+                        .addGap(216, 216, 216)
+                        .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnCancelar)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,8 +365,8 @@ public class formModEvento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)))
+                        .addComponent(txtDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBus)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -250,28 +388,42 @@ public class formModEvento extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtHoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMontoAbonado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMontoFalt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAbonar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -279,28 +431,34 @@ public class formModEvento extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAddAct;
     public javax.swing.JButton btnAddArt;
+    public javax.swing.JButton btnBus;
+    public javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnDelAct;
     public javax.swing.JButton btnDelArt;
+    public javax.swing.JButton btnGuardar;
     public javax.swing.JComboBox<String> cmbMontaje;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
+    public com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    public javax.swing.JLabel lblMontoFalt;
     public javax.swing.JLabel lblPrecioMontaje;
     private javax.swing.JTable tableActividades;
     private javax.swing.JTable tableArticulo;
+    public javax.swing.JTextField txtAbonar;
+    public javax.swing.JTextField txtDoc;
+    public javax.swing.JTextField txtHoraInicio;
+    public javax.swing.JTextField txtMontoAbonado;
+    public javax.swing.JTextField txtPrecioTotal;
     // End of variables declaration//GEN-END:variables
 }

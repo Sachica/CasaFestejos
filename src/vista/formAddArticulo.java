@@ -29,13 +29,6 @@ public class formAddArticulo extends javax.swing.JPanel {
         this.cmbComidas.addItem("");
     }
     
-    private void removeItems(){
-        this.cmbMesa.removeAllItems();
-        this.cmbBebidas.removeAllItems();
-        this.cmbSilla.removeAllItems();
-        this.cmbComidas.removeAllItems();
-    }
-    
     public void initListeners(java.awt.event.ActionListener e){
         this.cmbMesa.addActionListener(e);
         this.cmbSilla.addActionListener(e);
@@ -53,17 +46,17 @@ public class formAddArticulo extends javax.swing.JPanel {
         this.cmbBebidas.setSelectedIndex(0);
         this.cmbSilla.setSelectedIndex(0);
         this.cmbComidas.setSelectedIndex(0);
-        this.lblPrecioBebida.setText("$");
-        this.lblPrecioComida.setText("$");
-        this.lblPrecioMesa.setText("$");
-        this.lblPrecioSilla.setText("$");
+        this.lable3.setText("$");
+        this.label2.setText("$");
+        this.label4.setText("$");
+        this.label1.setText("$");
         this.txtCantBebida.setText("");
         this.txtCantComida.setText("");
         this.txtCantMesa.setText("");
         this.txtCantSilla.setText("");
     }
     
-    public void addArticulo(modelo.Articulo articulo){
+    public void addArticulo(modelo.ArticuloAdmin articulo){
         switch(articulo.getTipo()){
             case BEBIDA : this.cmbBebidas.addItem(articulo.getNombre());
             break;
@@ -76,12 +69,29 @@ public class formAddArticulo extends javax.swing.JPanel {
         }
     }
     
+    private void removeItems(){
+        for(Integer i=this.cmbBebidas.getItemCount()-1; i>0; i--){
+            this.cmbBebidas.removeItemAt(i);
+        }
+        
+        for(Integer i=this.cmbComidas.getItemCount()-1; i>0; i--){
+            this.cmbComidas.removeItemAt(i);
+        }
+        
+        for(Integer i=this.cmbMesa.getItemCount()-1; i>0; i--){
+            this.cmbMesa.removeItemAt(i);
+        }
+        
+        for(Integer i=this.cmbSilla.getItemCount()-1; i>0; i--){
+            this.cmbSilla.removeItemAt(i);
+        }
+    }
+    
     public void cargar(){
         try{
             this.removeItems();
-            this.initItems();
-            java.util.ArrayList<modelo.Articulo> articulos = modeloDAO.ArticuloDAO.getAll(Conexion.getConnection());
-            for(modelo.Articulo articulo : articulos){
+            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Conexion.getConnection());
+            for(modelo.ArticuloAdmin articulo : articulos){
                 this.addArticulo(articulo);
             }
         }catch(SQLException e){
@@ -108,10 +118,12 @@ public class formAddArticulo extends javax.swing.JPanel {
         jLabel14 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lblPrecioSilla = new javax.swing.JLabel();
-        lblPrecioMesa = new javax.swing.JLabel();
+        label1 = new javax.swing.JLabel();
+        label4 = new javax.swing.JLabel();
         btnAddSilla = new javax.swing.JButton();
         btnAddMesa = new javax.swing.JButton();
+        lblPrecioSilla = new javax.swing.JLabel();
+        lblPrecioMesa = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         cmbComidas = new javax.swing.JComboBox<>();
@@ -124,11 +136,14 @@ public class formAddArticulo extends javax.swing.JPanel {
         cmbBebidas = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        lblPrecioComida = new javax.swing.JLabel();
+        label2 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
+        lable3 = new javax.swing.JLabel();
+        lblPrecioComida = new javax.swing.JLabel();
         lblPrecioBebida = new javax.swing.JLabel();
         btnFin = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(600, 373));
         setMinimumSize(new java.awt.Dimension(600, 373));
 
@@ -150,13 +165,11 @@ public class formAddArticulo extends javax.swing.JPanel {
         cmbMesa.setBackground(new java.awt.Color(255, 255, 255));
         cmbMesa.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtCantSilla.setEditable(false);
         txtCantSilla.setBackground(new java.awt.Color(0, 0, 51));
         txtCantSilla.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCantSilla.setForeground(new java.awt.Color(255, 255, 255));
         txtCantSilla.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        txtCantMesa.setEditable(false);
         txtCantMesa.setBackground(new java.awt.Color(0, 0, 51));
         txtCantMesa.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCantMesa.setForeground(new java.awt.Color(255, 255, 255));
@@ -178,11 +191,11 @@ public class formAddArticulo extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Cantidad");
 
-        lblPrecioSilla.setForeground(new java.awt.Color(255, 255, 255));
-        lblPrecioSilla.setText("$");
+        label1.setForeground(new java.awt.Color(255, 255, 255));
+        label1.setText("$");
 
-        lblPrecioMesa.setForeground(new java.awt.Color(255, 255, 255));
-        lblPrecioMesa.setText("$");
+        label4.setForeground(new java.awt.Color(255, 255, 255));
+        label4.setText("$");
 
         btnAddSilla.setBackground(new java.awt.Color(255, 255, 255));
         btnAddSilla.setForeground(new java.awt.Color(0, 0, 0));
@@ -191,6 +204,10 @@ public class formAddArticulo extends javax.swing.JPanel {
         btnAddMesa.setBackground(new java.awt.Color(255, 255, 255));
         btnAddMesa.setForeground(new java.awt.Color(0, 0, 0));
         btnAddMesa.setText("Añadir");
+
+        lblPrecioSilla.setForeground(new java.awt.Color(255, 255, 255));
+
+        lblPrecioMesa.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -210,27 +227,31 @@ public class formAddArticulo extends javax.swing.JPanel {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPrecioMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCantMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(49, 49, 49))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(5, 5, 5)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cmbSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                                .addGap(1, 1, 1)
-                                                .addComponent(txtCantSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(txtCantMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(52, 52, 52))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                                        .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblPrecioSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(lblPrecioMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(txtCantSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPrecioSilla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(94, 94, 94)
                         .addComponent(btnAddSilla)
@@ -250,7 +271,9 @@ public class formAddArticulo extends javax.swing.JPanel {
                     .addComponent(cmbSilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblPrecioSilla, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPrecioSilla, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -265,6 +288,7 @@ public class formAddArticulo extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecioMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -314,14 +338,18 @@ public class formAddArticulo extends javax.swing.JPanel {
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Precio");
 
-        lblPrecioComida.setForeground(new java.awt.Color(255, 255, 255));
-        lblPrecioComida.setText("$");
+        label2.setForeground(new java.awt.Color(255, 255, 255));
+        label2.setText("$");
 
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("Precio");
 
+        lable3.setForeground(new java.awt.Color(255, 255, 255));
+        lable3.setText("$");
+
+        lblPrecioComida.setForeground(new java.awt.Color(255, 255, 255));
+
         lblPrecioBebida.setForeground(new java.awt.Color(255, 255, 255));
-        lblPrecioBebida.setText("$");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -337,32 +365,40 @@ public class formAddArticulo extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCantComida, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPrecioComida, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(70, 70, 70))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPrecioComida, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(64, 64, 64))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(txtCantBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(48, 48, 48)
+                                    .addComponent(cmbComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(24, 24, 24)
+                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel5Layout.createSequentialGroup()
+                                            .addComponent(lable3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(cmbBebidas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(17, 17, 17))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAddBebida)
-                        .addGap(90, 90, 90))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbBebidas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(17, Short.MAX_VALUE))))
+                        .addGap(90, 90, 90))))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(btnAddComida)
@@ -378,7 +414,8 @@ public class formAddArticulo extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPrecioComida, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrecioComida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -392,9 +429,10 @@ public class formAddArticulo extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lable3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCantBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -459,6 +497,10 @@ public class formAddArticulo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel label1;
+    private javax.swing.JLabel label2;
+    private javax.swing.JLabel label4;
+    private javax.swing.JLabel lable3;
     public javax.swing.JLabel lblPrecioBebida;
     public javax.swing.JLabel lblPrecioComida;
     public javax.swing.JLabel lblPrecioMesa;

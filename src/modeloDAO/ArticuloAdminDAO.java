@@ -9,17 +9,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import modelo.Articulo;
+import modelo.ArticuloAdmin;
 import util.TipoArticulo;
 
 /**
  *
  * @author kuroy
  */
-public class ArticuloDAO {
+public class ArticuloAdminDAO {
 
-    public static Boolean guardar(Articulo articulo, Connection connection) throws SQLException{
-        String query = "INSERT INTO articulo (id, tipo, nombre, precio) VALUES(?,?,?,?)";
+    public static Boolean guardar(ArticuloAdmin articulo, Connection connection) throws SQLException{
+        String query = "INSERT INTO articulo_admin (id, tipo, nombre, precio) VALUES(?,?,?,?)";
         PreparedStatement ps = connection.prepareStatement(query);
         
         ps.setInt(1, articulo.getId());
@@ -30,8 +30,8 @@ public class ArticuloDAO {
         return ps.execute();
     }
     
-    public static Boolean actualizar(Articulo articulo, Connection connection) throws SQLException{
-        String query = "UPDATE articulo SET tipo=?, nombre=?, precio=? WHERE id=?";
+    public static Boolean actualizar(ArticuloAdmin articulo, Connection connection) throws SQLException{
+        String query = "UPDATE articulo_admin SET tipo=?, nombre=?, precio=? WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
         ps.setString(1, articulo.getTipo().toString());
@@ -42,8 +42,8 @@ public class ArticuloDAO {
         return ps.executeUpdate()!=0;
     }
     
-    public static Articulo buscarPorID(Articulo articulo, Connection connection) throws SQLException{
-        String query = "SELECT * FROM articulo WHERE id=?";
+    public static ArticuloAdmin buscarPorID(ArticuloAdmin articulo, Connection connection) throws SQLException{
+        String query = "SELECT * FROM articulo_admin WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
         ps.setInt(1, articulo.getId());
@@ -55,14 +55,14 @@ public class ArticuloDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            return new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+            return new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
         }
         
         return null;
     }
     
-    public static Articulo buscarPorNombre(Articulo articulo, Connection connection) throws SQLException{
-        String query = "SELECT * FROM articulo WHERE nombre=?";
+    public static ArticuloAdmin buscarPorNombre(ArticuloAdmin articulo, Connection connection) throws SQLException{
+        String query = "SELECT * FROM articulo_admin WHERE nombre=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
         ps.setString(1, articulo.getNombre());
@@ -74,15 +74,15 @@ public class ArticuloDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            return new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+            return new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
         }
         
         return null;
     }
     
-    public static java.util.ArrayList<Articulo> getAll(Connection connection) throws SQLException{
-        java.util.ArrayList<Articulo> articulos = new java.util.ArrayList<>(); 
-        String query = "SELECT * FROM articulo";
+    public static java.util.ArrayList<ArticuloAdmin> getAll(Connection connection) throws SQLException{
+        java.util.ArrayList<ArticuloAdmin> articulos = new java.util.ArrayList<>(); 
+        String query = "SELECT * FROM articulo_admin";
 
         ResultSet rs = connection.prepareStatement(query).executeQuery();
         
@@ -92,14 +92,14 @@ public class ArticuloDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            articulos.add(new Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio));
+            articulos.add(new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio));
         }
         
         return articulos;
     }
     
-    public static Boolean eliminar(Articulo articulo, Connection connection) throws SQLException{
-        String query = "DELETE FROM articulo WHERE id=?";
+    public static Boolean eliminar(ArticuloAdmin articulo, Connection connection) throws SQLException{
+        String query = "DELETE FROM articulo_admin WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
         ps.setInt(1, articulo.getId());

@@ -18,7 +18,7 @@ import modelo.Evento;
 public class EventoDAO {
 
     public static Boolean GUARDguardarAR(Connection conexion, Evento evento) throws SQLException {
-        String query = "INSERT INTO evento (id, nombre, fecha_celebracion, responsable_id, num_asistentes, direccion, monto_abonado, monto_total, estado) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO evento (id, nombre, fecha_celebracion, hora, direccion, monto_abonado, monto_total, estado) VALUES(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement consulta = conexion.prepareStatement(query);
 
         consulta.setInt(1, evento.getID());
@@ -27,7 +27,7 @@ public class EventoDAO {
         consulta.setInt(3, evento.getID());
         consulta.setString(4, evento.getDireccion_evento());
         consulta.setInt(5, evento.getMonto_abonado());
-        consulta.setInt(6, evento.getMontoTotal());
+        consulta.setInt(6, evento.getMonto_total());
         consulta.setString(7, evento.getEstado_pago().toString());
 
         return consulta.execute();
@@ -42,7 +42,7 @@ public class EventoDAO {
         consulta.setInt(3, evento.getResponsable().getCedula());
         consulta.setString(4, evento.getDireccion_evento());
         consulta.setInt(5, evento.getMonto_abonado());
-        consulta.setInt(6, evento.getMontoTotal());
+        consulta.setInt(6, evento.getMonto_total());
         consulta.setString(7, evento.getEstado_pago().toString());
 
         return consulta.executeUpdate() != 0;

@@ -27,6 +27,11 @@ public class ControladorInicio{
             vista.cambiarPanel(vista.frmInicio, vista.frmCliente);
         }
         
+        if(e.getSource() == vista.frmInicio.btnBuscarEvento){
+            vista.frmModEvento.cargar();
+            vista.cambiarPanel(vista.frmInicio, vista.frmModEvento);
+        }
+        
         if(e.getSource() == vista.frmInicio.btnCrearEvento){
             vista.frmAddArticulo.cargar();
             vista.frmEvento.cargar();

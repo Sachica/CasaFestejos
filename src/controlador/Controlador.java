@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
-import servicio.Conexion;
 
 import vista.*;
 /**
@@ -25,6 +23,7 @@ public class Controlador implements ActionListener, MouseListener {
     private ControladorEvento controladorEvento;
     private ControladorArticulo controladorArticulo;
     private ControladorAddArticulo controladorAddArticulo;
+    private ControladorModEvento controladorModEvento;
     
     public Controlador(){
         vista = new Vista();
@@ -35,6 +34,7 @@ public class Controlador implements ActionListener, MouseListener {
         controladorEvento = new ControladorEvento(vista);
         controladorArticulo = new ControladorArticulo(vista);  
         controladorAddArticulo = new ControladorAddArticulo(vista);
+        controladorModEvento = new ControladorModEvento(vista);
         this.initComponents();
     }
     
@@ -50,7 +50,9 @@ public class Controlador implements ActionListener, MouseListener {
         controladorRegistro.actionPerformed(e);
         controladorCliente.actionPerformed(e);
         controladorArticulo.actionPerformed(e);
+        controladorAddArticulo.actionPerformed(e);
         controladorEvento.actionPerformed(e);
+        controladorModEvento.actionPerformed(e);
     }
 
     @Override
@@ -75,6 +77,11 @@ public class Controlador implements ActionListener, MouseListener {
     }
     
     public static void main(String[] args){
+//        modelo.ArticuloCliente a = new modelo.ArticuloCliente(2, util.TipoArticulo.MONTAJE, "Cumpleaños", 1, 10000);
+//        try{
+//            modeloDAO.ArticuloClienteDAO.guardar(a, servicio.Conexion.getConnection());
+//        }catch(java.sql.SQLException e){
+//        }
         Controlador m = new Controlador();       
     }
 

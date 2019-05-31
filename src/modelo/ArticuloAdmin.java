@@ -9,16 +9,16 @@ import util.TipoArticulo;
  *
  * @author kuroy
  */
-public class Articulo {
+public class ArticuloAdmin {
     private Integer id;
     private TipoArticulo tipo;
     private String nombre;
     private Integer precio;
 
-    public Articulo() {
+    public ArticuloAdmin() {
     }
 
-    public Articulo(Integer id, TipoArticulo tipo, String nombre, Integer precio) {
+    public ArticuloAdmin(Integer id, TipoArticulo tipo, String nombre, Integer precio) {
         this.id = id;
         this.tipo = tipo;
         this.nombre = nombre;

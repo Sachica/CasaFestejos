@@ -6,7 +6,7 @@
 package controlador;
 
 import java.sql.SQLException;
-import modeloDAO.ArticuloDAO;
+import modeloDAO.ArticuloAdminDAO;
 import servicio.Conexion;
 import util.TipoArticulo;
 import vista.Vista;
@@ -27,30 +27,31 @@ public class ControladorArticulo {
         if(e.getSource() == vista.frmArticulo.btnCargar){
             try{
                 vista.frmArticulo.tableModel.setRowCount(0);
-                this.insertarDatos(ArticuloDAO.getAll(Conexion.getConnection()));
+                this.insertarDatos(ArticuloAdminDAO.getAll(Conexion.getConnection()));
             }catch(SQLException er){
             }
         }
         
         if(e.getSource() == vista.frmArticulo.btnAgregar){
             try{
-                ArticuloDAO.guardar(this.getArticulo(), Conexion.getConnection());
+                ArticuloAdminDAO.guardar(this.getArticulo(), Conexion.getConnection());
                 vista.frmArticulo.clear();               
             }catch(SQLException err){
+                System.out.println(err.getMessage());
             }
         }
         
         if(e.getSource() == vista.frmArticulo.btnActualizar){
             try{
-                ArticuloDAO.actualizar(this.getArticulo(), Conexion.getConnection());
-                
+                ArticuloAdminDAO.actualizar(this.getArticulo(), Conexion.getConnection());
+                vista.frmArticulo.clear();   
             }catch(SQLException err){
             }
         }
         
         if(e.getSource() == vista.frmArticulo.btnEliminar){
             try{
-                ArticuloDAO.eliminar(this.getArticulo(), Conexion.getConnection());
+                ArticuloAdminDAO.eliminar(this.getArticulo(), Conexion.getConnection());
                 vista.frmArticulo.clear();
             }catch(SQLException err){
             }
@@ -82,19 +83,19 @@ public class ControladorArticulo {
         vista.frmArticulo.txtActPrecio.setText(data[3].toString());
     }
     
-    private void insertarDatos(java.util.ArrayList<modelo.Articulo> articulos){
-        for(modelo.Articulo articulo : articulos){
+    private void insertarDatos(java.util.ArrayList<modelo.ArticuloAdmin> articulos){
+        for(modelo.ArticuloAdmin articulo : articulos){
             Object data[] = {articulo.getId(), articulo.getNombre(), articulo.getTipo(), articulo.getPrecio()};
             vista.frmArticulo.tableModel.addRow(data);
         }
     }
     
-    private modelo.Articulo getArticulo(){
+    private modelo.ArticuloAdmin getArticulo(){
         Integer id = Integer.parseInt(vista.frmArticulo.txtId.getText());
         String nombre = vista.frmArticulo.txtActNombre.getText();
         String tipo = vista.frmArticulo.txtActTipo.getText();
         Integer precio = Integer.parseInt(vista.frmArticulo.txtActPrecio.getText());
         
-        return new modelo.Articulo(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+        return new modelo.ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
     }
 }

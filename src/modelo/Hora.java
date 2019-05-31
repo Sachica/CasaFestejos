@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package modelo;
-import util.MyException;
 import java.time.LocalDateTime;
 
 /**
@@ -23,10 +22,7 @@ public class Hora{
         this.segundo = c.getSecond();
     }
 
-    public Hora(Integer hora, Integer minuto, Integer segundo) throws MyException{
-        if((hora<0 || hora>23) || (minuto<0 || minuto>59) || (segundo<0 || segundo>59)){
-            throw new MyException("Hora no permitida");
-        }
+    public Hora(Integer hora, Integer minuto, Integer segundo){
         this.hora = hora;
         this.minuto = minuto;
         this.segundo = segundo;

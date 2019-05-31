@@ -14,18 +14,20 @@ import util.TipoArticulo;
  * @author kuroy
  */
 public class formEvento extends javax.swing.JPanel {
+
     private Integer precioTotal;
+
     /**
      * Creates new form formEvento
      */
     public formEvento() {
         initComponents();
         this.precioTotal = 0;
-        this.cmbMontaje.addItem("");  
+        this.cmbMontaje.addItem("");
         this.habilitar(Boolean.FALSE);
     }
 
-    public void initListeners(java.awt.event.ActionListener e){
+    public void initListeners(java.awt.event.ActionListener e) {
         this.cmbMontaje.addActionListener(e);
         this.btnAddActividad.addActionListener(e);
         this.btnCancelar.addActionListener(e);
@@ -35,52 +37,51 @@ public class formEvento extends javax.swing.JPanel {
         this.btnVolver.addActionListener(e);
         this.btnAddArticulo.addActionListener(e);
     }
-    
-    public void precioArticulos(Object articulos[]){
-        for(Object array : articulos){
-            for(Object obj : ((java.util.ArrayList<Object>)array)){
-                if(obj instanceof modelo.Bebida || obj instanceof modelo.Platillo){
-                    precioTotal += ((modelo.Comida)obj).getCosto();
-                    ((modelo.Comida)obj).setId(Integer.parseInt(txtDoc.getText()));
-                }else{
-                    precioTotal += ((modelo.Mobiliario)obj).getCosto();
-                    ((modelo.Mobiliario)obj).setId(Integer.parseInt(txtDoc.getText()));
-                }
-            }
+
+    public void precioArticulos(java.util.ArrayList<modelo.ArticuloCliente> articulos) {
+        for (modelo.ArticuloCliente articulo : articulos) {
+            precioTotal += articulo.getCosto();
+            articulo.setId(Integer.parseInt(txtDoc.getText()));
         }
-        
+
     }
-    
-    public void calcularPrecio(){
+
+    public void calcularPrecio() {
         Integer x = Integer.parseInt(!lblPrecioMontaje.getText().isEmpty() ? lblPrecioMontaje.getText() : "0");
-        this.txtPrecioTotal.setText("$ "+(x+precioTotal));
+        this.txtPrecioTotal.setText("$ " + (x + precioTotal));
     }
-    
-    public void habilitar(Boolean x){
+
+    public void habilitar(Boolean x) {
         this.txtDoc.setEditable(!x);
         this.panelMontaje.setVisible(x);
         this.btnAddArticulo.setVisible(x);
         this.panelConfirm.setVisible(x);
         this.panelActiv.setVisible(x);
     }
-    
-    public void addArticulo(modelo.Articulo articulo){
-        if(articulo.getTipo().equals(TipoArticulo.MONTAJE)){
+
+    public void addArticulo(modelo.ArticuloAdmin articulo) {
+        if (articulo.getTipo().equals(TipoArticulo.MONTAJE)) {
             this.cmbMontaje.addItem(articulo.getNombre());
         }
     }
-    
-    public void cargar(){
-        try{
-            this.cmbMontaje.removeAllItems();
-            this.cmbMontaje.addItem("");
-            java.util.ArrayList<modelo.Articulo> articulos = modeloDAO.ArticuloDAO.getAll(Conexion.getConnection());
-            for(modelo.Articulo articulo : articulos){
-                this.addArticulo(articulo);
-            }
-        }catch(SQLException e){
+
+    private void removeItems() {
+        for (Integer i = this.cmbMontaje.getItemCount() - 1; i > 0; i--) {
+            this.cmbMontaje.removeItemAt(i);
         }
     }
+
+    public void cargar() {
+        try {
+            this.removeItems();
+            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Conexion.getConnection());
+            for (modelo.ArticuloAdmin articulo : articulos) {
+                this.addArticulo(articulo);
+            }
+        } catch (SQLException e) {
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,7 +129,7 @@ public class formEvento extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
         setForeground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(402, 665));
+        setMaximumSize(new java.awt.Dimension(402, 692));
 
         panelMontaje.setBackground(new java.awt.Color(51, 51, 51));
         panelMontaje.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo De Montaje", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -147,6 +148,8 @@ public class formEvento extends javax.swing.JPanel {
 
         jLabel.setForeground(new java.awt.Color(255, 255, 255));
         jLabel.setText("$");
+
+        lblPrecioMontaje.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout panelMontajeLayout = new javax.swing.GroupLayout(panelMontaje);
         panelMontaje.setLayout(panelMontajeLayout);
@@ -216,11 +219,9 @@ public class formEvento extends javax.swing.JPanel {
 
         txtHoraAct.setBackground(new java.awt.Color(0, 0, 51));
         txtHoraAct.setForeground(new java.awt.Color(255, 255, 255));
-        txtHoraAct.setText("HH");
 
         txtMinAct.setBackground(new java.awt.Color(0, 0, 51));
         txtMinAct.setForeground(new java.awt.Color(255, 255, 255));
-        txtMinAct.setText("MM");
 
         jLabel18.setBackground(new java.awt.Color(0, 0, 51));
         jLabel18.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -313,7 +314,6 @@ public class formEvento extends javax.swing.JPanel {
 
         txtHoraEvt.setBackground(new java.awt.Color(0, 0, 51));
         txtHoraEvt.setForeground(new java.awt.Color(255, 255, 255));
-        txtHoraEvt.setText("HH");
 
         jLabel21.setBackground(new java.awt.Color(0, 0, 51));
         jLabel21.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -322,7 +322,6 @@ public class formEvento extends javax.swing.JPanel {
 
         txtMinEvt.setBackground(new java.awt.Color(0, 0, 51));
         txtMinEvt.setForeground(new java.awt.Color(255, 255, 255));
-        txtMinEvt.setText("MM");
 
         jDateChooser2.setBackground(new java.awt.Color(255, 255, 255));
         jDateChooser2.setForeground(new java.awt.Color(0, 0, 0));
@@ -395,7 +394,7 @@ public class formEvento extends javax.swing.JPanel {
                 .addGroup(panelConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addComponent(btnConfirmar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         btnAddArticulo.setBackground(new java.awt.Color(255, 255, 255));
@@ -453,14 +452,14 @@ public class formEvento extends javax.swing.JPanel {
                         .addComponent(btnBus)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnVolver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9)
                 .addComponent(btnAddArticulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelActiv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

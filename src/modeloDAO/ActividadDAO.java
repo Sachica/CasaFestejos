@@ -18,7 +18,7 @@ import util.MyException;
  */
 public class ActividadDAO {
     public static Boolean guardar(Actividad actividad, Connection connection) throws SQLException{
-        String query = "INSERT INTO actividad (id, nombre, descripcion, hora) VALUES(?,?,?,?)";
+        String query = "INSERT INTO actividad_cliente (id, nombre, descripcion, hora) VALUES(?,?,?,?)";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, actividad.getId());
         ps.setString(2, actividad.getNombre());
@@ -29,7 +29,7 @@ public class ActividadDAO {
     }
     
     public static Boolean actualizar(Actividad actividad, Connection connection) throws SQLException{
-        String query = "UPDATE actividad SET nombre=?, descripcion=?, hora=? WHERE id=?";
+        String query = "UPDATE actividad_cliente SET nombre=?, descripcion=?, hora=? WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, actividad.getNombre());
         ps.setString(2, actividad.getDescripcion());
@@ -39,9 +39,9 @@ public class ActividadDAO {
         return ps.executeUpdate()!=0;
     }
     
-    public static java.util.ArrayList<modelo.Actividad> buscar(Actividad actividad, Connection connection) throws SQLException, MyException{
+    public static java.util.ArrayList<modelo.Actividad> buscar(Actividad actividad, Connection connection) throws SQLException{
         java.util.ArrayList<modelo.Actividad>  actividades = new java.util.ArrayList<>(); 
-        String query = "SELECT * FROM actividad WHERE id=?";
+        String query = "SELECT * FROM actividad_cliente WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, actividad.getId());
         ResultSet rs = ps.executeQuery();
@@ -49,7 +49,7 @@ public class ActividadDAO {
             Integer id = rs.getInt("id");
             String nombre = rs.getString("nombre");
             String descripcion = rs.getString("descripcion");
-            String horario[] = rs.getString("horario").split(":");
+            String horario[] = rs.getString("hora").split(":");
             Integer hora = Integer.parseInt(horario[0]);
             Integer minuto = Integer.parseInt(horario[1]);
             actividades.add(new Actividad(id, nombre, descripcion, new modelo.Hora(hora, minuto, 0)));
@@ -59,7 +59,7 @@ public class ActividadDAO {
     }
     
     public static Boolean eliminar(Actividad actividad, Connection connection) throws SQLException{
-        String query = "DELETE FROM actividad WHERE id=?";
+        String query = "DELETE FROM actividad_cliente WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, actividad.getId());
         
