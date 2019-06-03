@@ -8,7 +8,6 @@ package controlador;
 import java.sql.SQLException;
 import modelo.Responsable;
 import modeloDAO.ResponsableDAO;
-import servicio.Conexion;
 import vista.Vista;
 
 /**
@@ -25,7 +24,7 @@ public class ControladorRegistro{
     public void actionPerformed(java.awt.event.ActionEvent e){
         if(e.getSource() == vista.frmRegistro.btnRegistrar){
             try {
-                ResponsableDAO.guardar(this.getResponsable(), Conexion.getConnection());
+                ResponsableDAO.guardar(this.getResponsable(), Controlador.getConnection());
                 vista.frmRegistro.clean();
             } catch (SQLException er) {
                 System.out.println(er.getMessage());

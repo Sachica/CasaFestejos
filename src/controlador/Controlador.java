@@ -9,36 +9,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import servicio.Conexion;
 import vista.*;
 /**
  *
  * @author kuroy
  */
-public class Controlador implements ActionListener, MouseListener {
+public class Controlador implements ActionListener, MouseListener, TableModelListener {
     private Vista vista;
+    private static Conexion connection;
     private ControladorRegistro controladorRegistro;
     private ControladorInicio controladorInicio;
     private ControladorCliente controladorCliente;
     private ControladorEvento controladorEvento;
     private ControladorArticulo controladorArticulo;
     private ControladorAddArticulo controladorAddArticulo;
+    private ControladorAddActividad controladorAddActividad;
     private ControladorModEvento controladorModEvento;
     
     public Controlador(){
         vista = new Vista();
-        vista.initListeners(this, this);
+        vista.initListeners(this, this, this);
+        connection = new Conexion();
         controladorRegistro = new ControladorRegistro(vista);
         controladorInicio = new ControladorInicio(vista);
         controladorCliente = new ControladorCliente(vista);
         controladorEvento = new ControladorEvento(vista);
         controladorArticulo = new ControladorArticulo(vista);  
         controladorAddArticulo = new ControladorAddArticulo(vista);
+        controladorAddActividad = new ControladorAddActividad(vista);
         controladorModEvento = new ControladorModEvento(vista);
         this.initComponents();
     }
     
     private void initComponents(){
+        vista.frmAddArticulo.cargarItemOpciones();
+        vista.frmEvento.cargarItemOpciones();
+        vista.frmModEvento.cargarItemOpciones();
         vista.cambiarPanel(vista.frmRegistro, vista.frmInicio);
         vista.setVisible(true);
     }
@@ -53,6 +62,7 @@ public class Controlador implements ActionListener, MouseListener {
         controladorAddArticulo.actionPerformed(e);
         controladorEvento.actionPerformed(e);
         controladorModEvento.actionPerformed(e);
+        controladorAddActividad.actionPerformed(e);
     }
 
     @Override
@@ -83,6 +93,15 @@ public class Controlador implements ActionListener, MouseListener {
 //        }catch(java.sql.SQLException e){
 //        }
         Controlador m = new Controlador();       
+    }
+
+    public static java.sql.Connection getConnection(){
+        return Controlador.connection.getConnection();
+    }
+    
+    @Override
+    public void tableChanged(TableModelEvent tme) {
+        controladorModEvento.tableChanged(tme);
     }
 
 }

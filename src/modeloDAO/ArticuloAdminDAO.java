@@ -55,7 +55,7 @@ public class ArticuloAdminDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            return new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+            return new ArticuloAdmin(id, TipoArticulo.getTipoString(tipo), nombre, precio);
         }
         
         return null;
@@ -74,7 +74,7 @@ public class ArticuloAdminDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            return new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+            return new ArticuloAdmin(id, TipoArticulo.getTipoString(tipo), nombre, precio);
         }
         
         return null;
@@ -92,7 +92,7 @@ public class ArticuloAdminDAO {
             String nombre = rs.getString("nombre");
             Integer precio = rs.getInt("precio");
             
-            articulos.add(new ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio));
+            articulos.add(new ArticuloAdmin(id, TipoArticulo.getTipoString(tipo), nombre, precio));
         }
         
         return articulos;

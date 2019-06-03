@@ -4,147 +4,177 @@
  * and open the template in the editor.
  */
 package controlador;
+
 import java.sql.SQLException;
 import modelo.*;
-import modeloDAO.ArticuloClienteDAO;
-import servicio.Conexion;
 import vista.Vista;
+
 /**
  *
  * @author kuroy
  */
 public class ControladorAddArticulo {
     private Vista vista;
-        private java.util.ArrayList<ArticuloCliente> articulos;
-    private java.util.ArrayList<Object> platillos;
-    private java.util.ArrayList<Object> sillas;
-    private java.util.ArrayList<Object> mesas;
-    
+    private java.util.ArrayList<ArticuloCliente> articulos;
+
     public ControladorAddArticulo(Vista vista) {
         this.vista = vista;
         this.articulos = new java.util.ArrayList<>();
     }
-    
+
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        if(e.getSource() == vista.frmAddArticulo.btnFin){
-            try{
-                vista.frmEvento.precioArticulos(articulos);
-                ArticuloClienteDAO.addAll(articulos, Conexion.getConnection());
-            }catch(SQLException er){
-            }           
-            this.resetear();
+        if (e.getSource() == vista.frmAddArticulo.btnFin) {
+            if (vista.frmAddArticulo.getCambio()) {
+                vista.frmEvento.addArticulos(articulos.clone());
+                vista.cambiarPanel(vista.frmAddArticulo, vista.frmEvento);
+            } else {
+                vista.frmModEvento.addArticulosTabla(articulos.clone());
+                vista.cambiarPanel(vista.frmAddArticulo, vista.frmModEvento);              
+            }
+            vista.frmAddArticulo.setCambio(Boolean.TRUE, 0);
             vista.frmAddArticulo.resetear();
-            vista.cambiarPanel(vista.frmAddArticulo, vista.frmEvento);
+            this.resetear();
         }
-        
-        if(e.getSource() == vista.frmAddArticulo.btnAddSilla){
-            try{
-                if(this.puedeAñadir(vista.frmAddArticulo.txtCantSilla, vista.frmAddArticulo.cmbSilla)){    
+
+        if (e.getSource() == vista.frmAddArticulo.btnAddSilla) {
+            try {
+                if (this.puedeAñadir(vista.frmAddArticulo.txtCantSilla, vista.frmAddArticulo.cmbSilla)) {
+                    Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbSilla.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantSilla.getText());
-                    this.articulos.add(new ArticuloCliente(0, util.TipoArticulo.SILLA, nombre, cant, this.articuloPrecio(nombre)));
-                }else{
+                    this.resetSilla();
+                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.SILLA, nombre, cant, this.articuloPrecio(nombre)));
+                } else {
                     //mostrarMensaje
                 }
-            }catch(NumberFormatException err){
+            } catch (NumberFormatException err) {
                 //mostrarMensaje
             }
         }
-        
-        if(e.getSource() == vista.frmAddArticulo.btnAddMesa){
-            try{
-                if(this.puedeAñadir(vista.frmAddArticulo.txtCantMesa, vista.frmAddArticulo.cmbMesa)){    
+
+        if (e.getSource() == vista.frmAddArticulo.btnAddMesa) {
+            try {
+                if (this.puedeAñadir(vista.frmAddArticulo.txtCantMesa, vista.frmAddArticulo.cmbMesa)) {
+                    Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbMesa.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantMesa.getText());
-                    this.articulos.add(new ArticuloCliente(0, util.TipoArticulo.MESA, nombre, cant, this.articuloPrecio(nombre)));
-                }else{
+                    this.resetMesa();
+                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.MESA, nombre, cant, this.articuloPrecio(nombre)));
+                } else {
                     //mostrarMensaje
                 }
-            }catch(NumberFormatException err){
+            } catch (NumberFormatException err) {
                 //mostrarMensaje
             }
         }
-        
-        if(e.getSource() == vista.frmAddArticulo.btnAddBebida){
-            try{
-                if(this.puedeAñadir(vista.frmAddArticulo.txtCantBebida, vista.frmAddArticulo.cmbBebidas)){ 
+
+        if (e.getSource() == vista.frmAddArticulo.btnAddBebida) {
+            try {
+                if (this.puedeAñadir(vista.frmAddArticulo.txtCantBebida, vista.frmAddArticulo.cmbBebidas)) {
+                    Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantBebida.getText());
-                    this.articulos.add(new ArticuloCliente(0, util.TipoArticulo.BEBIDA, nombre, cant, this.articuloPrecio(nombre)));
-                }else{
+                    this.resetBebida();
+                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.BEBIDA, nombre, cant, this.articuloPrecio(nombre)));
+                } else {
                     //mostrarMensaje
                 }
-            }catch(NumberFormatException err){
+            } catch (NumberFormatException err) {
                 //mostrarMensaje
             }
         }
-        
-        if(e.getSource() == vista.frmAddArticulo.btnAddComida){
-            try{
-                if(this.puedeAñadir(vista.frmAddArticulo.txtCantComida, vista.frmAddArticulo.cmbComidas)){ 
+
+        if (e.getSource() == vista.frmAddArticulo.btnAddComida) {
+            try {
+                if (this.puedeAñadir(vista.frmAddArticulo.txtCantComida, vista.frmAddArticulo.cmbComidas)) {
+                    Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbComidas.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantComida.getText());
-                    this.articulos.add(new ArticuloCliente(0, util.TipoArticulo.PLATILLO, nombre, cant, this.articuloPrecio(nombre)));
-                }else{
+                    this.resetComida();
+                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.PLATILLO, nombre, cant, this.articuloPrecio(nombre)));
+                } else {
                     //mostrarMensaje
                 }
-            }catch(NumberFormatException err){
+            } catch (NumberFormatException err) {
                 //mostrarMensaje
             }
         }
-        
+
         if (e.getSource() == vista.frmAddArticulo.cmbMesa) {
             Integer precio = articuloPrecio(vista.frmAddArticulo.cmbMesa.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmAddArticulo.lblPrecioMesa.setText(""+precio);
-            } 
-            else{
-                vista.frmAddArticulo.lblPrecioMesa.setText("$");
+            if (precio != -1) {
+                vista.frmAddArticulo.lblPrecioMesa.setText("" + precio);
+            } else {
+                vista.frmAddArticulo.lblPrecioMesa.setText("");
             }
         }
-        
+
         if (e.getSource() == vista.frmAddArticulo.cmbSilla) {
             Integer precio = articuloPrecio(vista.frmAddArticulo.cmbSilla.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmAddArticulo.lblPrecioSilla.setText(""+precio);
-            }else{
-                vista.frmAddArticulo.lblPrecioSilla.setText("$");
-            }       
-        }
-        
-        if (e.getSource() == vista.frmAddArticulo.cmbBebidas) {
-            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmAddArticulo.lblPrecioBebida.setText(""+precio);
-            }else{
-                vista.frmAddArticulo.lblPrecioBebida.setText("$");
+            if (precio != -1) {
+                vista.frmAddArticulo.lblPrecioSilla.setText("" + precio);
+            } else {
+                vista.frmAddArticulo.lblPrecioSilla.setText("");
             }
         }
-        
+
+        if (e.getSource() == vista.frmAddArticulo.cmbBebidas) {
+            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString());
+            if (precio != -1) {
+                vista.frmAddArticulo.lblPrecioBebida.setText("" + precio);
+            } else {
+                vista.frmAddArticulo.lblPrecioBebida.setText("");
+            }
+        }
+
         if (e.getSource() == vista.frmAddArticulo.cmbComidas) {
             Integer precio = articuloPrecio(vista.frmAddArticulo.cmbComidas.getSelectedItem().toString());
-            if(precio!=-1){
-                vista.frmAddArticulo.lblPrecioComida.setText(""+precio);
-            }else{
-                vista.frmAddArticulo.lblPrecioComida.setText("$");
-            }  
-        }       
+            if (precio != -1) {
+                vista.frmAddArticulo.lblPrecioComida.setText("" + precio);
+            } else {
+                vista.frmAddArticulo.lblPrecioComida.setText("");
+            }
+        }
     }
-    
-    private Boolean puedeAñadir(javax.swing.JTextField txt, javax.swing.JComboBox cmb){
-        return !txt.getText().isEmpty() && Integer.parseInt(txt.getText())!=0 && cmb.getSelectedIndex()!=0;
+
+    private void resetSilla() {
+        vista.frmAddArticulo.cmbSilla.setSelectedIndex(0);
+        vista.frmAddArticulo.lblPrecioSilla.setText("");
+        vista.frmAddArticulo.txtCantSilla.setText("");
     }
-    
-    private void resetear(){
+
+    private void resetMesa() {
+        vista.frmAddArticulo.cmbMesa.setSelectedIndex(0);
+        vista.frmAddArticulo.lblPrecioMesa.setText("");
+        vista.frmAddArticulo.txtCantMesa.setText("");
+    }
+
+    private void resetBebida() {
+        vista.frmAddArticulo.cmbBebidas.setSelectedIndex(0);
+        vista.frmAddArticulo.lblPrecioBebida.setText("");
+        vista.frmAddArticulo.txtCantBebida.setText("");
+    }
+
+    private void resetComida() {
+        vista.frmAddArticulo.cmbComidas.setSelectedIndex(0);
+        vista.frmAddArticulo.lblPrecioComida.setText("");
+        vista.frmAddArticulo.txtCantComida.setText("");
+    }
+
+    private Boolean puedeAñadir(javax.swing.JTextField txt, javax.swing.JComboBox cmb) {
+        return !txt.getText().isEmpty() && Integer.parseInt(txt.getText()) != 0 && cmb.getSelectedIndex() != 0;
+    }
+
+    private void resetear() {
         this.articulos.clear();
     }
-    
+
     private Integer articuloPrecio(String nombre) {
         try {
             ArticuloAdmin articulo = new ArticuloAdmin();
             articulo.setNombre(nombre);
-            articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, servicio.Conexion.getConnection());            
-            return articulo!=null ? articulo.getPrecio() : -1;
+            articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
+            return articulo != null ? articulo.getPrecio() : -1;
         } catch (SQLException e) {
         }
         return -1;

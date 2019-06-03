@@ -58,11 +58,28 @@ public class ActividadDAO {
         return actividades;
     }
     
-    public static Boolean eliminar(Actividad actividad, Connection connection) throws SQLException{
+    public static Boolean eliminarPorNombre(Actividad actividad, Connection connection) throws SQLException{
+        String query = "DELETE FROM actividad_cliente WHERE nombre=?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, actividad.getNombre());
+        
+        return ps.execute();
+    }
+    
+    public static Boolean eliminarTodo(Actividad actividad, Connection connection) throws SQLException{
         String query = "DELETE FROM actividad_cliente WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, actividad.getId());
         
         return ps.execute();
+    }
+    
+    public static Boolean addAll(java.util.ArrayList<Actividad> actividades, Connection connection) throws SQLException{
+        ActividadDAO.eliminarTodo(actividades.remove(actividades.size()-1), connection);
+        for(Actividad actividad : actividades){
+            ActividadDAO.guardar(actividad, connection);
+        }
+        
+        return true;
     }
 }

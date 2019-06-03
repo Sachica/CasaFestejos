@@ -5,20 +5,23 @@
  */
 package vista;
 
+import controlador.Controlador;
 import java.sql.SQLException;
-import servicio.Conexion;
 
 /**
  *
  * @author kuroy
  */
 public class formAddArticulo extends javax.swing.JPanel {
-
+    private Boolean cambio;
+    private Integer id;
     /**
      * Creates new form formAddArticulo
      */
     public formAddArticulo() {
         initComponents();
+        this.cambio = true;
+        this.id = 0;
         this.initItems();
     }
 
@@ -46,10 +49,10 @@ public class formAddArticulo extends javax.swing.JPanel {
         this.cmbBebidas.setSelectedIndex(0);
         this.cmbSilla.setSelectedIndex(0);
         this.cmbComidas.setSelectedIndex(0);
-        this.lable3.setText("$");
-        this.label2.setText("$");
-        this.label4.setText("$");
-        this.label1.setText("$");
+        this.lblPrecioBebida.setText("");
+        this.lblPrecioComida.setText("");
+        this.lblPrecioMesa.setText("");
+        this.lblPrecioSilla.setText("");
         this.txtCantBebida.setText("");
         this.txtCantComida.setText("");
         this.txtCantMesa.setText("");
@@ -87,10 +90,10 @@ public class formAddArticulo extends javax.swing.JPanel {
         }
     }
     
-    public void cargar(){
+    public void cargarItemOpciones(){
         try{
             this.removeItems();
-            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Conexion.getConnection());
+            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
             for(modelo.ArticuloAdmin articulo : articulos){
                 this.addArticulo(articulo);
             }
@@ -98,6 +101,18 @@ public class formAddArticulo extends javax.swing.JPanel {
         }
     }
 
+    public Boolean getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(Boolean cambio, Integer id) {
+        this.id = id;
+        this.cambio = cambio;
+    }
+
+    public Integer getId() {
+        return id;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -314,6 +329,7 @@ public class formAddArticulo extends javax.swing.JPanel {
 
         txtCantComida.setBackground(new java.awt.Color(0, 0, 51));
         txtCantComida.setForeground(new java.awt.Color(255, 255, 255));
+        txtCantComida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btnAddComida.setBackground(new java.awt.Color(255, 255, 255));
         btnAddComida.setForeground(new java.awt.Color(0, 0, 0));
@@ -321,6 +337,7 @@ public class formAddArticulo extends javax.swing.JPanel {
 
         txtCantBebida.setBackground(new java.awt.Color(0, 0, 51));
         txtCantBebida.setForeground(new java.awt.Color(255, 255, 255));
+        txtCantBebida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Cantidad");
@@ -381,8 +398,8 @@ public class formAddArticulo extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(48, 48, 48)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cmbComidas, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -427,10 +444,11 @@ public class formAddArticulo extends javax.swing.JPanel {
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbBebidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lable3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPrecioBebida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lable3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)

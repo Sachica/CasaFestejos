@@ -24,20 +24,14 @@ public class Fecha{
         this.dia = l.getDayOfMonth()<10 ? l.getDayOfMonth(): l.getDayOfMonth();
     }
     
-    public Fecha(Integer año, Integer mes, Integer dia) throws MyException{
-        if(año<0 && mes<0 || mes>12 || dia<0 || dia>31){
-            throw new MyException("Fecha no permitida!");
-        }
+    public Fecha(Integer año, Integer mes, Integer dia){
         this.año = año;
         this.mes = mes;
         this.dia = dia;
         this.hora = new Hora();
     }
 
-    public Fecha(Integer año, Integer mes, Integer dia, Hora hora) throws MyException{
-        if(año<0 && mes<0 || mes>12 || dia<0 || dia>31){
-            throw new MyException("Fecha no permitida!");
-        }
+    public Fecha(Integer año, Integer mes, Integer dia, Hora hora){
         this.año = año;
         this.mes = mes;
         this.dia = dia;
@@ -132,6 +126,6 @@ public class Fecha{
     public String toString() {
         String diaS = this.dia<10 ? "0"+this.dia : ""+this.dia;
         String mesS = this.mes<10 ? "0"+this.mes : ""+this.mes;
-        return diaS+"/"+mesS+"/"+año+"-"+this.hora.toString();
+        return diaS+"/"+mesS+"/"+año;
     }
 }

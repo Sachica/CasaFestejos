@@ -14,21 +14,28 @@ import java.sql.SQLException;
  * @author usuario
  */
 public class Conexion {
+    private Connection connection;
     private static final String URL = "jdbc:mysql://localhost:3306/casa_festejos";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
 
-    public static Connection getConnection() {
-        
-        Connection connection = null;
-
-        try {
+    public Conexion() {
+        try{
+            this.conectarABase();
+        }catch(ClassNotFoundException | SQLException e){
+        }
+    }
+    
+    public void conectarABase() throws ClassNotFoundException, SQLException{
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println(e);
-            System.out.println("Conexion fallida");
-        }
+    }
+
+    public Connection getConnection() {
         return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

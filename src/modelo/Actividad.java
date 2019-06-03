@@ -59,6 +59,12 @@ public class Actividad{
         this.id = id;
     }
     
+    @Override
+    public boolean equals(Object obj){
+        Actividad other = (Actividad)obj;
+        return this.getNombre().equals(other.getNombre()) || this.getHorario().equals(other.getHorario());
+    }
+    
     public String toString(){
         return "Nombre: "+this.getNombre()+"\t Horario: "+this.getHorario();
     }

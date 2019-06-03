@@ -61,12 +61,27 @@ public class ArticuloCliente {
         this.cantidad = cantidad;
     }
 
+    public void aumentarCantidad(Integer cantidad){
+        this.cantidad += cantidad;
+    }
+    
     public Integer getCosto() {
-        return costo;
+        return costo*cantidad;
     }
 
     public void setCosto(Integer costo) {
         this.costo = costo;
     }
+    
+    @Override
+    public boolean equals(Object obj){
+        return this.getNombre().equals(((ArticuloCliente)obj).getNombre());
+    }
+
+    @Override
+    public String toString() {
+        return "ArticuloCliente{" + "id=" + id + ", nombre=" + nombre + ", tipoArticulo=" + tipoArticulo + ", cantidad=" + cantidad + "\t costo=" + costo + '}';
+    }
+    
     
 }

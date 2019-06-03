@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import modeloDAO.ResponsableDAO;
 import modelo.Responsable;
-import servicio.Conexion;
 import vista.Vista;
 /**
  *
@@ -28,7 +27,7 @@ public class ControladorCliente{
                 Integer cedula = Integer.parseInt(vista.frmCliente.txtCedula.getText());
                 Responsable responsable = new Responsable();
                 responsable.setCedula(cedula);
-                responsable = ResponsableDAO.buscar(responsable, Conexion.getConnection());
+                responsable = ResponsableDAO.buscar(responsable, Controlador.getConnection());
                 this.cargarResponsable(responsable);
             } catch (NumberFormatException err) {
                 this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
@@ -49,7 +48,7 @@ public class ControladorCliente{
             try{
                 Integer cedula = Integer.parseInt(vista.frmCliente.txtCedula.getText());
                 Responsable responsable = this.getResponsable();
-                ResponsableDAO.actualizar(responsable, cedula, Conexion.getConnection());
+                ResponsableDAO.actualizar(responsable, cedula, Controlador.getConnection());
                 vista.frmCliente.deshabilitar();
                 vista.frmCliente.clean();
                 this.mostrarMensajes("Cliente actualizado exitosamente", Boolean.TRUE);

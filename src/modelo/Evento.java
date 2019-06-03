@@ -10,30 +10,31 @@ import util.Estado;
  * @author kuroy
  */
 public class Evento{
-    private String nombre;
     private Responsable responsable;
     private String direccion_evento;
     private Fecha fecha_celebracion;
     private Integer monto_abonado;
     private Integer monto_total;
     private Estado estado_pago;
+    private Estado estado;
 	
     public Evento(){
-        this.nombre = "";
         this.responsable = null;
 	this.direccion_evento = null;
 	this.fecha_celebracion = null;
+        this.monto_total = 0;
         this.monto_abonado = 0;
+        this.estado = Estado.ACTIVO;
         this.estado_pago = Estado.NO_PAGO;
     }
 	
-    public Evento(String nombre, Fecha fecha_celebracion, String direccion_evento, Responsable responsable, Integer montoInicial, Integer montoTotal){
-	this.nombre = nombre;
+    public Evento(Fecha fecha_celebracion, String direccion_evento, Responsable responsable, Integer monto_abonado, Integer montoTotal, Estado estado){
         this.responsable = responsable;
 	this.direccion_evento = direccion_evento;
 	this.fecha_celebracion = fecha_celebracion;
-        this.monto_abonado = montoInicial;
+        this.monto_abonado = monto_abonado;
         this.monto_total = montoTotal;
+        this.estado = estado;
         this.actualizarEstado();
     }
     
@@ -44,14 +45,6 @@ public class Evento{
     
     private void actualizarEstado(){
         this.estado_pago = monto_abonado>=monto_total ? Estado.PAGO : Estado.NO_PAGO;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Responsable getResponsable() {
@@ -93,7 +86,15 @@ public class Evento{
     public void setEstado_pago(Estado estado_pago) {
         this.estado_pago = estado_pago;
     }
-    
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
     public Integer getID(){
         return this.getResponsable().getCedula();
     }

@@ -7,7 +7,6 @@ package controlador;
 
 import java.sql.SQLException;
 import modeloDAO.ArticuloAdminDAO;
-import servicio.Conexion;
 import util.TipoArticulo;
 import vista.Vista;
 
@@ -27,14 +26,14 @@ public class ControladorArticulo {
         if(e.getSource() == vista.frmArticulo.btnCargar){
             try{
                 vista.frmArticulo.tableModel.setRowCount(0);
-                this.insertarDatos(ArticuloAdminDAO.getAll(Conexion.getConnection()));
+                this.insertarDatos(ArticuloAdminDAO.getAll(Controlador.getConnection()));
             }catch(SQLException er){
             }
         }
         
         if(e.getSource() == vista.frmArticulo.btnAgregar){
             try{
-                ArticuloAdminDAO.guardar(this.getArticulo(), Conexion.getConnection());
+                ArticuloAdminDAO.guardar(this.getArticulo(), Controlador.getConnection());
                 vista.frmArticulo.clear();               
             }catch(SQLException err){
                 System.out.println(err.getMessage());
@@ -43,7 +42,7 @@ public class ControladorArticulo {
         
         if(e.getSource() == vista.frmArticulo.btnActualizar){
             try{
-                ArticuloAdminDAO.actualizar(this.getArticulo(), Conexion.getConnection());
+                ArticuloAdminDAO.actualizar(this.getArticulo(), Controlador.getConnection());
                 vista.frmArticulo.clear();   
             }catch(SQLException err){
             }
@@ -51,7 +50,7 @@ public class ControladorArticulo {
         
         if(e.getSource() == vista.frmArticulo.btnEliminar){
             try{
-                ArticuloAdminDAO.eliminar(this.getArticulo(), Conexion.getConnection());
+                ArticuloAdminDAO.eliminar(this.getArticulo(), Controlador.getConnection());
                 vista.frmArticulo.clear();
             }catch(SQLException err){
             }
@@ -60,6 +59,9 @@ public class ControladorArticulo {
         if(e.getSource() == vista.frmArticulo.btnFin){
             vista.frmArticulo.clear();
             vista.frmArticulo.tableModel.setRowCount(0);
+            vista.frmAddArticulo.cargarItemOpciones();
+            vista.frmEvento.cargarItemOpciones();
+            vista.frmModEvento.cargarItemOpciones();
             vista.cambiarPanel(vista.frmArticulo, vista.frmInicio);
         }
     }
@@ -96,6 +98,6 @@ public class ControladorArticulo {
         String tipo = vista.frmArticulo.txtActTipo.getText();
         Integer precio = Integer.parseInt(vista.frmArticulo.txtActPrecio.getText());
         
-        return new modelo.ArticuloAdmin(id, TipoArticulo.getTipoArticulo(tipo), nombre, precio);
+        return new modelo.ArticuloAdmin(id, TipoArticulo.getTipoString(tipo), nombre, precio);
     }
 }

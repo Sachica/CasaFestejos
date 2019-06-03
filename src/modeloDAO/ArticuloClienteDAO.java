@@ -56,13 +56,13 @@ public class ArticuloClienteDAO {
             Integer cantidad = rs.getInt("cantidad");
             Integer costo = rs.getInt("costo");
 
-            articulos.add(new ArticuloCliente(id, util.TipoArticulo.getTipoArticulo(tipo), nombre, costo, cantidad));
+            articulos.add(new ArticuloCliente(id, util.TipoArticulo.getTipoString(tipo), nombre, cantidad, costo));
         }
 
         return articulos;
     }
 
-    public static Boolean eliminar(ArticuloCliente articuloCliente, Connection connection) throws SQLException {
+    public static Boolean eliminarTodo(ArticuloCliente articuloCliente, Connection connection) throws SQLException {
         String query = "DELETE FROM articulo_cliente WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
 
@@ -70,10 +70,33 @@ public class ArticuloClienteDAO {
 
         return ps.execute();
     }
+    
+    public static Boolean eliminarPorNombre(ArticuloCliente articuloCliente, Connection connection) throws SQLException {
+        String query = "DELETE FROM articulo_cliente WHERE nombre=?";
+        PreparedStatement ps = connection.prepareStatement(query);
+
+        ps.setString(1, articuloCliente.getNombre());
+
+        return ps.execute();
+    }
 
     public static Boolean addAll(java.util.ArrayList<ArticuloCliente> articulos, Connection connection) throws SQLException {
+        ArticuloClienteDAO.eliminarTodo(articulos.remove(articulos.size()-1), connection);
         for (ArticuloCliente articulo : articulos) {
             ArticuloClienteDAO.guardar(articulo, connection);
+        }
+        return true;
+    }
+    
+    public static Boolean updateAll(java.util.ArrayList<ArticuloCliente> articulos, Connection connection) throws SQLException{
+        String query = "UPDATE articulo_cliente SET cantidad=?, precio=? WHERE id=?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        for(ArticuloCliente articulo : articulos){
+            ps.setInt(1, articulo.getCantidad());
+            ps.setInt(2, articulo.getCosto());
+            ps.setInt(3, articulo.getId());
+            
+            ps.executeUpdate();
         }
         return true;
     }

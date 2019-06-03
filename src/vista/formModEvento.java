@@ -5,8 +5,9 @@
  */
 package vista;
 
+import controlador.Controlador;
 import java.sql.SQLException;
-import servicio.Conexion;
+import util.TipoArticulo;
 
 /**
  *
@@ -15,17 +16,25 @@ import servicio.Conexion;
 public class formModEvento extends javax.swing.JPanel {
     public javax.swing.table.DefaultTableModel tableModelAct;
     public javax.swing.table.DefaultTableModel tableModelArt;
+    public modelo.Evento eventoActual;
+    public java.util.ArrayList<modelo.ArticuloCliente> articulos;
+    public java.util.ArrayList<modelo.Actividad> actividades;
     /**
      * Creates new form formModEvento2
      */
     public formModEvento() {
         initComponents();
         this.cmbMontaje.addItem("");
-        tableModelAct = (javax.swing.table.DefaultTableModel)this.tableActividades.getModel();
-        tableModelArt = (javax.swing.table.DefaultTableModel)this.tableArticulo.getModel();
+        this.eventoActual = new modelo.Evento();
+        this.articulos = new java.util.ArrayList<>();
+        this.actividades = new java.util.ArrayList<>();
+        this.tableModelAct = (javax.swing.table.DefaultTableModel)this.tableActividades.getModel();
+        this.tableModelArt = (javax.swing.table.DefaultTableModel)this.tableArticulo.getModel();
     }
 
-    public void initListener(java.awt.event.ActionListener e){
+    public void initListener(java.awt.event.ActionListener e, javax.swing.event.TableModelListener t){
+        this.tableModelArt.addTableModelListener(t);
+        this.tableModelAct.addTableModelListener(t);
         this.cmbMontaje.addActionListener(e);
         this.btnAddAct.addActionListener(e);
         this.btnAddArt.addActionListener(e);
@@ -34,72 +43,141 @@ public class formModEvento extends javax.swing.JPanel {
         this.btnDelArt.addActionListener(e);
         this.btnCancelar.addActionListener(e);
         this.btnGuardar.addActionListener(e);
+        this.btnVolver.addActionListener(e);
     }
     
     public void clear(){
         this.tableModelAct.setRowCount(0);
-        this.tableModelAct.setRowCount(0);
+        this.tableModelArt.setRowCount(0);
+        this.articulos.clear();
+        this.actividades.clear();
+        this.eventoActual = new modelo.Evento();
         this.txtAbonar.setText("");
         this.txtDoc.setText("");
         this.txtHoraInicio.setText("");
-        this.txtMontoAbonado.setText("");
-        this.txtPrecioTotal.setText("");
+        this.lblMontoAbonado.setText("");
+        this.lblPrecioTotal.setText("");
+        this.txtAbonar.setText("");
+        this.txtEstado.setText("");
+        this.txtFecha.setText("");
+        this.txtDir.setText("");
+        this.lblMontoFalt.setText("");
+        this.cmbMontaje.setSelectedIndex(0);
+        this.lblPrecioMontaje.setText("");
+        this.txtDoc.setEditable(Boolean.TRUE);
     }
     
     private void removeItems(){
         for(Integer i=this.cmbMontaje.getItemCount()-1; i>0; i--){
             this.cmbMontaje.removeItemAt(i);
         }
-        this.tableModelAct.setRowCount(0);
-        this.tableModelArt.setRowCount(0);
+        this.resetTablas();
     }
     
-    public void addAllArticulo(java.util.ArrayList<modelo.ArticuloCliente> articulos){
+    //Base de datos
+    private void addAllArticulo(java.util.ArrayList<modelo.ArticuloCliente> articulos){
+        this.articulos = articulos;
         for(modelo.ArticuloCliente articulo : articulos){
             if(articulo.getTipoArticulo().equals(util.TipoArticulo.MONTAJE)){
                 this.cmbMontaje.setSelectedIndex(this.index(articulo.getNombre()));
-                try{
-                    this.lblPrecioMontaje.setText(this.getPrecio(articulo.getNombre()));
-                }catch(SQLException err){
-                }
+                this.lblPrecioMontaje.setText(""+articulo.getCosto());
+            }else{
+                Integer precio = this.getPrecio(articulo.getNombre());
+                articulo.setCosto(precio);
+                Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
+                this.tableModelArt.addRow(data);
             }
-            Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
-            this.tableModelArt.addRow(data);
         }
     }
     
-    public void addAllActividad(java.util.ArrayList<modelo.Actividad> actividades){
+    private void addAllActividad(java.util.ArrayList<modelo.Actividad> actividades){
+        this.actividades = actividades;
         for(modelo.Actividad actividad : actividades){
-            Object data[] = {actividad.getNombre(), actividad.getDescripcion(), actividad.getHorario().toString()};
+            Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
             this.tableModelAct.addRow(data);
         }
     }
+    //
     
+    //frmAddArticulo
+    public void addArticulosTabla(Object obj){
+        java.util.ArrayList<modelo.ArticuloCliente> articulosNuevo = (java.util.ArrayList<modelo.ArticuloCliente>)obj;
+        for(modelo.ArticuloCliente articulo : articulosNuevo){
+            if(!this.articuloExistenteTabla(articulo)){
+                this.articulos.add(articulo);
+                Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
+                this.tableModelArt.addRow(data);
+                this.precioTotal();
+            }           
+        }
+    }
+    
+    public Boolean addActividadesTable(modelo.Actividad actividad){
+        if(!actividadExistente(actividad)){
+            this.actividades.add(actividad);
+            Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
+            this.tableModelAct.addRow(data);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private Boolean articuloExistenteTabla(modelo.ArticuloCliente articulo){
+        Integer row = this.tableModelArt.getRowCount();
+        for(Integer i=0; i<row; i++){
+            String nombre = this.tableModelArt.getValueAt(i, 0).toString();
+            if(nombre.equals(articulo.getNombre())){            
+                Integer value = Integer.parseInt(this.tableModelArt.getValueAt(i, 1).toString());
+                this.articulos.get(i).aumentarCantidad(value);
+                this.precioTotal();
+                articulo.aumentarCantidad(value);
+                this.tableModelArt.setValueAt(articulo.getCantidad(), i, 1);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public Boolean actividadExistente(modelo.Actividad actividad){
+        for(modelo.Actividad act : this.actividades){
+            if(act.equals(actividad)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    //
+    
+    //Base de datos para montaje
     public void addArticulo(modelo.ArticuloAdmin articulo){
         if(articulo.getTipo().equals(util.TipoArticulo.MONTAJE)){
             this.cmbMontaje.addItem(articulo.getNombre());
         }
     }
     
-    public void cargar(){
+    public void cargarItemOpciones(){
         try{
             this.removeItems();
-            java.util.ArrayList<modelo.ArticuloAdmin> articulos = modeloDAO.ArticuloAdminDAO.getAll(Conexion.getConnection());
-            for(modelo.ArticuloAdmin articulo : articulos){
+            java.util.ArrayList<modelo.ArticuloAdmin> articulosOpciones = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
+            for(modelo.ArticuloAdmin articulo : articulosOpciones){
                 this.addArticulo(articulo);
             }
         }catch(SQLException e){
         }
     }
+    //
     
-    private String getPrecio(String name) throws SQLException{
+    private Integer getPrecio(String name){
         modelo.ArticuloAdmin articulo = new modelo.ArticuloAdmin();
         articulo.setNombre(name);
-        articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Conexion.getConnection());
-        if(articulo != null){
-            return ""+articulo.getPrecio();
+        try{
+            articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
+        }catch(SQLException e){
         }
-        return "";
+        return articulo!=null ? articulo.getPrecio() : -1;
     }
     
     private Integer index(String name){
@@ -111,6 +189,106 @@ public class formModEvento extends javax.swing.JPanel {
         return -1;
     }
     
+    private void resetTablas(){
+        this.tableModelAct.setRowCount(0);
+        this.tableModelArt.setRowCount(0);
+    }
+    
+    public void cargarEventoBaseDeDatos() throws SQLException, NumberFormatException, NullPointerException {
+        modelo.Responsable responsable = new modelo.Responsable();
+        responsable.setCedula(Integer.parseInt(this.txtDoc.getText()));
+        this.eventoActual.setResponsable(responsable);
+        this.eventoActual = modeloDAO.EventoDAO.buscar(Controlador.getConnection(), this.eventoActual);
+        
+        this.txtFecha.setText(this.eventoActual.getFecha_celebracion().toString());
+        this.txtHoraInicio.setText(this.eventoActual.getFecha_celebracion().getHora().toString());
+        this.lblMontoAbonado.setText(""+this.eventoActual.getMonto_abonado());
+        this.lblPrecioTotal.setText(""+this.eventoActual.getMonto_total());
+        this.lblMontoFalt.setText(" $   "+(this.eventoActual.getMonto_total()-this.eventoActual.getMonto_abonado()));
+        if(this.eventoActual.getEstado().equals(util.Estado.ACTIVO)){
+            this.btnCancelar.setText("Cancelar evento");
+        }else{
+            this.btnCancelar.setText("Activar evento");
+        }
+        this.txtEstado.setText(""+this.eventoActual.getEstado().toString());
+        this.txtDir.setText(eventoActual.getDireccion_evento());
+    }
+    
+    public void cargarTablaBaseDeDatos() throws SQLException, NumberFormatException, NullPointerException {
+        this.resetTablas();
+        
+        modelo.ArticuloCliente articuloCliente = new modelo.ArticuloCliente();
+        Integer cedula = Integer.parseInt(this.txtDoc.getText());
+        articuloCliente.setId(cedula);
+        this.addAllArticulo(modeloDAO.ArticuloClienteDAO.buscar(articuloCliente, Controlador.getConnection()));
+        
+        modelo.Actividad actividad = new modelo.Actividad();
+        actividad.setId(cedula);
+        this.addAllActividad(modeloDAO.ActividadDAO.buscar(actividad, Controlador.getConnection()));
+        this.precioTotal();
+    }
+    
+    public void cargarTablaActuales() throws SQLException, NumberFormatException, NullPointerException {
+        this.resetTablas();
+        
+        for(modelo.ArticuloCliente articulo : this.articulos){
+            if(articulo.getTipoArticulo().equals(util.TipoArticulo.MONTAJE)){
+                this.cmbMontaje.setSelectedItem(this.index(articulo.getNombre()));
+                this.lblPrecioMontaje.setText(""+articulo.getCosto());
+            }else{
+            Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
+            this.tableModelArt.addRow(data);
+            }
+        }
+        
+        for(modelo.Actividad actividad : this.actividades){
+            Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
+            this.tableModelAct.addRow(data);
+        }
+    }
+    
+    public void actualizarArticulo(Integer row, Integer value){
+        this.articulos.get(row).setCantidad(value);
+    }
+    
+    public void actualizarActividad(Integer row, Integer column, String value){
+        if(column==0){
+            System.out.println(value);
+            this.actividades.get(row).setNombre(value);
+        }else{
+            this.actividades.get(row).setDescripcion(value);
+        }
+    }
+    
+    public Integer precioTotal(){
+        Integer precioArticulos = 0;
+        for(modelo.ArticuloCliente articulo : this.articulos){
+            precioArticulos += articulo.getCosto();
+        }
+        this.lblPrecioTotal.setText(""+precioArticulos);
+        this.lblMontoFalt.setText(" $   "+(precioArticulos-this.eventoActual.getMonto_abonado()));
+        if((precioArticulos-this.eventoActual.getMonto_abonado())<=0){
+            this.lblMontoFalt.setText(" $   0");
+            this.lblAbonar.setText("Cambio");
+            this.txtAbonar.setText(""+(precioArticulos-this.eventoActual.getMonto_abonado())*-1);
+        }else{
+            this.lblAbonar.setText("Abonar");
+            this.txtAbonar.setText("");
+        }
+        return precioArticulos;
+    }
+    
+    public void cambiarMontaje(modelo.ArticuloCliente articuloMontaje){
+        for(modelo.ArticuloCliente articulo : this.articulos){
+            if(articulo.getTipoArticulo().equals(articuloMontaje.getTipoArticulo())){
+                articulo.setNombre(articuloMontaje.getNombre());
+                articulo.setCosto(articuloMontaje.getCosto());
+                return;
+            }
+        }
+        
+        this.articulos.add(articuloMontaje);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,37 +307,46 @@ public class formModEvento extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        cmbMontaje = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActividades = new javax.swing.JTable();
         txtHoraInicio = new javax.swing.JTextField();
-        txtMontoAbonado = new javax.swing.JTextField();
         btnDelArt = new javax.swing.JButton();
         btnAddArt = new javax.swing.JButton();
         btnAddAct = new javax.swing.JButton();
         btnDelAct = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        lblPrecioMontaje = new javax.swing.JLabel();
-        dateChooser = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         txtAbonar = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        lblAbonar = new javax.swing.JLabel();
         lblMontoFalt = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtPrecioTotal = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblPrecioMontaje = new javax.swing.JLabel();
+        cmbMontaje = new javax.swing.JComboBox<>();
+        btnVolver = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtEstado = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtDir = new javax.swing.JTextField();
+        lblPrecioTotal = new javax.swing.JLabel();
+        lblMontoAbonado = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setMaximumSize(new java.awt.Dimension(738, 654));
+        setForeground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(738, 714));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Articulos"));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        tableArticulo.setBackground(new java.awt.Color(255, 255, 255));
-        tableArticulo.setForeground(new java.awt.Color(0, 0, 0));
+        tableArticulo.setBackground(new java.awt.Color(0, 0, 0));
+        tableArticulo.setForeground(new java.awt.Color(255, 255, 255));
         tableArticulo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -167,8 +354,21 @@ public class formModEvento extends javax.swing.JPanel {
             new String [] {
                 "Nombre", "Cantidad", "Precio"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableArticulo);
+        if (tableArticulo.getColumnModel().getColumnCount() > 0) {
+            tableArticulo.getColumnModel().getColumn(0).setResizable(false);
+            tableArticulo.getColumnModel().getColumn(1).setResizable(false);
+            tableArticulo.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -203,20 +403,11 @@ public class formModEvento extends javax.swing.JPanel {
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Fecha de celebracion");
 
-        jLabel2.setForeground(java.awt.Color.white);
-        jLabel2.setText("Montaje");
-
-        cmbMontaje.setBackground(new java.awt.Color(255, 255, 255));
-        cmbMontaje.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel3.setForeground(java.awt.Color.white);
-        jLabel3.setText("Precio         $ ");
-
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividades"));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        tableActividades.setBackground(new java.awt.Color(255, 255, 255));
-        tableActividades.setForeground(new java.awt.Color(0, 0, 0));
+        tableActividades.setBackground(new java.awt.Color(0, 0, 0));
+        tableActividades.setForeground(new java.awt.Color(255, 255, 255));
         tableActividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -224,7 +415,15 @@ public class formModEvento extends javax.swing.JPanel {
             new String [] {
                 "Nombre", "Hora inicio", "Descripcion"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tableActividades);
         if (tableActividades.getColumnModel().getColumnCount() > 0) {
             tableActividades.getColumnModel().getColumn(0).setResizable(false);
@@ -238,7 +437,7 @@ public class formModEvento extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -251,10 +450,6 @@ public class formModEvento extends javax.swing.JPanel {
 
         txtHoraInicio.setBackground(new java.awt.Color(0, 0, 51));
         txtHoraInicio.setForeground(new java.awt.Color(255, 255, 255));
-
-        txtMontoAbonado.setEditable(false);
-        txtMontoAbonado.setBackground(new java.awt.Color(0, 0, 51));
-        txtMontoAbonado.setForeground(new java.awt.Color(255, 255, 255));
 
         btnDelArt.setBackground(new java.awt.Color(255, 255, 255));
         btnDelArt.setForeground(new java.awt.Color(0, 0, 0));
@@ -278,9 +473,7 @@ public class formModEvento extends javax.swing.JPanel {
 
         btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
         btnCancelar.setForeground(new java.awt.Color(0, 0, 0));
-        btnCancelar.setText("Cancelar");
-
-        lblPrecioMontaje.setForeground(java.awt.Color.white);
+        btnCancelar.setText("Cancelar  evento");
 
         jLabel7.setForeground(java.awt.Color.white);
         jLabel7.setText("Monto faltante");
@@ -288,17 +481,88 @@ public class formModEvento extends javax.swing.JPanel {
         txtAbonar.setBackground(new java.awt.Color(0, 0, 51));
         txtAbonar.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setForeground(java.awt.Color.white);
-        jLabel8.setText("Abonar");
+        lblAbonar.setForeground(java.awt.Color.white);
+        lblAbonar.setText("Abonar");
 
         lblMontoFalt.setForeground(java.awt.Color.white);
-        lblMontoFalt.setText("$");
+        lblMontoFalt.setText(" $");
 
         jLabel9.setForeground(java.awt.Color.white);
         jLabel9.setText("Precio total");
 
-        txtPrecioTotal.setBackground(new java.awt.Color(0, 0, 51));
-        txtPrecioTotal.setForeground(new java.awt.Color(255, 255, 255));
+        txtFecha.setBackground(new java.awt.Color(0, 0, 51));
+        txtFecha.setForeground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cambiar montaje", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("Montaje");
+
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setText("Precio         $ ");
+
+        lblPrecioMontaje.setForeground(java.awt.Color.white);
+
+        cmbMontaje.setBackground(new java.awt.Color(255, 255, 255));
+        cmbMontaje.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbMontaje, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnVolver.setBackground(new java.awt.Color(255, 255, 255));
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setText("Volver");
+
+        jLabel10.setForeground(java.awt.Color.white);
+        jLabel10.setText("Estado");
+
+        txtEstado.setEditable(false);
+        txtEstado.setBackground(new java.awt.Color(0, 0, 51));
+        txtEstado.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel11.setForeground(java.awt.Color.white);
+        jLabel11.setText("Direccion");
+
+        txtDir.setBackground(new java.awt.Color(0, 0, 51));
+        txtDir.setForeground(new java.awt.Color(255, 255, 255));
+
+        lblPrecioTotal.setForeground(new java.awt.Color(255, 255, 255));
+
+        lblMontoAbonado.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("$");
+
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("$");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -308,55 +572,57 @@ public class formModEvento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnBus))
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(btnAddArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnDelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(btnAddAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnDelAct, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
+                                    .addComponent(lblAbonar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtHoraInicio)
-                                    .addComponent(txtMontoAbonado)
-                                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtAbonar)
-                                    .addComponent(lblMontoFalt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(42, 42, 42)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lblMontoFalt, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                    .addComponent(txtFecha)
+                                    .addComponent(txtDir)
+                                    .addComponent(txtEstado)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblPrecioTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lblMontoAbonado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbMontaje, 0, 139, Short.MAX_VALUE)
-                                    .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(txtDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBus))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAddAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDelAct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDelArt, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(btnAddArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(216, 216, 216)
+                        .addGap(158, 158, 158)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addComponent(btnCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVolver)))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,42 +654,48 @@ public class formModEvento extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                            .addComponent(txtFecha))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                            .addComponent(txtHoraInicio))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                            .addComponent(txtDir))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtHoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPrecioMontaje, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPrecioTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                        .addGap(4, 4, 4)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMontoAbonado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblMontoAbonado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblMontoFalt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAbonar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblAbonar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtAbonar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnVolver))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -436,29 +708,37 @@ public class formModEvento extends javax.swing.JPanel {
     public javax.swing.JButton btnDelAct;
     public javax.swing.JButton btnDelArt;
     public javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnVolver;
     public javax.swing.JComboBox<String> cmbMontaje;
-    public com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAbonar;
+    public javax.swing.JLabel lblMontoAbonado;
     public javax.swing.JLabel lblMontoFalt;
     public javax.swing.JLabel lblPrecioMontaje;
-    private javax.swing.JTable tableActividades;
-    private javax.swing.JTable tableArticulo;
+    public javax.swing.JLabel lblPrecioTotal;
+    public javax.swing.JTable tableActividades;
+    public javax.swing.JTable tableArticulo;
     public javax.swing.JTextField txtAbonar;
+    public javax.swing.JTextField txtDir;
     public javax.swing.JTextField txtDoc;
+    public javax.swing.JTextField txtEstado;
+    public javax.swing.JTextField txtFecha;
     public javax.swing.JTextField txtHoraInicio;
-    public javax.swing.JTextField txtMontoAbonado;
-    public javax.swing.JTextField txtPrecioTotal;
     // End of variables declaration//GEN-END:variables
 }

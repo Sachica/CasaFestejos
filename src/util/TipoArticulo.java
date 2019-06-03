@@ -5,6 +5,8 @@
  */
 package util;
 
+import controlador.Controlador;
+
 /**
  *
  * @author kuroy
@@ -16,7 +18,7 @@ public enum TipoArticulo {
     BEBIDA,
     PLATILLO;
     
-    public static TipoArticulo getTipoArticulo(String tipo){
+    public static TipoArticulo getTipoString(String tipo){
         switch(tipo){
             case "SILLA" : return SILLA;
             case "MESA" : return MESA;
@@ -25,5 +27,20 @@ public enum TipoArticulo {
             case "PLATILLO" : return PLATILLO;
             default : return null;
         }       
+    }
+    
+    public static TipoArticulo getTipoArticulo(String name){
+        java.util.ArrayList<modelo.ArticuloAdmin> articulos = new java.util.ArrayList<>();
+        try{
+            articulos = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
+        }catch(java.sql.SQLException e){
+        }
+        for(modelo.ArticuloAdmin articulo : articulos){
+            if(articulo.getNombre().equals(name)){
+                return articulo.getTipo();
+            }
+        }
+        
+        return null;
     }
 }
