@@ -79,7 +79,7 @@ public class ControladorModEvento {
                 modeloDAO.ArticuloClienteDAO.addAll(this.agregarSeguroArticulo(vista.frmModEvento.articulos), Controlador.getConnection());
                 modeloDAO.ActividadDAO.addAll(this.agregarSeguroActividad(vista.frmModEvento.actividades), Controlador.getConnection());
                 modelo.Evento evento = this.getEvento();
-                if (!vista.frmModEvento.txtAbonar.getText().trim().isEmpty()) {
+                if (!vista.frmModEvento.txtAbonar.getText().trim().isEmpty() && !vista.frmModEvento.lblAbonar.getText().equals("Cambio")) {
                     Integer value = Integer.parseInt(vista.frmModEvento.txtAbonar.getText());
                     evento.abonar(value);
                 }

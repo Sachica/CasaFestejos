@@ -7,6 +7,7 @@ package controlador;
 
 import java.sql.SQLException;
 import modelo.*;
+import util.SistemaImagen;
 import vista.Vista;
 
 /**
@@ -101,38 +102,50 @@ public class ControladorAddArticulo {
         }
 
         if (e.getSource() == vista.frmAddArticulo.cmbMesa) {
-            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbMesa.getSelectedItem().toString());
+            String nombreArticulo = vista.frmAddArticulo.cmbMesa.getSelectedItem().toString();
+            Integer precio = articuloPrecio(nombreArticulo);
             if (precio != -1) {
+                vista.frmAddArticulo.lblMesa.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblMesa.getMaximumSize()));
                 vista.frmAddArticulo.lblPrecioMesa.setText("" + precio);
             } else {
                 vista.frmAddArticulo.lblPrecioMesa.setText("");
+                vista.frmAddArticulo.lblMesa.setIcon(null);
             }
         }
 
         if (e.getSource() == vista.frmAddArticulo.cmbSilla) {
-            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbSilla.getSelectedItem().toString());
+            String nombreArticulo = vista.frmAddArticulo.cmbSilla.getSelectedItem().toString();
+            Integer precio = articuloPrecio(nombreArticulo);
             if (precio != -1) {
+                vista.frmAddArticulo.lblSilla.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblSilla.getMaximumSize()));
                 vista.frmAddArticulo.lblPrecioSilla.setText("" + precio);
             } else {
                 vista.frmAddArticulo.lblPrecioSilla.setText("");
+                vista.frmAddArticulo.lblSilla.setIcon(null);
             }
         }
 
         if (e.getSource() == vista.frmAddArticulo.cmbBebidas) {
-            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString());
+            String nombreArticulo = vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString();
+            Integer precio = articuloPrecio(nombreArticulo);
             if (precio != -1) {
+                vista.frmAddArticulo.lblBebida.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblBebida.getMaximumSize()));                
                 vista.frmAddArticulo.lblPrecioBebida.setText("" + precio);
             } else {
                 vista.frmAddArticulo.lblPrecioBebida.setText("");
+                vista.frmAddArticulo.lblBebida.setIcon(null);
             }
         }
 
         if (e.getSource() == vista.frmAddArticulo.cmbComidas) {
-            Integer precio = articuloPrecio(vista.frmAddArticulo.cmbComidas.getSelectedItem().toString());
+            String  nombreArticulo = vista.frmAddArticulo.cmbComidas.getSelectedItem().toString();
+            Integer precio = articuloPrecio(nombreArticulo);
             if (precio != -1) {
+                vista.frmAddArticulo.lblComida.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblComida.getMaximumSize()));                
                 vista.frmAddArticulo.lblPrecioComida.setText("" + precio);
             } else {
                 vista.frmAddArticulo.lblPrecioComida.setText("");
+                vista.frmAddArticulo.lblComida.setIcon(null);
             }
         }
     }

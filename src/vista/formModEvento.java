@@ -727,7 +727,7 @@ public class formModEvento extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblAbonar;
+    public javax.swing.JLabel lblAbonar;
     public javax.swing.JLabel lblMontoAbonado;
     public javax.swing.JLabel lblMontoFalt;
     public javax.swing.JLabel lblPrecioMontaje;
