@@ -80,10 +80,12 @@ public class Controlador implements ActionListener, MouseListener, TableModelLis
 
     @Override
     public void mouseEntered(MouseEvent me) {
+        controladorArticulo.mouseEntered(me);
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
+        controladorArticulo.mouseExited(me);
     }
     
     public static void main(String[] args){

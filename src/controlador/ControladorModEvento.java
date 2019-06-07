@@ -7,6 +7,9 @@ package controlador;
 
 import java.sql.SQLException;
 import javax.swing.event.TableModelEvent;
+import modelo.*;
+import modeloDAO.*;
+import java.util.ArrayList;
 import vista.Vista;
 
 /**
@@ -63,11 +66,11 @@ public class ControladorModEvento {
         if (e.getSource() == vista.frmModEvento.cmbMontaje) {
             try {
                 if (!vista.frmModEvento.cmbMontaje.getSelectedItem().equals("")) {
-                    Integer precio = Integer.parseInt(this.getPrecio(vista.frmModEvento.cmbMontaje.getSelectedItem().toString()));
-                    vista.frmModEvento.lblPrecioMontaje.setText("" + precio);
+                    Integer costo = Integer.parseInt(this.getPrecio(vista.frmModEvento.cmbMontaje.getSelectedItem().toString()));
+                    vista.frmModEvento.lblPrecioMontaje.setText("" + costo);
                     String nombre = vista.frmModEvento.cmbMontaje.getSelectedItem().toString();
                     Integer id = Integer.parseInt(vista.frmModEvento.txtDoc.getText());
-                    vista.frmModEvento.cambiarMontaje(new modelo.ArticuloCliente(id, util.TipoArticulo.MONTAJE, nombre, 1, precio));
+                    vista.frmModEvento.cambiarMontaje(new Articulo(id, nombre, 1, costo, TipoArticulo.MONTAJE));
                     vista.frmModEvento.precioTotal();
                 }
             } catch (SQLException err) {
@@ -76,14 +79,14 @@ public class ControladorModEvento {
 
         if (e.getSource() == vista.frmModEvento.btnGuardar) {
             try {
-                modeloDAO.ArticuloClienteDAO.addAll(this.agregarSeguroArticulo(vista.frmModEvento.articulos), Controlador.getConnection());
-                modeloDAO.ActividadDAO.addAll(this.agregarSeguroActividad(vista.frmModEvento.actividades), Controlador.getConnection());
-                modelo.Evento evento = this.getEvento();
+                ArticuloClienteDAO.addAll(this.agregarSeguroArticulo(vista.frmModEvento.articulos), Controlador.getConnection());
+                ActividadDAO.addAll(this.agregarSeguroActividad(vista.frmModEvento.actividades), Controlador.getConnection());
+                Evento evento = this.getEvento();
                 if (!vista.frmModEvento.txtAbonar.getText().trim().isEmpty() && !vista.frmModEvento.lblAbonar.getText().equals("Cambio")) {
                     Integer value = Integer.parseInt(vista.frmModEvento.txtAbonar.getText());
                     evento.abonar(value);
                 }
-                modeloDAO.EventoDAO.actualizar(Controlador.getConnection(), evento);
+                EventoDAO.actualizar(Controlador.getConnection(), evento);
                 vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
                 vista.frmModEvento.clear();
             } catch (SQLException err) {
@@ -92,10 +95,10 @@ public class ControladorModEvento {
         }
 
         if (e.getActionCommand().equals("Cancelar evento")) {
-            modelo.Evento evento = this.getEvento();
-            evento.setEstado(util.Estado.CANCELADO);
+            Evento evento = this.getEvento();
+            evento.setEstado(modelo.Estado.CANCELADO);
             try {
-                modeloDAO.EventoDAO.actualizar(Controlador.getConnection(), evento);
+                EventoDAO.actualizar(Controlador.getConnection(), evento);
             } catch (SQLException err) {
             }
             vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
@@ -104,10 +107,10 @@ public class ControladorModEvento {
         }
 
         if (e.getActionCommand().equals("Activar evento")) {
-            modelo.Evento evento = this.getEvento();
-            evento.setEstado(util.Estado.ACTIVO);
+            Evento evento = this.getEvento();
+            evento.setEstado(modelo.Estado.ACTIVO);
             try {
-                modeloDAO.EventoDAO.actualizar(Controlador.getConnection(), evento);
+                EventoDAO.actualizar(Controlador.getConnection(), evento);
             } catch (SQLException err) {
             }
             vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
@@ -180,18 +183,18 @@ public class ControladorModEvento {
         }
     }
 
-    private modelo.Evento getEvento() {
-        modelo.Fecha fecha_celebracion = this.getFecha();
+    private Evento getEvento() {
+        Fecha fecha_celebracion = this.getFecha();
         Integer monto_abonado = 0;
         monto_abonado = Integer.parseInt(vista.frmModEvento.lblMontoAbonado.getText());
         Integer monto_total = Integer.parseInt(vista.frmModEvento.lblPrecioTotal.getText());
-        util.Estado estado = util.Estado.getEstado(vista.frmModEvento.txtEstado.getText());
+        modelo.Estado estado = modelo.Estado.getEstado(vista.frmModEvento.txtEstado.getText());
         String direccion = vista.frmModEvento.txtDir.getText();
 
-        return new modelo.Evento(fecha_celebracion, direccion, this.getResponsable(), monto_abonado, monto_total, estado);
+        return new Evento(fecha_celebracion, direccion, this.getResponsable(), monto_abonado, monto_total, estado);
     }
 
-    private modelo.Fecha getFecha() throws NumberFormatException, ArrayIndexOutOfBoundsException {
+    private Fecha getFecha() throws NumberFormatException, ArrayIndexOutOfBoundsException {
         String fecha[] = vista.frmModEvento.txtFecha.getText().split("/");
         Integer dia = Integer.parseInt(fecha[0]);
         Integer mes = Integer.parseInt(fecha[1]);
@@ -200,15 +203,15 @@ public class ControladorModEvento {
         Integer hora = Integer.parseInt(horario[0]);
         Integer minuto = Integer.parseInt(horario[1]);
         Integer segundo = Integer.parseInt(horario[2]);
-        return new modelo.Fecha(año, mes, dia, new modelo.Hora(hora, minuto, segundo));
+        return new Fecha(año, mes, dia, new Hora(hora, minuto, segundo));
     }
 
-    private modelo.Responsable getResponsable() {
-        modelo.Responsable r = new modelo.Responsable();
+    private Responsable getResponsable() {
+        Responsable responsable = new Responsable();
         Integer doc = Integer.parseInt(vista.frmModEvento.txtDoc.getText());
-        r.setCedula(doc);
+        responsable.setCedula(doc);
         try {
-            return modeloDAO.ResponsableDAO.buscar(r, Controlador.getConnection());
+            return ResponsableDAO.buscar(responsable, Controlador.getConnection());
         } catch (SQLException e) {
         }
 
@@ -216,24 +219,24 @@ public class ControladorModEvento {
     }
 
     private String getPrecio(String name) throws SQLException {
-        modelo.ArticuloAdmin articulo = new modelo.ArticuloAdmin();
+        Articulo articulo = new Articulo();
         articulo.setNombre(name);
-        articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
+        articulo = ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
         if (articulo != null) {
-            return "" + articulo.getPrecio();
+            return "" + articulo.getCosto();
         }
         return "";
     }
 
-    private java.util.ArrayList<modelo.ArticuloCliente> agregarSeguroArticulo(java.util.ArrayList<modelo.ArticuloCliente> articulos) {
-        modelo.ArticuloCliente articulo = new modelo.ArticuloCliente();
+    private ArrayList<Articulo> agregarSeguroArticulo(ArrayList<Articulo> articulos) {
+        Articulo articulo = new Articulo();
         articulo.setId(Integer.parseInt(vista.frmModEvento.txtDoc.getText()));
         articulos.add(articulo);
         return articulos;
     }
 
-    private java.util.ArrayList<modelo.Actividad> agregarSeguroActividad(java.util.ArrayList<modelo.Actividad> actividades) {
-        modelo.Actividad actividad = new modelo.Actividad();
+    private ArrayList<Actividad> agregarSeguroActividad(ArrayList<Actividad> actividades) {
+        Actividad actividad = new Actividad();
         actividad.setId(Integer.parseInt(vista.frmModEvento.txtDoc.getText()));
         actividades.add(actividad);
         return actividades;

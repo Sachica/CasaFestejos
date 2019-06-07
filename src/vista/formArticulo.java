@@ -5,6 +5,7 @@
  */
 package vista;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
@@ -34,8 +35,8 @@ public class formArticulo extends javax.swing.JPanel {
     }
     
     public void cargarImagen(String path){
-        java.awt.Dimension dim = lblImagen.getMaximumSize();
-        lblImagen.setIcon(new ImageIcon(new ImageIcon(path).getImage().getScaledInstance((int)dim.getWidth(), (int)dim.getHeight(), Image.SCALE_DEFAULT)));
+        Dimension dim = lblImagen.getMaximumSize();
+        lblImagen.setIcon(new ImageIcon(new ImageIcon(path).getImage().getScaledInstance((int)dim.getWidth()+20, (int)dim.getHeight(), Image.SCALE_DEFAULT)));
     }
     
     public void clear(){
@@ -59,7 +60,6 @@ public class formArticulo extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblArt = new javax.swing.JTable();
         btnCargar = new javax.swing.JButton();
-        btnFin = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -73,9 +73,11 @@ public class formArticulo extends javax.swing.JPanel {
         btnEliminar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         lblImagen = new javax.swing.JLabel();
+        btnFin = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setMaximumSize(new java.awt.Dimension(821, 427));
+        setFocusable(false);
+        setMaximumSize(new java.awt.Dimension(821, 492));
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Articulos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -96,10 +98,7 @@ public class formArticulo extends javax.swing.JPanel {
         btnCargar.setBackground(new java.awt.Color(255, 255, 255));
         btnCargar.setForeground(new java.awt.Color(0, 0, 0));
         btnCargar.setText("Cargar");
-
-        btnFin.setBackground(new java.awt.Color(255, 255, 255));
-        btnFin.setForeground(new java.awt.Color(0, 0, 0));
-        btnFin.setText("Finalizar");
+        btnCargar.setFocusable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,8 +110,6 @@ public class formArticulo extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCargar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFin)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -120,9 +117,7 @@ public class formArticulo extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCargar)
-                    .addComponent(btnFin))
+                .addComponent(btnCargar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -146,6 +141,7 @@ public class formArticulo extends javax.swing.JPanel {
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizar.setText("Actualizar");
+        btnActualizar.setFocusable(false);
 
         txtActTipo.setBackground(new java.awt.Color(0, 0, 51));
         txtActTipo.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,26 +158,35 @@ public class formArticulo extends javax.swing.JPanel {
         btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
         btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminar.setText("Eliminar");
+        btnEliminar.setFocusable(false);
 
         btnAgregar.setBackground(new java.awt.Color(255, 255, 255));
         btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setText("Agregar Articulo");
+        btnAgregar.setFocusable(false);
 
+        lblImagen.setBackground(new java.awt.Color(51, 51, 51));
         lblImagen.setForeground(new java.awt.Color(255, 255, 255));
         lblImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImagen.setText("+");
         lblImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 51)));
-        lblImagen.setMaximumSize(new java.awt.Dimension(258, 126));
-        lblImagen.setMinimumSize(new java.awt.Dimension(258, 126));
+        lblImagen.setMaximumSize(new java.awt.Dimension(258, 192));
+        lblImagen.setMinimumSize(new java.awt.Dimension(258, 192));
+        lblImagen.setOpaque(true);
+
+        btnFin.setBackground(new java.awt.Color(255, 255, 255));
+        btnFin.setForeground(new java.awt.Color(0, 0, 0));
+        btnFin.setText("Finalizar");
+        btnFin.setFocusable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,24 +207,23 @@ public class formArticulo extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
+                        .addGap(67, 67, 67)
                         .addComponent(btnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)))
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFin)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(28, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -235,11 +239,13 @@ public class formArticulo extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtActPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnActualizar)
                     .addComponent(btnEliminar)
-                    .addComponent(btnAgregar))
+                    .addComponent(btnAgregar)
+                    .addComponent(btnFin))
                 .addContainerGap())
         );
 

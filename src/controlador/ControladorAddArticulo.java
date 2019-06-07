@@ -6,7 +6,9 @@
 package controlador;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import modelo.*;
+import modeloDAO.ArticuloAdminDAO;
 import util.SistemaImagen;
 import vista.Vista;
 
@@ -16,11 +18,11 @@ import vista.Vista;
  */
 public class ControladorAddArticulo {
     private Vista vista;
-    private java.util.ArrayList<ArticuloCliente> articulos;
+    private ArrayList<Articulo> articulos;
 
     public ControladorAddArticulo(Vista vista) {
         this.vista = vista;
-        this.articulos = new java.util.ArrayList<>();
+        this.articulos = new ArrayList<>();
     }
 
     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -43,8 +45,9 @@ public class ControladorAddArticulo {
                     Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbSilla.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantSilla.getText());
+                    Integer costo = this.articuloPrecio(nombre);
                     this.resetSilla();
-                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.SILLA, nombre, cant, this.articuloPrecio(nombre)));
+                    this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.SILLA));
                 } else {
                     //mostrarMensaje
                 }
@@ -59,8 +62,9 @@ public class ControladorAddArticulo {
                     Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbMesa.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantMesa.getText());
+                    Integer costo = this.articuloPrecio(nombre);
                     this.resetMesa();
-                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.MESA, nombre, cant, this.articuloPrecio(nombre)));
+                    this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.MESA));
                 } else {
                     //mostrarMensaje
                 }
@@ -75,8 +79,9 @@ public class ControladorAddArticulo {
                     Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantBebida.getText());
+                    Integer costo = this.articuloPrecio(nombre);
                     this.resetBebida();
-                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.BEBIDA, nombre, cant, this.articuloPrecio(nombre)));
+                    this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.BEBIDA));
                 } else {
                     //mostrarMensaje
                 }
@@ -91,8 +96,9 @@ public class ControladorAddArticulo {
                     Integer id = vista.frmAddArticulo.getId();
                     String nombre = vista.frmAddArticulo.cmbComidas.getSelectedItem().toString();
                     Integer cant = Integer.parseInt(vista.frmAddArticulo.txtCantComida.getText());
+                    Integer costo = this.articuloPrecio(nombre);
                     this.resetComida();
-                    this.articulos.add(new ArticuloCliente(id, util.TipoArticulo.PLATILLO, nombre, cant, this.articuloPrecio(nombre)));
+                    this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.PLATILLO));
                 } else {
                     //mostrarMensaje
                 }
@@ -184,10 +190,10 @@ public class ControladorAddArticulo {
 
     private Integer articuloPrecio(String nombre) {
         try {
-            ArticuloAdmin articulo = new ArticuloAdmin();
+            Articulo articulo = new Articulo();
             articulo.setNombre(nombre);
-            articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
-            return articulo != null ? articulo.getPrecio() : -1;
+            articulo = ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
+            return articulo != null ? articulo.getCosto() : -1;
         } catch (SQLException e) {
         }
         return -1;

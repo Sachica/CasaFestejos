@@ -86,7 +86,7 @@ public class EventoDAO {
                 
                 String estado = rs.getString("estado");
                 
-                return new Evento(fecha_celebracion, direccion, responsable, monto_abonado, monto_total, util.Estado.getEstado(estado));
+                return new Evento(fecha_celebracion, direccion, responsable, monto_abonado, monto_total, modelo.Estado.getEstado(estado));
             }
         return null;
     }

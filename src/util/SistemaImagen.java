@@ -36,7 +36,7 @@ public class SistemaImagen {
         name = name.replaceAll(" ", "_");
         String dir = DIR+File.separator+name+JPG;
         if(new File(dir).exists()){
-            Icon i = new ImageIcon(new ImageIcon(dir).getImage().getScaledInstance((int)dimension.getWidth(), (int)dimension.getHeight(), Image.SCALE_DEFAULT));
+            Icon i = new ImageIcon(new ImageIcon(dir).getImage().getScaledInstance((int)dimension.getWidth()+20, (int)dimension.getHeight(), Image.SCALE_DEFAULT));
             return i;
         }
          return null;
@@ -48,13 +48,13 @@ public class SistemaImagen {
     }
     
     public static void actualizarImagenes(){
-        java.util.ArrayList<modelo.ArticuloAdmin> articulos;
+        java.util.ArrayList<modelo.Articulo> articulos;
         try{
             articulos = modeloDAO.ArticuloAdminDAO.getAll(controlador.Controlador.getConnection());
             File file = new File(DIR);
             Integer i = 0;
             for (String archivo : file.list()) {
-                for(modelo.ArticuloAdmin articulo : articulos){
+                for(modelo.Articulo articulo : articulos){
                     String nombreArchivo = archivo.replaceAll("_", " ").split("\\.")[0];
                     if(nombreArchivo.equals(articulo.getNombre())){
                         i++;

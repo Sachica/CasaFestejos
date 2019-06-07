@@ -5,12 +5,19 @@
  */
 package controlador;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import modelo.Articulo;
 import modeloDAO.ArticuloAdminDAO;
-import util.TipoArticulo;
+import modelo.TipoArticulo;
 import vista.Vista;
 
 /**
@@ -27,40 +34,41 @@ public class ControladorArticulo {
         this.vista = vista;
     }
 
-    public void actionPerformed(java.awt.event.ActionEvent e) {
+    public void actionPerformed(java.awt.event.ActionEvent e) throws IOException {
         if (e.getSource() == vista.frmArticulo.btnCargar) {
             this.cargarDatosDeBase();
         }
 
         if (e.getSource() == vista.frmArticulo.btnAgregar) {
             try {
-                modelo.ArticuloAdmin articulo = this.getArticulo();
+                Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.guardar(articulo, Controlador.getConnection());
-                util.SistemaImagen.guardarImagen(URLImagen, articulo.getNombre());
                 vista.frmArticulo.clear();
                 this.cargarDatosDeBase();
             } catch (SQLException err) {
                 System.out.println(err.getMessage());
+            } catch (IOException err){
+                
             }
         }
 
         if (e.getSource() == vista.frmArticulo.btnActualizar) {
             try {
-                modelo.ArticuloAdmin articulo = this.getArticulo();
+                Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.actualizar(articulo, Controlador.getConnection());
-                util.SistemaImagen.guardarImagen(URLImagen, articulo.getNombre());
                 vista.frmArticulo.clear();
-                util.SistemaImagen.actualizarImagenes();
                 this.cargarDatosDeBase();
             } catch (SQLException err) {
+                
+            } catch (IOException err){
+                
             }
         }
 
         if (e.getSource() == vista.frmArticulo.btnEliminar) {
             try {
-                modelo.ArticuloAdmin articulo = this.getArticulo();
+                Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.eliminar(articulo, Controlador.getConnection());
-                util.SistemaImagen.eliminarImagen(articulo.getNombre());
                 this.cargarDatosDeBase();
                 vista.frmArticulo.clear();
             } catch (SQLException err) {
@@ -82,11 +90,17 @@ public class ControladorArticulo {
             if (vista.frmArticulo.tblArt.getSelectedRow() != -1) {
                 Integer row = vista.frmArticulo.tblArt.getSelectedRow();
                 Object id = vista.frmArticulo.tblArt.getValueAt(row, 0);
-                Object nombre = vista.frmArticulo.tblArt.getValueAt(row, 1);
-                Object tipo = vista.frmArticulo.tblArt.getValueAt(row, 2);
-                Object precio = vista.frmArticulo.tblArt.getValueAt(row, 3);
-                this.cargarArticulo(new Object[]{id, nombre, tipo, precio});
-                vista.frmArticulo.lblImagen.setIcon(util.SistemaImagen.getImagen(nombre.toString(), vista.frmArticulo.lblImagen.getMaximumSize()));
+                Articulo articulo = new Articulo();
+                articulo.setId(Integer.parseInt(id.toString()));
+                try{
+                    articulo = ArticuloAdminDAO.buscarPorID(articulo, Controlador.getConnection());
+                }catch(SQLException e){
+                }
+                Object nombre = articulo.getNombre();
+                Object tipo = articulo.getTipo();
+                Object costo = articulo.getCosto();
+                this.cargarArticulo(new Object[]{id, nombre, tipo, costo});
+                vista.frmArticulo.lblImagen.setIcon(this.getImagen(articulo.getImagen()));
             }
         }
 
@@ -95,6 +109,20 @@ public class ControladorArticulo {
         }
     }
 
+    public void mouseEntered(java.awt.event.MouseEvent e){
+        if(e.getSource() == vista.frmArticulo.lblImagen){
+            vista.frmArticulo.lblImagen.setBackground(Color.WHITE);
+            vista.frmArticulo.lblImagen.setForeground(Color.BLACK);
+        }
+    }
+    
+    public void mouseExited(java.awt.event.MouseEvent e){
+        if(e.getSource() == vista.frmArticulo.lblImagen){
+            vista.frmArticulo.lblImagen.setBackground(new Color(51,51,51));
+            vista.frmArticulo.lblImagen.setForeground(Color.WHITE);
+        }
+    }
+    
     private void getFile() {
         JFileChooser file = new JFileChooser();
         file.setFileFilter(new FileNameExtensionFilter("Archivos JPG", "JPG"));
@@ -113,9 +141,9 @@ public class ControladorArticulo {
         vista.frmArticulo.txtActPrecio.setText(data[3].toString());
     }
 
-    private void insertarDatos(java.util.ArrayList<modelo.ArticuloAdmin> articulos) {
-        for (modelo.ArticuloAdmin articulo : articulos) {
-            Object data[] = {articulo.getId(), articulo.getNombre(), articulo.getTipo(), articulo.getPrecio()};
+    private void insertarDatos(ArrayList<Articulo> articulos) {
+        for (Articulo articulo : articulos) {
+            Object data[] = {articulo.getId(), articulo.getNombre(), articulo.getTipo(), articulo.getCosto()};
             vista.frmArticulo.tableModel.addRow(data);
         }
     }
@@ -128,12 +156,18 @@ public class ControladorArticulo {
         }
     }
 
-    private modelo.ArticuloAdmin getArticulo() {
+    private Articulo getArticulo() {
         Integer id = Integer.parseInt(vista.frmArticulo.txtId.getText());
         String nombre = vista.frmArticulo.txtActNombre.getText();
         String tipo = vista.frmArticulo.txtActTipo.getText();
         Integer precio = Integer.parseInt(vista.frmArticulo.txtActPrecio.getText());
+        ImageIcon imagen = new ImageIcon(URLImagen);
 
-        return new modelo.ArticuloAdmin(id, TipoArticulo.getTipoString(tipo), nombre, precio);
+        return new Articulo(id, nombre, id, precio, imagen, TipoArticulo.getTipoString(tipo));
+    }
+    
+    private ImageIcon getImagen(ImageIcon imagen){
+        Dimension dim = vista.frmArticulo.lblImagen.getMaximumSize();
+        return new ImageIcon(imagen.getImage().getScaledInstance((int)dim.getWidth()+20, (int)dim.getHeight(), Image.SCALE_DEFAULT));
     }
 }

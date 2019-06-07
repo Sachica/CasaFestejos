@@ -7,22 +7,26 @@ package vista;
 
 import controlador.Controlador;
 import java.sql.SQLException;
-import util.TipoArticulo;
+import java.util.ArrayList;
+import modelo.Actividad;
+import modelo.Articulo;
+import modeloDAO.ArticuloAdminDAO;
+import modelo.TipoArticulo;
 
 /**
  *
  * @author kuroy
  */
 public class formEvento extends javax.swing.JPanel {
-    public java.util.ArrayList<modelo.ArticuloCliente> articulos;
-    public java.util.ArrayList<modelo.Actividad> actividades;
+    public ArrayList<Articulo> articulos;
+    public ArrayList<Actividad> actividades;
     /**
      * Creates new form formEvento
      */
     public formEvento() {
         initComponents();
-        this.articulos = new java.util.ArrayList<>();
-        this.actividades = new java.util.ArrayList<>();
+        this.articulos = new ArrayList<>();
+        this.actividades = new ArrayList<>();
         this.cmbMontaje.addItem("");
         this.habilitar(Boolean.FALSE);
     }
@@ -38,8 +42,8 @@ public class formEvento extends javax.swing.JPanel {
     }
 
     public void addArticulos(Object obj) {
-        java.util.ArrayList<modelo.ArticuloCliente> articulosCliente = (java.util.ArrayList<modelo.ArticuloCliente>)obj;
-        for (modelo.ArticuloCliente articulo : articulosCliente) {
+        ArrayList<Articulo> articulosCliente = (ArrayList<Articulo>)obj;
+        for (Articulo articulo : articulosCliente) {
             Integer index = this.articuloExistente(articulo);
             if(index!=-1){
                 this.articulos.get(index).aumentarCantidad(articulo.getCantidad());
@@ -50,7 +54,7 @@ public class formEvento extends javax.swing.JPanel {
         this.calcularPrecio();
     }
     
-    public Boolean addActividad(modelo.Actividad actividad){
+    public Boolean addActividad(Actividad actividad){
         if(!this.actividadExistente(actividad)){
             this.actividades.add(actividad);
             return true;
@@ -59,8 +63,8 @@ public class formEvento extends javax.swing.JPanel {
         return false;
     }
     
-    private Boolean actividadExistente(modelo.Actividad actividad){
-        for(modelo.Actividad act : this.actividades){
+    private Boolean actividadExistente(Actividad actividad){
+        for(Actividad act : this.actividades){
             if(act.equals(actividad)){
                 return true;
             }
@@ -69,9 +73,9 @@ public class formEvento extends javax.swing.JPanel {
         return false;
     }
     
-    private Integer articuloExistente(modelo.ArticuloCliente articulo){
+    private Integer articuloExistente(Articulo articulo){
         Integer i=0;
-        for(modelo.ArticuloCliente art : this.articulos){
+        for(Articulo art : this.articulos){
             if(art.equals(articulo)){
                 return i;
             }
@@ -88,7 +92,7 @@ public class formEvento extends javax.swing.JPanel {
 
     private Integer calcularArticulosPrecio(){
         Integer precio = 0;
-        for(modelo.ArticuloCliente articulo : this.articulos){
+        for(Articulo articulo : this.articulos){
             precio += articulo.getCosto();
         }
         
@@ -102,7 +106,7 @@ public class formEvento extends javax.swing.JPanel {
         this.panelConfirm.setVisible(x);
     }
 
-    public void addOpcionesArticulos(modelo.ArticuloAdmin articulo) {
+    public void addOpcionesArticulos(Articulo articulo) {
         if (articulo.getTipo().equals(TipoArticulo.MONTAJE)) {
             this.cmbMontaje.addItem(articulo.getNombre());
         }
@@ -117,8 +121,8 @@ public class formEvento extends javax.swing.JPanel {
     public void cargarItemOpciones() {
         try {
             this.removeItems();
-            java.util.ArrayList<modelo.ArticuloAdmin> articulosItems = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
-            for (modelo.ArticuloAdmin articulo : articulosItems) {
+            ArrayList<Articulo> articulosItems = ArticuloAdminDAO.getAll(Controlador.getConnection());
+            for (Articulo articulo : articulosItems) {
                 this.addOpcionesArticulos(articulo);
             }
         } catch (SQLException e) {

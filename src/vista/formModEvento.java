@@ -7,18 +7,25 @@ package vista;
 
 import controlador.Controlador;
 import java.sql.SQLException;
-import util.TipoArticulo;
+import modelo.Evento;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import modelo.Actividad;
+import modelo.Articulo;
+import modelo.Responsable;
+import modeloDAO.ArticuloAdminDAO;
+import modelo.TipoArticulo;
 
 /**
  *
  * @author kuroy
  */
 public class formModEvento extends javax.swing.JPanel {
-    public javax.swing.table.DefaultTableModel tableModelAct;
-    public javax.swing.table.DefaultTableModel tableModelArt;
-    public modelo.Evento eventoActual;
-    public java.util.ArrayList<modelo.ArticuloCliente> articulos;
-    public java.util.ArrayList<modelo.Actividad> actividades;
+    public DefaultTableModel tableModelAct;
+    public DefaultTableModel tableModelArt;
+    public Evento eventoActual;
+    public ArrayList<modelo.Articulo> articulos;
+    public ArrayList<modelo.Actividad> actividades;
     /**
      * Creates new form formModEvento2
      */
@@ -26,10 +33,10 @@ public class formModEvento extends javax.swing.JPanel {
         initComponents();
         this.cmbMontaje.addItem("");
         this.eventoActual = new modelo.Evento();
-        this.articulos = new java.util.ArrayList<>();
-        this.actividades = new java.util.ArrayList<>();
-        this.tableModelAct = (javax.swing.table.DefaultTableModel)this.tableActividades.getModel();
-        this.tableModelArt = (javax.swing.table.DefaultTableModel)this.tableArticulo.getModel();
+        this.articulos = new ArrayList<>();
+        this.actividades = new ArrayList<>();
+        this.tableModelAct = (DefaultTableModel)this.tableActividades.getModel();
+        this.tableModelArt = (DefaultTableModel)this.tableArticulo.getModel();
     }
 
     public void initListener(java.awt.event.ActionListener e, javax.swing.event.TableModelListener t){
@@ -75,10 +82,10 @@ public class formModEvento extends javax.swing.JPanel {
     }
     
     //Base de datos
-    private void addAllArticulo(java.util.ArrayList<modelo.ArticuloCliente> articulos){
+    private void addAllArticulo(ArrayList<Articulo> articulos){
         this.articulos = articulos;
-        for(modelo.ArticuloCliente articulo : articulos){
-            if(articulo.getTipoArticulo().equals(util.TipoArticulo.MONTAJE)){
+        for(Articulo articulo : articulos){
+            if(articulo.getTipo().equals(TipoArticulo.MONTAJE)){
                 this.cmbMontaje.setSelectedIndex(this.index(articulo.getNombre()));
                 this.lblPrecioMontaje.setText(""+articulo.getCosto());
             }else{
@@ -90,9 +97,9 @@ public class formModEvento extends javax.swing.JPanel {
         }
     }
     
-    private void addAllActividad(java.util.ArrayList<modelo.Actividad> actividades){
+    private void addAllActividad(ArrayList<Actividad> actividades){
         this.actividades = actividades;
-        for(modelo.Actividad actividad : actividades){
+        for(Actividad actividad : actividades){
             Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
             this.tableModelAct.addRow(data);
         }
@@ -101,8 +108,8 @@ public class formModEvento extends javax.swing.JPanel {
     
     //frmAddArticulo
     public void addArticulosTabla(Object obj){
-        java.util.ArrayList<modelo.ArticuloCliente> articulosNuevo = (java.util.ArrayList<modelo.ArticuloCliente>)obj;
-        for(modelo.ArticuloCliente articulo : articulosNuevo){
+        ArrayList<Articulo> articulosNuevo = (ArrayList<Articulo>)obj;
+        for(Articulo articulo : articulosNuevo){
             if(!this.articuloExistenteTabla(articulo)){
                 this.articulos.add(articulo);
                 Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
@@ -112,7 +119,7 @@ public class formModEvento extends javax.swing.JPanel {
         }
     }
     
-    public Boolean addActividadesTable(modelo.Actividad actividad){
+    public Boolean addActividadesTable(Actividad actividad){
         if(!actividadExistente(actividad)){
             this.actividades.add(actividad);
             Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
@@ -123,15 +130,15 @@ public class formModEvento extends javax.swing.JPanel {
         return false;
     }
     
-    private Boolean articuloExistenteTabla(modelo.ArticuloCliente articulo){
+    private Boolean articuloExistenteTabla(Articulo articulo){
         Integer row = this.tableModelArt.getRowCount();
         for(Integer i=0; i<row; i++){
             String nombre = this.tableModelArt.getValueAt(i, 0).toString();
             if(nombre.equals(articulo.getNombre())){            
-                Integer value = Integer.parseInt(this.tableModelArt.getValueAt(i, 1).toString());
+                Integer value = Integer.parseInt(this.tableModelArt.getValueAt(i, 1).toString());              
                 this.articulos.get(i).aumentarCantidad(value);
-                this.precioTotal();
                 articulo.aumentarCantidad(value);
+                this.precioTotal();                
                 this.tableModelArt.setValueAt(articulo.getCantidad(), i, 1);
                 return true;
             }
@@ -140,8 +147,8 @@ public class formModEvento extends javax.swing.JPanel {
         return false;
     }
     
-    public Boolean actividadExistente(modelo.Actividad actividad){
-        for(modelo.Actividad act : this.actividades){
+    public Boolean actividadExistente(Actividad actividad){
+        for(Actividad act : this.actividades){
             if(act.equals(actividad)){
                 return true;
             }
@@ -152,8 +159,8 @@ public class formModEvento extends javax.swing.JPanel {
     //
     
     //Base de datos para montaje
-    public void addArticulo(modelo.ArticuloAdmin articulo){
-        if(articulo.getTipo().equals(util.TipoArticulo.MONTAJE)){
+    public void addArticulo(Articulo articulo){
+        if(articulo.getTipo().equals(TipoArticulo.MONTAJE)){
             this.cmbMontaje.addItem(articulo.getNombre());
         }
     }
@@ -161,8 +168,8 @@ public class formModEvento extends javax.swing.JPanel {
     public void cargarItemOpciones(){
         try{
             this.removeItems();
-            java.util.ArrayList<modelo.ArticuloAdmin> articulosOpciones = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
-            for(modelo.ArticuloAdmin articulo : articulosOpciones){
+            ArrayList<Articulo> articulosOpciones = ArticuloAdminDAO.getAll(Controlador.getConnection());
+            for(modelo.Articulo articulo : articulosOpciones){
                 this.addArticulo(articulo);
             }
         }catch(SQLException e){
@@ -171,13 +178,13 @@ public class formModEvento extends javax.swing.JPanel {
     //
     
     private Integer getPrecio(String name){
-        modelo.ArticuloAdmin articulo = new modelo.ArticuloAdmin();
+        Articulo articulo = new Articulo();
         articulo.setNombre(name);
         try{
             articulo = modeloDAO.ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
         }catch(SQLException e){
         }
-        return articulo!=null ? articulo.getPrecio() : -1;
+        return articulo!=null ? articulo.getCosto() : -1;
     }
     
     private Integer index(String name){
@@ -195,8 +202,9 @@ public class formModEvento extends javax.swing.JPanel {
     }
     
     public void cargarEventoBaseDeDatos() throws SQLException, NumberFormatException, NullPointerException {
-        modelo.Responsable responsable = new modelo.Responsable();
+        Responsable responsable = new Responsable();
         responsable.setCedula(Integer.parseInt(this.txtDoc.getText()));
+        
         this.eventoActual.setResponsable(responsable);
         this.eventoActual = modeloDAO.EventoDAO.buscar(Controlador.getConnection(), this.eventoActual);
         
@@ -205,7 +213,7 @@ public class formModEvento extends javax.swing.JPanel {
         this.lblMontoAbonado.setText(""+this.eventoActual.getMonto_abonado());
         this.lblPrecioTotal.setText(""+this.eventoActual.getMonto_total());
         this.lblMontoFalt.setText(" $   "+(this.eventoActual.getMonto_total()-this.eventoActual.getMonto_abonado()));
-        if(this.eventoActual.getEstado().equals(util.Estado.ACTIVO)){
+        if(this.eventoActual.getEstado().equals(modelo.Estado.ACTIVO)){
             this.btnCancelar.setText("Cancelar evento");
         }else{
             this.btnCancelar.setText("Activar evento");
@@ -217,12 +225,12 @@ public class formModEvento extends javax.swing.JPanel {
     public void cargarTablaBaseDeDatos() throws SQLException, NumberFormatException, NullPointerException {
         this.resetTablas();
         
-        modelo.ArticuloCliente articuloCliente = new modelo.ArticuloCliente();
+        Articulo articuloCliente = new modelo.Articulo();
         Integer cedula = Integer.parseInt(this.txtDoc.getText());
         articuloCliente.setId(cedula);
         this.addAllArticulo(modeloDAO.ArticuloClienteDAO.buscar(articuloCliente, Controlador.getConnection()));
         
-        modelo.Actividad actividad = new modelo.Actividad();
+        Actividad actividad = new Actividad();
         actividad.setId(cedula);
         this.addAllActividad(modeloDAO.ActividadDAO.buscar(actividad, Controlador.getConnection()));
         this.precioTotal();
@@ -231,17 +239,17 @@ public class formModEvento extends javax.swing.JPanel {
     public void cargarTablaActuales() throws SQLException, NumberFormatException, NullPointerException {
         this.resetTablas();
         
-        for(modelo.ArticuloCliente articulo : this.articulos){
-            if(articulo.getTipoArticulo().equals(util.TipoArticulo.MONTAJE)){
+        for(Articulo articulo : this.articulos){
+            if(articulo.getTipo().equals(TipoArticulo.MONTAJE)){
                 this.cmbMontaje.setSelectedItem(this.index(articulo.getNombre()));
                 this.lblPrecioMontaje.setText(""+articulo.getCosto());
             }else{
-            Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
-            this.tableModelArt.addRow(data);
+                Object data[] = {articulo.getNombre(), articulo.getCantidad(), articulo.getCosto()};
+                this.tableModelArt.addRow(data);
             }
         }
         
-        for(modelo.Actividad actividad : this.actividades){
+        for(Actividad actividad : this.actividades){
             Object data[] = {actividad.getNombre(), actividad.getHorario().toString(), actividad.getDescripcion()};
             this.tableModelAct.addRow(data);
         }
@@ -253,7 +261,6 @@ public class formModEvento extends javax.swing.JPanel {
     
     public void actualizarActividad(Integer row, Integer column, String value){
         if(column==0){
-            System.out.println(value);
             this.actividades.get(row).setNombre(value);
         }else{
             this.actividades.get(row).setDescripcion(value);
@@ -262,7 +269,7 @@ public class formModEvento extends javax.swing.JPanel {
     
     public Integer precioTotal(){
         Integer precioArticulos = 0;
-        for(modelo.ArticuloCliente articulo : this.articulos){
+        for(Articulo articulo : this.articulos){
             precioArticulos += articulo.getCosto();
         }
         this.lblPrecioTotal.setText(""+precioArticulos);
@@ -278,9 +285,9 @@ public class formModEvento extends javax.swing.JPanel {
         return precioArticulos;
     }
     
-    public void cambiarMontaje(modelo.ArticuloCliente articuloMontaje){
-        for(modelo.ArticuloCliente articulo : this.articulos){
-            if(articulo.getTipoArticulo().equals(articuloMontaje.getTipoArticulo())){
+    public void cambiarMontaje(Articulo articuloMontaje){
+        for(Articulo articulo : this.articulos){
+            if(articulo.getTipo().equals(articuloMontaje.getTipo())){
                 articulo.setNombre(articuloMontaje.getNombre());
                 articulo.setCosto(articuloMontaje.getCosto());
                 return;

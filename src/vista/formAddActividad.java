@@ -9,12 +9,12 @@ package vista;
  *
  * @author kuroy
  */
-public class frmAddActividad extends javax.swing.JPanel {
+public class formAddActividad extends javax.swing.JPanel {
     private Boolean cambio;
     /**
      * Creates new form frmAddActividad
      */
-    public frmAddActividad() {
+    public formAddActividad() {
         initComponents();
         this.cambio = true;
     }

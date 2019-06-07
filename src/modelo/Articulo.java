@@ -5,30 +5,44 @@
  */
 package modelo;
 
-import util.TipoArticulo;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author kuroy
  */
-public class ArticuloCliente {
+public class Articulo {
     private Integer id;
     private String nombre;
-    private TipoArticulo tipoArticulo;
     private Integer cantidad;
     private Integer costo;
+    private ImageIcon imagen;
+    private TipoArticulo tipo;
 
-    public ArticuloCliente() {
+    public Articulo() {
     }
-
-    public ArticuloCliente(Integer id, TipoArticulo tipoArticulo, String nombre, Integer cantidad, Integer costo) {
+    
+    public Articulo(Integer id, String nombre, Integer cantidad, Integer costo, TipoArticulo tipo) {
         this.id = id;
         this.nombre = nombre;
-        this.tipoArticulo = tipoArticulo;
         this.cantidad = cantidad;
         this.costo = costo;
+        this.tipo = tipo;
     }
 
+    public Articulo(Integer id, String nombre, Integer cantidad, Integer costo, ImageIcon imagen, TipoArticulo tipo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.costo = costo;
+        this.imagen = imagen;
+        this.tipo = tipo;
+    }
+
+    public void aumentarCantidad(Integer cantidad){
+        this.cantidad += cantidad;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -45,14 +59,6 @@ public class ArticuloCliente {
         this.nombre = nombre;
     }
 
-    public TipoArticulo getTipoArticulo() {
-        return tipoArticulo;
-    }
-
-    public void setTipoArticulo(TipoArticulo tipoArticulo) {
-        this.tipoArticulo = tipoArticulo;
-    }
-    
     public Integer getCantidad() {
         return cantidad;
     }
@@ -61,27 +67,28 @@ public class ArticuloCliente {
         this.cantidad = cantidad;
     }
 
-    public void aumentarCantidad(Integer cantidad){
-        this.cantidad += cantidad;
-    }
-    
     public Integer getCosto() {
-        return costo*cantidad;
+        return costo;
     }
 
     public void setCosto(Integer costo) {
         this.costo = costo;
     }
-    
-    @Override
-    public boolean equals(Object obj){
-        return this.getNombre().equals(((ArticuloCliente)obj).getNombre());
+
+    public ImageIcon getImagen() {
+        return imagen;
     }
 
-    @Override
-    public String toString() {
-        return "ArticuloCliente{" + "id=" + id + ", nombre=" + nombre + ", tipoArticulo=" + tipoArticulo + ", cantidad=" + cantidad + "\t costo=" + costo + '}';
+    public void setImagen(ImageIcon imagen) {
+        this.imagen = imagen;
     }
-    
+
+    public TipoArticulo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoArticulo tipo) {
+        this.tipo = tipo;
+    }
     
 }

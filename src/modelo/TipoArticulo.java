@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package modelo;
 
 import controlador.Controlador;
+import java.util.ArrayList;
+import modeloDAO.ArticuloAdminDAO;
 
 /**
  *
@@ -30,12 +32,12 @@ public enum TipoArticulo {
     }
     
     public static TipoArticulo getTipoArticulo(String name){
-        java.util.ArrayList<modelo.ArticuloAdmin> articulos = new java.util.ArrayList<>();
+        ArrayList<Articulo> articulos = new ArrayList<>();
         try{
-            articulos = modeloDAO.ArticuloAdminDAO.getAll(Controlador.getConnection());
+            articulos = ArticuloAdminDAO.getAll(Controlador.getConnection());
         }catch(java.sql.SQLException e){
         }
-        for(modelo.ArticuloAdmin articulo : articulos){
+        for(Articulo articulo : articulos){
             if(articulo.getNombre().equals(name)){
                 return articulo.getTipo();
             }
