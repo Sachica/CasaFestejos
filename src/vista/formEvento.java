@@ -184,7 +184,7 @@ public class formEvento extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
         setForeground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(402, 481));
+        setMaximumSize(new java.awt.Dimension(350, 480));
         setPreferredSize(new java.awt.Dimension(402, 452));
 
         panelMontaje.setBackground(new java.awt.Color(51, 51, 51));
@@ -406,7 +406,7 @@ public class formEvento extends javax.swing.JPanel {
 
         btnBus.setBackground(new java.awt.Color(255, 255, 255));
         btnBus.setForeground(new java.awt.Color(0, 0, 0));
-        btnBus.setText("Buscar");
+        btnBus.setText("Verificar");
 
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
         btnVolver.setForeground(new java.awt.Color(0, 0, 0));
@@ -430,7 +430,7 @@ public class formEvento extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(panelMontaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

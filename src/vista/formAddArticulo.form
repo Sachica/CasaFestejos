@@ -6,10 +6,10 @@
       <Color blue="33" green="33" red="33" type="rgb"/>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[674, 727]"/>
+      <Dimension value="[630, 727]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[674, 727]"/>
+      <Dimension value="[650, 727]"/>
     </Property>
   </Properties>
   <AuxValues>
@@ -93,23 +93,23 @@
                               <Component id="jLabel13" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="label4" min="-2" pref="17" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblPrecioMesa" max="32767" attributes="0"/>
+                                  <Component id="lblPrecioMesa" min="-2" pref="105" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="cmbMesa" min="-2" pref="128" max="-2" attributes="0"/>
+                              <Component id="cmbMesa" min="-2" pref="147" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblSilla" min="-2" pref="258" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel3" min="-2" pref="105" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                                  <Component id="cmbSilla" min="-2" pref="129" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Component id="cmbSilla" min="-2" pref="147" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="lblSilla" min="-2" pref="258" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Component id="btnAddSilla" alignment="1" min="-2" pref="108" max="-2" attributes="0"/>

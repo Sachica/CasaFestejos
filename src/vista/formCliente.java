@@ -24,24 +24,20 @@ public class formCliente extends javax.swing.JPanel {
         this.btnModificar.addActionListener(e);
         this.btnVolver.addActionListener(e);
         this.btnClean.addActionListener(e);
+        this.btnRegis.addActionListener(e);
+    }
+    
+    public Boolean puedeModificar(){
+        return !this.txtCedula.getText().isEmpty();
     }
     
     public void deshabilitar(){
-        this.txtCedula.setEditable(true);
-        this.txtCed.setEditable(false);
-        this.txtEmail.setEditable(false);
-        this.txtApe.setEditable(false);
-        this.txtNom.setEditable(false);
-        this.txtTel.setEditable(false);
+        this.txtCedula.setEditable(false);
     }
     
     public void habilitar(){
-        this.txtCedula.setEditable(false);
-        this.txtCed.setEditable(true);
-        this.txtEmail.setEditable(true);
-        this.txtApe.setEditable(true);
-        this.txtNom.setEditable(true);
-        this.txtTel.setEditable(true);
+        this.txtCedula.setEditable(true);
+
     }
     
     public void clean(){
@@ -51,6 +47,8 @@ public class formCliente extends javax.swing.JPanel {
         this.txtApe.setText("");
         this.txtNom.setText("");
         this.txtTel.setText("");
+        this.txtCedula.setEditable(true);
+        this.btnModificar.setText(formCliente.MODIFICAR);
     }
     
     /**
@@ -77,12 +75,13 @@ public class formCliente extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         txtCedula = new javax.swing.JTextField();
         btnClean = new javax.swing.JButton();
+        btnRegis = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Modificicaciones del cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(412, 300));
+        setMaximumSize(new java.awt.Dimension(440, 300));
         setMinimumSize(new java.awt.Dimension(412, 300));
-        setPreferredSize(new java.awt.Dimension(412, 300));
+        setPreferredSize(new java.awt.Dimension(430, 300));
 
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -147,14 +146,17 @@ public class formCliente extends javax.swing.JPanel {
         btnModificar.setBackground(new java.awt.Color(255, 255, 255));
         btnModificar.setForeground(new java.awt.Color(0, 0, 0));
         btnModificar.setText("Modificar");
+        btnModificar.setFocusable(false);
 
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
         btnVolver.setForeground(new java.awt.Color(0, 0, 0));
         btnVolver.setText("Volver");
+        btnVolver.setFocusable(false);
 
         btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setText("Buscar");
+        btnBuscar.setFocusable(false);
 
         txtCedula.setBackground(new java.awt.Color(0, 0, 51));
         txtCedula.setForeground(new java.awt.Color(255, 255, 255));
@@ -164,15 +166,22 @@ public class formCliente extends javax.swing.JPanel {
         btnClean.setBackground(new java.awt.Color(255, 255, 255));
         btnClean.setForeground(new java.awt.Color(0, 0, 0));
         btnClean.setText("Limpiar");
+        btnClean.setFocusable(false);
+
+        btnRegis.setBackground(new java.awt.Color(255, 255, 255));
+        btnRegis.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegis.setText("Registrar");
+        btnRegis.setFocusable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,20 +201,21 @@ public class formCliente extends javax.swing.JPanel {
                                     .addComponent(txtApe, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCed, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                                    .addComponent(txtCedula)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtCed)
+                                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnRegis)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClean)))
-                .addContainerGap(84, Short.MAX_VALUE))
+                        .addComponent(btnClean)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +250,8 @@ public class formCliente extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar)
                     .addComponent(btnVolver)
-                    .addComponent(btnClean))
+                    .addComponent(btnClean)
+                    .addComponent(btnRegis))
                 .addGap(23, 23, 23))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -250,6 +261,7 @@ public class formCliente extends javax.swing.JPanel {
     public javax.swing.JButton btnBuscar;
     public javax.swing.JButton btnClean;
     public javax.swing.JButton btnModificar;
+    public javax.swing.JButton btnRegis;
     public javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

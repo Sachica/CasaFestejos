@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.Articulo;
 import modeloDAO.ArticuloAdminDAO;
@@ -34,9 +35,10 @@ public class ControladorArticulo {
         this.vista = vista;
     }
 
-    public void actionPerformed(java.awt.event.ActionEvent e) throws IOException {
+    public void actionPerformed(java.awt.event.ActionEvent e){
         if (e.getSource() == vista.frmArticulo.btnCargar) {
             this.cargarDatosDeBase();
+            this.mostrarMensajes("Articulo cargados", Boolean.TRUE);
         }
 
         if (e.getSource() == vista.frmArticulo.btnAgregar) {
@@ -44,11 +46,15 @@ public class ControladorArticulo {
                 Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.guardar(articulo, Controlador.getConnection());
                 vista.frmArticulo.clear();
+                this.URLImagen = "";
                 this.cargarDatosDeBase();
+                this.mostrarMensajes("Articulo guardado exitosamente", Boolean.TRUE);
             } catch (SQLException err) {
-                System.out.println(err.getMessage());
+                this.mostrarMensajes("Ya existe un articulo con este mismo id", Boolean.FALSE);
             } catch (IOException err){
-                
+                this.mostrarMensajes("Se debe escoger imagen", Boolean.FALSE);
+            } catch (NumberFormatException err){
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
 
@@ -57,6 +63,7 @@ public class ControladorArticulo {
                 Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.actualizar(articulo, Controlador.getConnection());
                 vista.frmArticulo.clear();
+                this.URLImagen = "";
                 this.cargarDatosDeBase();
             } catch (SQLException err) {
                 
@@ -69,14 +76,21 @@ public class ControladorArticulo {
             try {
                 Articulo articulo = this.getArticulo();
                 ArticuloAdminDAO.eliminar(articulo, Controlador.getConnection());
+                this.URLImagen = "";
                 this.cargarDatosDeBase();
                 vista.frmArticulo.clear();
             } catch (SQLException err) {
             }
         }
 
+        if(e.getSource() == vista.frmArticulo.btnLimp){
+            vista.frmArticulo.clear();
+            this.URLImagen = "";
+        }
+        
         if (e.getSource() == vista.frmArticulo.btnFin) {
             vista.frmArticulo.clear();
+            this.URLImagen = "";
             vista.frmArticulo.tableModel.setRowCount(0);
             vista.frmAddArticulo.cargarItemOpciones();
             vista.frmEvento.cargarItemOpciones();
@@ -99,7 +113,8 @@ public class ControladorArticulo {
                 Object nombre = articulo.getNombre();
                 Object tipo = articulo.getTipo();
                 Object costo = articulo.getCosto();
-                this.cargarArticulo(new Object[]{id, nombre, tipo, costo});
+                Object cantidad = articulo.getCantidad();
+                this.cargarArticulo(new Object[]{id, nombre, tipo, costo, cantidad});
                 vista.frmArticulo.lblImagen.setIcon(this.getImagen(articulo.getImagen()));
             }
         }
@@ -137,13 +152,14 @@ public class ControladorArticulo {
     private void cargarArticulo(Object data[]) {
         vista.frmArticulo.txtId.setText(data[0].toString());
         vista.frmArticulo.txtActNombre.setText(data[1].toString());
-        vista.frmArticulo.txtActTipo.setText(data[2].toString());
+        vista.frmArticulo.indexToSelected(data[2].toString());
         vista.frmArticulo.txtActPrecio.setText(data[3].toString());
+        vista.frmArticulo.txtCant.setText(data[4].toString());
     }
 
     private void insertarDatos(ArrayList<Articulo> articulos) {
         for (Articulo articulo : articulos) {
-            Object data[] = {articulo.getId(), articulo.getNombre(), articulo.getTipo(), articulo.getCosto()};
+            Object data[] = {articulo.getId(), articulo.getNombre(), articulo.getTipo(), articulo.getCosto(), articulo.getCantidad()};
             vista.frmArticulo.tableModel.addRow(data);
         }
     }
@@ -156,18 +172,25 @@ public class ControladorArticulo {
         }
     }
 
-    private Articulo getArticulo() {
+    private Articulo getArticulo(){
         Integer id = Integer.parseInt(vista.frmArticulo.txtId.getText());
         String nombre = vista.frmArticulo.txtActNombre.getText();
-        String tipo = vista.frmArticulo.txtActTipo.getText();
+        String tipo = vista.frmArticulo.cmbTipo.getSelectedItem().toString();
         Integer precio = Integer.parseInt(vista.frmArticulo.txtActPrecio.getText());
+        Integer cantidad = Integer.parseInt(vista.frmArticulo.txtCant.getText());
         ImageIcon imagen = new ImageIcon(URLImagen);
 
-        return new Articulo(id, nombre, id, precio, imagen, TipoArticulo.getTipoString(tipo));
+        return new Articulo(id, nombre, cantidad, precio, imagen, TipoArticulo.getTipoString(tipo));
     }
     
     private ImageIcon getImagen(ImageIcon imagen){
         Dimension dim = vista.frmArticulo.lblImagen.getMaximumSize();
         return new ImageIcon(imagen.getImage().getScaledInstance((int)dim.getWidth()+20, (int)dim.getHeight(), Image.SCALE_DEFAULT));
+    }
+    
+    public void mostrarMensajes(String mensaje, Boolean x){
+        String titulo = x ? "Operacion exitosa!" : "Operacion fallida!";
+        Integer tipo = x ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;       
+        JOptionPane.showMessageDialog(vista, mensaje, titulo, tipo);
     }
 }

@@ -5,6 +5,7 @@
  */
 package modeloDAO;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import modelo.Articulo;
 import modelo.TipoArticulo;
@@ -35,13 +37,13 @@ public class ArticuloAdminDAO {
         ps.setInt(4, articulo.getCosto());
         ps.setInt(5, articulo.getCantidad());
         FileInputStream imagenBinaria = new FileInputStream(new File(articulo.getImagen().getDescription()));
-        ps.setBlob(6, imagenBinaria);
+        ps.setBinaryStream(6, imagenBinaria);
         
         return ps.execute();
     }
     
     public static Boolean actualizar(Articulo articulo, Connection connection) throws SQLException, IOException{
-        String query = "UPDATE articulo_admin SET tipo=?, nombre=?, cantidad=?, precio=?, imagen=? WHERE id=?";
+        String query = "UPDATE articulo_admin SET tipo=?, nombre=?, cantidad=?, precio=? WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
         
         
@@ -49,9 +51,7 @@ public class ArticuloAdminDAO {
         ps.setString(2, articulo.getNombre());
         ps.setInt(3, articulo.getCantidad());
         ps.setInt(4, articulo.getCosto());
-        FileInputStream imagenBinaria = new FileInputStream(new File(articulo.getImagen().getDescription()));
-        ps.setBlob(5, imagenBinaria);
-        ps.setInt(6, articulo.getId());
+        ps.setInt(5, articulo.getId());
         
         return ps.executeUpdate()!=0;
     }
@@ -121,7 +121,12 @@ public class ArticuloAdminDAO {
     }
     
     private static ImageIcon leerImagen(InputStream imagenBinaria){
-        return null;
+        BufferedImage imgBuff = null;
+        try{
+            imgBuff = ImageIO.read(imagenBinaria);
+        }catch(IOException e){
+        }
+        return new ImageIcon(imgBuff);
     }
     
     public static Boolean eliminar(Articulo articulo, Connection connection) throws SQLException{

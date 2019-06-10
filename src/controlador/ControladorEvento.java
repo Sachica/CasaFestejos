@@ -7,6 +7,7 @@ package controlador;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.*;
 import modeloDAO.*;
 import modelo.TipoArticulo;
@@ -48,12 +49,12 @@ public class ControladorEvento {
                 if (responsable != null) {
                     vista.frmEvento.habilitar(Boolean.TRUE);
                 } else {
-                    //this.mostrarMensaje();
+                    this.mostrarMensajes("No se encuentra registrado", Boolean.FALSE);
                 }
             } catch (NumberFormatException err) {
-                //this.mostrarMensaje();
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             } catch (SQLException err) {
-                //this.mostrarMensaje();
+                this.mostrarMensajes("Error de busqueda a base de datos", Boolean.FALSE);
             }
         }
 
@@ -73,12 +74,10 @@ public class ControladorEvento {
                 this.guardarMontaje();                
                 vista.frmEvento.clear();
                 vista.cambiarPanel(vista.frmEvento, vista.frmInicio);
-            } catch (NumberFormatException err) {
-                System.out.println(err.getMessage());
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException err) {
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             } catch (SQLException err) {
-                System.out.println(err.getMessage());
-            } catch (Exception err){
-                System.out.println(err.getMessage());
+                this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
             }
         }
 
@@ -100,7 +99,7 @@ public class ControladorEvento {
         return -1;
     }
 
-    private Fecha getFecha() throws NumberFormatException {
+    private Fecha getFecha() throws NumberFormatException, ArrayIndexOutOfBoundsException {
         String fecha[] = vista.frmEvento.txtFecha.getText().split("/");
         Integer dia = Integer.parseInt(fecha[0]);
         Integer mes = Integer.parseInt(fecha[1]);
@@ -142,5 +141,11 @@ public class ControladorEvento {
         actividad.setId(Integer.parseInt(vista.frmEvento.txtDoc.getText()));
         actividades.add(actividad);
         return actividades;
+    }
+    
+    public void mostrarMensajes(String mensaje, Boolean x){
+        String titulo = x ? "Operacion exitosa!" : "Operacion fallida!";
+        Integer tipo = x ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;       
+        JOptionPane.showMessageDialog(vista, mensaje, titulo, tipo);
     }
 }

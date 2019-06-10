@@ -27,7 +27,7 @@ public class ArticuloClienteDAO {
         ps.setString(2, articulo.getNombre());
         ps.setString(3, articulo.getTipo().toString());
         ps.setInt(4, articulo.getCantidad());
-        ps.setInt(5, articulo.getCosto());
+        ps.setInt(5, articulo.getCosto()*articulo.getCantidad());
 
         return ps.execute();
     }
@@ -37,7 +37,7 @@ public class ArticuloClienteDAO {
         PreparedStatement ps = connection.prepareStatement(query);
 
         ps.setInt(1, articulo.getCantidad());
-        ps.setInt(2, articulo.getCosto());
+        ps.setInt(2, articulo.getCosto()*articulo.getCantidad());
         ps.setInt(3, articulo.getId());
 
         return ps.executeUpdate() != 0;
@@ -56,7 +56,7 @@ public class ArticuloClienteDAO {
             String nombre = rs.getString("nombre");
             String tipo = rs.getString("tipo");
             Integer cantidad = rs.getInt("cantidad");
-            Integer costo = rs.getInt("costo");
+            Integer costo = ArticuloClienteDAO.getCostoUnidad(nombre, connection);
 
             articulos.add(new Articulo(id, nombre, cantidad, costo, TipoArticulo.getTipoString(tipo)));
         }
@@ -64,6 +64,13 @@ public class ArticuloClienteDAO {
         return articulos;
     }
 
+    private static Integer getCostoUnidad(String name, Connection connection) throws SQLException{
+        Articulo articulo = new Articulo();
+        articulo.setNombre(name);
+        articulo = ArticuloAdminDAO.buscarPorNombre(articulo, connection);
+        return articulo.getCosto();
+    }
+    
     public static Boolean eliminarTodo(Articulo articulo, Connection connection) throws SQLException {
         String query = "DELETE FROM articulo_cliente WHERE id=?";
         PreparedStatement ps = connection.prepareStatement(query);
@@ -95,7 +102,7 @@ public class ArticuloClienteDAO {
         PreparedStatement ps = connection.prepareStatement(query);
         for(Articulo articulo : articulos){
             ps.setInt(1, articulo.getCantidad());
-            ps.setInt(2, articulo.getCosto());
+            ps.setInt(2, articulo.getCosto()*articulo.getCantidad());
             ps.setInt(3, articulo.getId());
             
             ps.executeUpdate();

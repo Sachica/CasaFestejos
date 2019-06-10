@@ -90,5 +90,15 @@ public class Articulo {
     public void setTipo(TipoArticulo tipo) {
         this.tipo = tipo;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        return this.getNombre().equals(((Articulo)obj).getNombre());
+    }
+    
+    @Override
+    public String toString() {
+        return "Articulo{" + "id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", costo=" + costo + ", tipo=" + tipo + '}';
+    }
     
 }

@@ -18,11 +18,7 @@ public class ControladorInicio{
         this.vista  = vista;
     }
     
-    public void actionPerformed(java.awt.event.ActionEvent e) {
-        if(e.getSource() == vista.frmInicio.btnRegis){
-            vista.cambiarPanel(vista.frmInicio, vista.frmRegistro);
-        }
-        
+    public void actionPerformed(java.awt.event.ActionEvent e) {      
         if(e.getSource() == vista.frmInicio.btnModCliente){
             vista.cambiarPanel(vista.frmInicio, vista.frmCliente);
         }

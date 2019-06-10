@@ -71,7 +71,7 @@ public class Evento{
     }
     
     public Integer getMonto_abonado() {
-        return this.getEstado_pago().equals(Estado.PAGO) ? getMonto_total() : getMonto_abonado();
+        return this.getEstado_pago().equals(Estado.PAGO) ? getMonto_total() : this.monto_abonado;
     }
     
     public Integer getMonto_total(){

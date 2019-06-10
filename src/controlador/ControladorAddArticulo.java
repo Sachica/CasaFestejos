@@ -7,9 +7,9 @@ package controlador;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.*;
 import modeloDAO.ArticuloAdminDAO;
-import util.SistemaImagen;
 import vista.Vista;
 
 /**
@@ -34,6 +34,7 @@ public class ControladorAddArticulo {
                 vista.frmModEvento.addArticulosTabla(articulos.clone());
                 vista.cambiarPanel(vista.frmAddArticulo, vista.frmModEvento);              
             }
+            this.mostrarMensajes("Articulos añadidos al evento", Boolean.TRUE);
             vista.frmAddArticulo.setCambio(Boolean.TRUE, 0);
             vista.frmAddArticulo.resetear();
             this.resetear();
@@ -48,11 +49,12 @@ public class ControladorAddArticulo {
                     Integer costo = this.articuloPrecio(nombre);
                     this.resetSilla();
                     this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.SILLA));
+                    this.mostrarMensajes("Se ha añadido al evento", Boolean.TRUE);
                 } else {
-                    //mostrarMensaje
+                    this.mostrarMensajes("No se ha elegido el articulo o cantidad nula", Boolean.FALSE);
                 }
             } catch (NumberFormatException err) {
-                //mostrarMensaje
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
 
@@ -65,11 +67,12 @@ public class ControladorAddArticulo {
                     Integer costo = this.articuloPrecio(nombre);
                     this.resetMesa();
                     this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.MESA));
+                    this.mostrarMensajes("Se ha añadido al evento", Boolean.TRUE);
                 } else {
-                    //mostrarMensaje
+                    this.mostrarMensajes("No se ha elegido el articulo o cantidad nula", Boolean.FALSE);
                 }
             } catch (NumberFormatException err) {
-                //mostrarMensaje
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
 
@@ -82,11 +85,12 @@ public class ControladorAddArticulo {
                     Integer costo = this.articuloPrecio(nombre);
                     this.resetBebida();
                     this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.BEBIDA));
+                    this.mostrarMensajes("Se ha añadido al evento", Boolean.TRUE);
                 } else {
-                    //mostrarMensaje
+                    this.mostrarMensajes("No se ha elegido el articulo o cantidad nula", Boolean.FALSE);
                 }
             } catch (NumberFormatException err) {
-                //mostrarMensaje
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
 
@@ -99,20 +103,21 @@ public class ControladorAddArticulo {
                     Integer costo = this.articuloPrecio(nombre);
                     this.resetComida();
                     this.articulos.add(new Articulo(id, nombre, cant, costo, TipoArticulo.PLATILLO));
+                    this.mostrarMensajes("Se ha añadido al evento", Boolean.TRUE);
                 } else {
-                    //mostrarMensaje
+                    this.mostrarMensajes("No se ha elegido el articulo o cantidad nula", Boolean.FALSE);
                 }
             } catch (NumberFormatException err) {
-                //mostrarMensaje
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
 
         if (e.getSource() == vista.frmAddArticulo.cmbMesa) {
             String nombreArticulo = vista.frmAddArticulo.cmbMesa.getSelectedItem().toString();
-            Integer precio = articuloPrecio(nombreArticulo);
-            if (precio != -1) {
-                vista.frmAddArticulo.lblMesa.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblMesa.getMaximumSize()));
-                vista.frmAddArticulo.lblPrecioMesa.setText("" + precio);
+            Articulo articulo = this.getArticulo(nombreArticulo);
+            if (articulo!=null) {
+                vista.frmAddArticulo.addImagen(articulo.getImagen(), vista.frmAddArticulo.lblMesa);
+                vista.frmAddArticulo.lblPrecioMesa.setText("" + articulo.getCosto());
             } else {
                 vista.frmAddArticulo.lblPrecioMesa.setText("");
                 vista.frmAddArticulo.lblMesa.setIcon(null);
@@ -121,10 +126,10 @@ public class ControladorAddArticulo {
 
         if (e.getSource() == vista.frmAddArticulo.cmbSilla) {
             String nombreArticulo = vista.frmAddArticulo.cmbSilla.getSelectedItem().toString();
-            Integer precio = articuloPrecio(nombreArticulo);
-            if (precio != -1) {
-                vista.frmAddArticulo.lblSilla.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblSilla.getMaximumSize()));
-                vista.frmAddArticulo.lblPrecioSilla.setText("" + precio);
+            Articulo articulo = this.getArticulo(nombreArticulo);
+            if (articulo!=null) {
+                vista.frmAddArticulo.addImagen(articulo.getImagen(), vista.frmAddArticulo.lblSilla);
+                vista.frmAddArticulo.lblPrecioSilla.setText("" + articulo.getCosto());
             } else {
                 vista.frmAddArticulo.lblPrecioSilla.setText("");
                 vista.frmAddArticulo.lblSilla.setIcon(null);
@@ -133,10 +138,10 @@ public class ControladorAddArticulo {
 
         if (e.getSource() == vista.frmAddArticulo.cmbBebidas) {
             String nombreArticulo = vista.frmAddArticulo.cmbBebidas.getSelectedItem().toString();
-            Integer precio = articuloPrecio(nombreArticulo);
-            if (precio != -1) {
-                vista.frmAddArticulo.lblBebida.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblBebida.getMaximumSize()));                
-                vista.frmAddArticulo.lblPrecioBebida.setText("" + precio);
+            Articulo articulo = this.getArticulo(nombreArticulo);
+            if (articulo!=null) {
+                vista.frmAddArticulo.addImagen(articulo.getImagen(), vista.frmAddArticulo.lblBebida);              
+                vista.frmAddArticulo.lblPrecioBebida.setText("" + articulo.getCosto());
             } else {
                 vista.frmAddArticulo.lblPrecioBebida.setText("");
                 vista.frmAddArticulo.lblBebida.setIcon(null);
@@ -145,10 +150,10 @@ public class ControladorAddArticulo {
 
         if (e.getSource() == vista.frmAddArticulo.cmbComidas) {
             String  nombreArticulo = vista.frmAddArticulo.cmbComidas.getSelectedItem().toString();
-            Integer precio = articuloPrecio(nombreArticulo);
-            if (precio != -1) {
-                vista.frmAddArticulo.lblComida.setIcon(SistemaImagen.getImagen(nombreArticulo, vista.frmAddArticulo.lblComida.getMaximumSize()));                
-                vista.frmAddArticulo.lblPrecioComida.setText("" + precio);
+            Articulo articulo = this.getArticulo(nombreArticulo);
+            if (articulo!=null) {
+                vista.frmAddArticulo.addImagen(articulo.getImagen(), vista.frmAddArticulo.lblComida);             
+                vista.frmAddArticulo.lblPrecioComida.setText("" + articulo.getCosto());
             } else {
                 vista.frmAddArticulo.lblPrecioComida.setText("");
                 vista.frmAddArticulo.lblComida.setIcon(null);
@@ -197,5 +202,22 @@ public class ControladorAddArticulo {
         } catch (SQLException e) {
         }
         return -1;
+    }
+    
+    private Articulo getArticulo(String nombre){
+        try {
+            Articulo articulo = new Articulo();
+            articulo.setNombre(nombre);
+            articulo = ArticuloAdminDAO.buscarPorNombre(articulo, Controlador.getConnection());
+            return articulo;
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
+    public void mostrarMensajes(String mensaje, Boolean x){
+        String titulo = x ? "Operacion exitosa!" : "Operacion fallida!";
+        Integer tipo = x ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;       
+        JOptionPane.showMessageDialog(vista, mensaje, titulo, tipo);
     }
 }

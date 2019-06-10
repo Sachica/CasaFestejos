@@ -10,6 +10,7 @@ import javax.swing.event.TableModelEvent;
 import modelo.*;
 import modeloDAO.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import vista.Vista;
 
 /**
@@ -29,27 +30,43 @@ public class ControladorModEvento {
             try {
                 vista.frmModEvento.cargarTablaBaseDeDatos();
                 vista.frmModEvento.cargarEventoBaseDeDatos();
+                vista.frmModEvento.habilitar(Boolean.TRUE);
                 vista.frmModEvento.txtDoc.setEditable(false);
+                this.mostrarMensajes("Evento encontrado", Boolean.TRUE);
             } catch (NumberFormatException err) {
-                //this.mostrarMensajes();
-                System.out.println("Num " + err.getMessage());
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
+            } catch (NullPointerException err) {
+                this.mostrarMensajes("Evento inexistente", Boolean.FALSE);
             } catch (SQLException err) {
-                //this.mostrarMensajes();
-                System.out.println("SQL " + err.getMessage());
+                this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
             }
         }
 
         if (e.getSource() == vista.frmModEvento.btnDelArt) {
             Integer row = vista.frmModEvento.tableArticulo.getSelectedRow();
-            vista.frmModEvento.articulos.remove((int) row);
-            vista.frmModEvento.tableModelArt.removeRow(row);
-            vista.frmModEvento.precioTotal();
+            try{
+                if(row==-1){
+                    throw new ArrayIndexOutOfBoundsException();
+                }              
+                String nombre = vista.frmModEvento.tableModelArt.getValueAt(row, 0).toString();
+                vista.frmModEvento.eliminarArticulo(nombre);
+                vista.frmModEvento.precioTotal();
+                vista.frmModEvento.tableModelArt.removeRow(row);
+                this.mostrarMensajes("Articulo borrado exitosamente", Boolean.TRUE);
+            }catch(ArrayIndexOutOfBoundsException err){
+                this.mostrarMensajes("No hay articulos para borrar", Boolean.FALSE);
+            }
         }
 
         if (e.getSource() == vista.frmModEvento.btnDelAct) {
             Integer row = vista.frmModEvento.tableActividades.getSelectedRow();
-            vista.frmModEvento.tableModelAct.removeRow(row);
-            vista.frmModEvento.actividades.remove((int) row);
+            try{
+                vista.frmModEvento.tableModelAct.removeRow(row);
+                vista.frmModEvento.actividades.remove((int) row);
+                this.mostrarMensajes("Actividad borrado exitosamente", Boolean.TRUE);
+            }catch(ArrayIndexOutOfBoundsException err){
+                this.mostrarMensajes("No hay actividades para borrar", Boolean.FALSE);
+            }
         }
 
         if (e.getSource() == vista.frmModEvento.btnAddArt) {
@@ -72,6 +89,10 @@ public class ControladorModEvento {
                     Integer id = Integer.parseInt(vista.frmModEvento.txtDoc.getText());
                     vista.frmModEvento.cambiarMontaje(new Articulo(id, nombre, 1, costo, TipoArticulo.MONTAJE));
                     vista.frmModEvento.precioTotal();
+                } else {
+                    vista.frmModEvento.eliminarMontaje();
+                    vista.frmModEvento.lblPrecioMontaje.setText("");
+                    vista.frmModEvento.precioTotal();
                 }
             } catch (SQLException err) {
             }
@@ -79,44 +100,46 @@ public class ControladorModEvento {
 
         if (e.getSource() == vista.frmModEvento.btnGuardar) {
             try {
-                ArticuloClienteDAO.addAll(this.agregarSeguroArticulo(vista.frmModEvento.articulos), Controlador.getConnection());
-                ActividadDAO.addAll(this.agregarSeguroActividad(vista.frmModEvento.actividades), Controlador.getConnection());
                 Evento evento = this.getEvento();
                 if (!vista.frmModEvento.txtAbonar.getText().trim().isEmpty() && !vista.frmModEvento.lblAbonar.getText().equals("Cambio")) {
                     Integer value = Integer.parseInt(vista.frmModEvento.txtAbonar.getText());
                     evento.abonar(value);
                 }
                 EventoDAO.actualizar(Controlador.getConnection(), evento);
+
+                ArticuloClienteDAO.addAll(this.agregarSeguroArticulo(vista.frmModEvento.articulos), Controlador.getConnection());
+                ActividadDAO.addAll(this.agregarSeguroActividad(vista.frmModEvento.actividades), Controlador.getConnection());
+
                 vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
                 vista.frmModEvento.clear();
+                this.mostrarMensajes("Evento actualizado exitosamente", Boolean.TRUE);
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException err){
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             } catch (SQLException err) {
-                System.out.println(err.getMessage());
-            }
+                this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
+            } 
         }
 
-        if (e.getActionCommand().equals("Cancelar evento")) {
-            Evento evento = this.getEvento();
-            evento.setEstado(modelo.Estado.CANCELADO);
-            try {
-                EventoDAO.actualizar(Controlador.getConnection(), evento);
-            } catch (SQLException err) {
+        if (e.getSource() == vista.frmModEvento.btnDel){
+            if(vista.frmModEvento.eventoActual!=null){
+                try{
+                    Evento evento = vista.frmModEvento.eventoActual;
+                    EventoDAO.eliminar(Controlador.getConnection(), evento);
+                    Articulo articulo = new Articulo();
+                    articulo.setId(evento.getID());
+                    Actividad actividad = new Actividad();
+                    actividad.setId(evento.getID());
+                    ArticuloClienteDAO.eliminarTodo(articulo, Controlador.getConnection());
+                    ActividadDAO.eliminarTodo(actividad, Controlador.getConnection());
+                    vista.frmModEvento.clear();
+                    vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
+                    this.mostrarMensajes("Evento eliminado", Boolean.TRUE);
+                }catch(SQLException err){
+                    this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
+                }
             }
-            vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
-            vista.frmModEvento.clear();
-            vista.frmModEvento.txtDoc.setEditable(true);
         }
-
-        if (e.getActionCommand().equals("Activar evento")) {
-            Evento evento = this.getEvento();
-            evento.setEstado(modelo.Estado.ACTIVO);
-            try {
-                EventoDAO.actualizar(Controlador.getConnection(), evento);
-            } catch (SQLException err) {
-            }
-            vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
-            vista.frmModEvento.clear();
-        }
-
+        
         if (e.getSource() == vista.frmModEvento.btnVolver) {
             vista.cambiarPanel(vista.frmModEvento, vista.frmInicio);
             vista.frmModEvento.clear();
@@ -128,7 +151,7 @@ public class ControladorModEvento {
             this.alterarTablaArticulos(tme);
         }
 
-        if (tme.getSource() == vista.frmModEvento.tableModelAct) {           
+        if (tme.getSource() == vista.frmModEvento.tableModelAct) {
             this.alterarTablaActividades(tme);
         }
     }
@@ -143,7 +166,8 @@ public class ControladorModEvento {
                     Integer valueInt = Integer.parseInt(valueString);
                     if (valueInt > 0) {
                         this.actualizarPrecio(row, valueInt);
-                        vista.frmModEvento.actualizarArticulo(row, valueInt);
+                        String nombre = vista.frmModEvento.tableModelArt.getValueAt(row, 0).toString();
+                        vista.frmModEvento.actualizarArticulo(nombre, valueInt);
                         vista.frmModEvento.precioTotal();
                     } else {
                         throw new NumberFormatException();
@@ -151,10 +175,11 @@ public class ControladorModEvento {
                 }
             }
         } catch (NumberFormatException e) {
-            //this.mostrarMensaje();
+            this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             try {
                 vista.frmModEvento.cargarTablaActuales();
             } catch (SQLException er) {
+                this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
             }
         }
     }
@@ -162,15 +187,18 @@ public class ControladorModEvento {
     private void alterarTablaActividades(TableModelEvent tme) {
         Integer column = tme.getColumn();
         Integer row = tme.getFirstRow();
-        if(column==-1)return;
-        if (!vista.frmModEvento.tableModelAct.getValueAt(row, column).toString().trim().equals("")) {         
+        if (column == -1) {
+            return;
+        }
+        if (!vista.frmModEvento.tableModelAct.getValueAt(row, column).toString().trim().equals("")) {
             String value = vista.frmModEvento.tableModelAct.getValueAt(row, column).toString().trim();
             vista.frmModEvento.actualizarActividad(row, column, value);
-        }else{
-            //this.mostrarMensaje();
+        } else {
+            this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             try {
                 vista.frmModEvento.cargarTablaActuales();
             } catch (SQLException er) {
+                this.mostrarMensajes("Error de acceso a base de datos", Boolean.FALSE);
             }
         }
     }
@@ -183,7 +211,7 @@ public class ControladorModEvento {
         }
     }
 
-    private Evento getEvento() {
+    private Evento getEvento() throws NumberFormatException, ArrayIndexOutOfBoundsException{
         Fecha fecha_celebracion = this.getFecha();
         Integer monto_abonado = 0;
         monto_abonado = Integer.parseInt(vista.frmModEvento.lblMontoAbonado.getText());
@@ -240,5 +268,11 @@ public class ControladorModEvento {
         actividad.setId(Integer.parseInt(vista.frmModEvento.txtDoc.getText()));
         actividades.add(actividad);
         return actividades;
+    }
+    
+    public void mostrarMensajes(String mensaje, Boolean x){
+        String titulo = x ? "Operacion exitosa!" : "Operacion fallida!";
+        Integer tipo = x ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;       
+        JOptionPane.showMessageDialog(vista, mensaje, titulo, tipo);
     }
 }

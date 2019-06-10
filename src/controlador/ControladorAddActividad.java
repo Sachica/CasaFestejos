@@ -5,6 +5,9 @@
  */
 package controlador;
 
+import javax.swing.JOptionPane;
+import modelo.Actividad;
+import modelo.Hora;
 import vista.Vista;
 /**
  *
@@ -21,21 +24,21 @@ public class ControladorAddActividad {
         if(e.getSource() == vista.frmAddActividad.btnAddActividad){
             try{
                 if(vista.frmAddActividad.getCambio()){                                   
-                    if(!vista.frmEvento.addActividad(this.getActividad())){
-                        //Mostrar mensaje
+                    if(vista.frmEvento.addActividad(this.getActividad())){
+                        this.mostrarMensajes("Actividad guardada", Boolean.TRUE);
+                    }else{
+                        this.mostrarMensajes("Ya existe una actividad con el mismo nombre o horario guardada", Boolean.FALSE);
                     }
                 }else{
                     if(!vista.frmModEvento.addActividadesTable(this.getActividad())){
-                        //Mostrar mensaje
-                    }                    
+                        this.mostrarMensajes("Actividad guardada", Boolean.TRUE);
+                    }else{
+                        this.mostrarMensajes("Ya existe una actividad con el mismo nombre o horario guardada", Boolean.FALSE);
+                    }                  
                 }
                 vista.frmAddActividad.clearActividad();
             }catch(NumberFormatException er){
-                //this.mostrarMensaje();
-                System.out.println(er.getMessage());
-            }catch(NullPointerException er){
-                //this.mostrarMensaje();
-                System.out.println(er.getMessage());
+                this.mostrarMensajes("Caracteres invalidos", Boolean.FALSE);
             }
         }
         
@@ -49,7 +52,7 @@ public class ControladorAddActividad {
         }
     }
 
-    private modelo.Actividad getActividad() {
+    private Actividad getActividad() {
         String nombre = vista.frmAddActividad.txtNomAct.getText();
         Integer id = 0;
         if(vista.frmAddActividad.getCambio()){
@@ -60,7 +63,13 @@ public class ControladorAddActividad {
         Integer hora = Integer.parseInt(vista.frmAddActividad.txtHoraAct.getText());
         Integer minuto = Integer.parseInt(vista.frmAddActividad.txtMinAct.getText());
         String descripcion = vista.frmAddActividad.txtDescrip.getText();
-        return new modelo.Actividad(id, nombre, descripcion, new modelo.Hora(hora, minuto, 0));
+        return new Actividad(id, nombre, descripcion, new Hora(hora, minuto, 0));
+    }
+    
+    public void mostrarMensajes(String mensaje, Boolean x){
+        String titulo = x ? "Operacion exitosa!" : "Operacion fallida!";
+        Integer tipo = x ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;       
+        JOptionPane.showMessageDialog(vista, mensaje, titulo, tipo);
     }
     
 }

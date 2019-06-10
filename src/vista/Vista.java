@@ -14,7 +14,6 @@ import javax.swing.JPanel;
  */
 public class Vista extends javax.swing.JFrame {
     public formEvento frmEvento;
-    public formRegistro frmRegistro;
     public formInicio frmInicio;
     public formCliente frmCliente;
     public formArticulo frmArticulo;
@@ -29,7 +28,6 @@ public class Vista extends javax.swing.JFrame {
         initComponents();      
         super.setLocationRelativeTo(null);       
         frmEvento = new formEvento();
-        frmRegistro = new formRegistro();
         frmInicio = new formInicio();
         frmCliente = new formCliente();
         frmArticulo = new formArticulo();
@@ -40,7 +38,6 @@ public class Vista extends javax.swing.JFrame {
 
     public void initListeners(java.awt.event.ActionListener e, java.awt.event.MouseListener m, javax.swing.event.TableModelListener t){
         this.frmEvento.initListeners(e);
-        this.frmRegistro.initListeners(e);
         this.frmInicio.initListener(e);
         this.frmCliente.initListeners(e);
         this.frmArticulo.initListener(e, m);

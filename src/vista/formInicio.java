@@ -29,7 +29,6 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         this.btnBuscarEvento.addActionListener(e);
         this.btnModCliente.addActionListener(e);
         this.btnCrearEvento.addActionListener(e);
-        this.btnRegis.addActionListener(e);
         this.btnUpdArt.addActionListener(e);
     }
     
@@ -60,7 +59,6 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnRegis = new javax.swing.JButton();
         btnCrearEvento = new javax.swing.JButton();
         btnBuscarEvento = new javax.swing.JButton();
         btnUpdArt = new javax.swing.JButton();
@@ -71,27 +69,24 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         setMaximumSize(new java.awt.Dimension(606, 422));
         setLayout(null);
 
-        btnRegis.setBackground(new java.awt.Color(255, 255, 255));
-        btnRegis.setForeground(new java.awt.Color(0, 0, 0));
-        btnRegis.setText("Registrar cliente");
-        add(btnRegis);
-        btnRegis.setBounds(170, 270, 270, 25);
-
         btnCrearEvento.setBackground(new java.awt.Color(255, 255, 255));
         btnCrearEvento.setForeground(new java.awt.Color(0, 0, 0));
         btnCrearEvento.setText("Crear evento");
+        btnCrearEvento.setFocusable(false);
         add(btnCrearEvento);
         btnCrearEvento.setBounds(170, 330, 270, 25);
 
         btnBuscarEvento.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscarEvento.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscarEvento.setText("Buscar evento");
+        btnBuscarEvento.setFocusable(false);
         add(btnBuscarEvento);
         btnBuscarEvento.setBounds(170, 360, 270, 25);
 
         btnUpdArt.setBackground(new java.awt.Color(255, 255, 255));
         btnUpdArt.setForeground(new java.awt.Color(0, 0, 0));
         btnUpdArt.setText("Actualizar articulos");
+        btnUpdArt.setFocusable(false);
         add(btnUpdArt);
         btnUpdArt.setBounds(170, 390, 270, 25);
 
@@ -104,7 +99,8 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
 
         btnModCliente.setBackground(new java.awt.Color(255, 255, 255));
         btnModCliente.setForeground(new java.awt.Color(0, 0, 0));
-        btnModCliente.setText("Modificar cliente");
+        btnModCliente.setText("Registrar cliente");
+        btnModCliente.setFocusable(false);
         add(btnModCliente);
         btnModCliente.setBounds(170, 300, 270, 25);
 
@@ -120,7 +116,6 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
     public javax.swing.JButton btnBuscarEvento;
     public javax.swing.JButton btnCrearEvento;
     public javax.swing.JButton btnModCliente;
-    public javax.swing.JButton btnRegis;
     public javax.swing.JButton btnUpdArt;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel lblFondo;

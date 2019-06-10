@@ -20,7 +20,6 @@ import vista.*;
 public class Controlador implements ActionListener, MouseListener, TableModelListener {
     private Vista vista;
     private static Conexion connection;
-    private ControladorRegistro controladorRegistro;
     private ControladorInicio controladorInicio;
     private ControladorCliente controladorCliente;
     private ControladorEvento controladorEvento;
@@ -33,7 +32,6 @@ public class Controlador implements ActionListener, MouseListener, TableModelLis
         vista = new Vista();
         vista.initListeners(this, this, this);
         connection = new Conexion();
-        controladorRegistro = new ControladorRegistro(vista);
         controladorInicio = new ControladorInicio(vista);
         controladorCliente = new ControladorCliente(vista);
         controladorEvento = new ControladorEvento(vista);
@@ -48,7 +46,7 @@ public class Controlador implements ActionListener, MouseListener, TableModelLis
         vista.frmAddArticulo.cargarItemOpciones();
         vista.frmEvento.cargarItemOpciones();
         vista.frmModEvento.cargarItemOpciones();
-        vista.cambiarPanel(vista.frmRegistro, vista.frmInicio);
+        vista.cambiarPanel(vista.frmCliente, vista.frmInicio);
         vista.setVisible(true);
     }
     
@@ -56,7 +54,6 @@ public class Controlador implements ActionListener, MouseListener, TableModelLis
     @Override
     public void actionPerformed(ActionEvent e) {
         controladorInicio.actionPerformed(e);
-        controladorRegistro.actionPerformed(e);
         controladorCliente.actionPerformed(e);
         controladorArticulo.actionPerformed(e);
         controladorAddArticulo.actionPerformed(e);
