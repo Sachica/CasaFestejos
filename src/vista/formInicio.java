@@ -70,39 +70,35 @@ public class formInicio extends javax.swing.JPanel implements Runnable{
         setLayout(null);
 
         btnCrearEvento.setBackground(new java.awt.Color(255, 255, 255));
-        btnCrearEvento.setForeground(new java.awt.Color(0, 0, 0));
         btnCrearEvento.setText("Crear evento");
         btnCrearEvento.setFocusable(false);
         add(btnCrearEvento);
-        btnCrearEvento.setBounds(170, 330, 270, 25);
+        btnCrearEvento.setBounds(170, 330, 270, 23);
 
         btnBuscarEvento.setBackground(new java.awt.Color(255, 255, 255));
-        btnBuscarEvento.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscarEvento.setText("Buscar evento");
         btnBuscarEvento.setFocusable(false);
         add(btnBuscarEvento);
-        btnBuscarEvento.setBounds(170, 360, 270, 25);
+        btnBuscarEvento.setBounds(170, 360, 270, 23);
 
         btnUpdArt.setBackground(new java.awt.Color(255, 255, 255));
-        btnUpdArt.setForeground(new java.awt.Color(0, 0, 0));
         btnUpdArt.setText("Actualizar articulos");
         btnUpdArt.setFocusable(false);
         add(btnUpdArt);
-        btnUpdArt.setBounds(170, 390, 270, 25);
+        btnUpdArt.setBounds(170, 390, 270, 23);
 
         jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Casa de Festejos Pimienta Negra Recien Molida :v");
+        jLabel1.setText("Casa de Festejos El Shaddai");
         add(jLabel1);
         jLabel1.setBounds(10, 10, 580, 60);
 
         btnModCliente.setBackground(new java.awt.Color(255, 255, 255));
-        btnModCliente.setForeground(new java.awt.Color(0, 0, 0));
         btnModCliente.setText("Registrar cliente");
         btnModCliente.setFocusable(false);
         add(btnModCliente);
-        btnModCliente.setBounds(170, 300, 270, 25);
+        btnModCliente.setBounds(170, 300, 270, 23);
 
         lblFondo.setForeground(new java.awt.Color(51, 51, 51));
         lblFondo.setMaximumSize(new java.awt.Dimension(610, 430));
