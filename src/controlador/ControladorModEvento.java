@@ -30,7 +30,6 @@ public class ControladorModEvento {
             try {
                 vista.frmModEvento.cargarTablaBaseDeDatos();
                 vista.frmModEvento.cargarEventoBaseDeDatos();
-                vista.frmModEvento.habilitar(Boolean.TRUE);
                 vista.frmModEvento.txtDoc.setEditable(false);
                 this.mostrarMensajes("Evento encontrado", Boolean.TRUE);
             } catch (NumberFormatException err) {

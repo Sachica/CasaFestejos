@@ -11,13 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import modelo.Estado;
 import servicio.Conexion;
 import vista.*;
 /**
  *
  * @author kuroy
  */
-public class Controlador implements ActionListener, MouseListener, TableModelListener {
+public class Controlador implements Runnable, ActionListener, MouseListener, TableModelListener {
     private Vista vista;
     private static Conexion connection;
     private ControladorInicio controladorInicio;
@@ -85,22 +86,41 @@ public class Controlador implements ActionListener, MouseListener, TableModelLis
         controladorArticulo.mouseExited(me);
     }
     
-    public static void main(String[] args){
-//        modelo.ArticuloCliente a = new modelo.ArticuloCliente(2, util.TipoArticulo.MONTAJE, "Cumpleaños", 1, 10000);
-//        try{
-//            modeloDAO.ArticuloClienteDAO.guardar(a, servicio.Conexion.getConnection());
-//        }catch(java.sql.SQLException e){
-//        }
-        Controlador m = new Controlador();       
-    }
-
-    public static java.sql.Connection getConnection(){
-        return Controlador.connection.getConnection();
-    }
-    
     @Override
     public void tableChanged(TableModelEvent tme) {
         controladorModEvento.tableChanged(tme);
     }
-
+    
+    @Override
+    public void run(){
+        while(true){
+            modelo.Fecha fecha = new modelo.Fecha();
+            try{
+                java.util.ArrayList<modelo.Evento> eventos = modeloDAO.EventoDAO.getAll(Controlador.getConnection());
+                for(modelo.Evento evento : eventos){
+                    if(evento.getFecha_celebracion().esMenor(fecha)){
+                        if(evento.getEstado_pago().equals(Estado.NO_PAGO)){
+                            evento.setEstado(Estado.CANCELADO);
+                        }else{
+                            evento.setEstado(Estado.FINALIZADO);
+                        }                      
+                    }else{
+                        evento.setEstado(Estado.ACTIVO);
+                    }
+                    modeloDAO.EventoDAO.actualizar(Controlador.getConnection(), evento);
+                }
+                Thread.sleep(60000);
+            }catch(java.sql.SQLException | InterruptedException e){
+            }
+        }
+    }
+    
+    public static java.sql.Connection getConnection(){
+        return Controlador.connection.getConnection();
+    }
+    
+    public static void main(String[] args){
+        Controlador m = new Controlador();
+        (new Thread(m)).start();
+    }
 }

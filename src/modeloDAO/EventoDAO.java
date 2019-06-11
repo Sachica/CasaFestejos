@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import modelo.Evento;
 
 /**
@@ -89,5 +90,36 @@ public class EventoDAO {
                 return new Evento(fecha_celebracion, direccion, responsable, monto_abonado, monto_total, modelo.Estado.getEstado(estado));
             }
         return null;
+    }
+    
+    public static ArrayList<Evento> getAll(Connection conexion) throws SQLException {
+            ArrayList<Evento> eventos = new ArrayList<>();
+            String query = "SELECT * FROM evento";
+            
+            ResultSet rs = conexion.prepareStatement(query).executeQuery();
+            if(rs.next()){
+                Integer id = rs.getInt("id");
+                modelo.Responsable responsable = new modelo.Responsable();
+                responsable.setCedula(id);
+                responsable = ResponsableDAO.buscar(responsable, conexion);
+                
+                String fecha[] = rs.getString("fecha_celebracion").split("/");
+                Integer dia = Integer.parseInt(fecha[0]);
+                Integer mes = Integer.parseInt(fecha[1]);
+                Integer año = Integer.parseInt(fecha[2]);
+                String horario[] = rs.getString("hora").split(":");
+                Integer hora = Integer.parseInt(horario[0]);
+                Integer minuto = Integer.parseInt(horario[1]);
+                modelo.Fecha fecha_celebracion = new modelo.Fecha(año, mes, dia, new modelo.Hora(hora, minuto, 0));
+                
+                String direccion = rs.getString("direccion");
+                Integer monto_abonado = rs.getInt("monto_abonado");
+                Integer monto_total = rs.getInt("monto_total");
+                
+                String estado = rs.getString("estado");
+                
+                eventos.add(new Evento(fecha_celebracion, direccion, responsable, monto_abonado, monto_total, modelo.Estado.getEstado(estado)));
+            }
+        return eventos;
     }
 }

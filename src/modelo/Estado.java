@@ -13,6 +13,7 @@ public enum Estado {
     PAGO,
     NO_PAGO,
     ACTIVO,
+    CANCELADO,
     FINALIZADO;
     
     public static Estado getEstado(String estadoString){
@@ -20,6 +21,7 @@ public enum Estado {
             case "PAGO" : return PAGO;
             case "NO_PAGO" : return NO_PAGO;
             case "ACTIVO" : return ACTIVO;
+            case "CANCELADO" : return CANCELADO;
             case "FINALIZADO" : return FINALIZADO;
         }
         

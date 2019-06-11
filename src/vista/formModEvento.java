@@ -37,7 +37,6 @@ public class formModEvento extends javax.swing.JPanel {
         this.actividades = new ArrayList<>();
         this.tableModelAct = (DefaultTableModel)this.tableActividades.getModel();
         this.tableModelArt = (DefaultTableModel)this.tableArticulo.getModel();
-        this.habilitar(Boolean.FALSE);
     }
 
     public void initListener(java.awt.event.ActionListener e, javax.swing.event.TableModelListener t){
@@ -73,7 +72,6 @@ public class formModEvento extends javax.swing.JPanel {
         this.cmbMontaje.setSelectedIndex(0);
         this.lblPrecioMontaje.setText("");
         this.txtDoc.setEditable(Boolean.TRUE);
-        this.habilitar(Boolean.FALSE);
     }
     
     private void removeItems(){
@@ -304,12 +302,6 @@ public class formModEvento extends javax.swing.JPanel {
             }
             i++;
         }
-    }
-    
-    public void habilitar(Boolean x){
-        this.panelArticulo.setVisible(x);
-        this.panelActividad.setVisible(x);
-        this.panelInfo.setVisible(x);
     }
     /**
      * This method is called from within the constructor to initialize the form.
